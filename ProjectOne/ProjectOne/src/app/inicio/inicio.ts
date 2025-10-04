@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-inicio',
   standalone: false,
   templateUrl: './inicio.html',
-  styleUrl: './inicio.css'
+  styleUrls: ['./inicio.css']
 })
-export class Inicio {
-
-}
+export class InicioComponent { }

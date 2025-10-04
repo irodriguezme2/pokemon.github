@@ -3,13 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { Inicio } from './inicio/inicio';
+import { InicioComponent} from './inicio/inicio';
 import {NgOptimizedImage} from '@angular/common';
+import { RegistroComponent } from './registro/registro';
 
 @NgModule({
   declarations: [
     App,
-    Inicio
+    InicioComponent,
+    RegistroComponent
   ],
   imports: [
     BrowserModule,

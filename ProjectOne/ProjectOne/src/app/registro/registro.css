@@ -1,0 +1,108 @@
+
+.card {
+  background: rgba(255, 255, 255, 0.60);
+  border-radius: 38px;
+  box-shadow: 0 4px 24px rgb(116, 157, 93);
+  padding: 32px 32px 40px 32px;
+  max-width: 420px;
+  width: 100%;
+  min-height: 520px;
+  margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.logo {
+  width: 320px;
+  margin-bottom: 20px;
+  margin-top: -45px;
+  object-fit: contain;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid #2c6599;
+  font-size: 20px;
+  font-weight: 500;
+  background: white;
+  box-shadow: 0 2px 6px rgba(44, 101, 153, 0.20);
+  outline: none;
+  transition: border 0.2s;
+}
+
+input:focus {
+  border-color: #f44336;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: #4178C2;
+  color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgb(44, 101, 153, 0.30);
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.action-btn:hover {
+  background: #2c6599;
+}
+
+.link-box {
+  margin-top: 12px;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+}
+.link-accent {
+  color: #f44336;
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: 4px;
+  transition: text-decoration 0.2s;
+}
+.link-accent:hover {
+  text-decoration: underline;
+}
+
+.suicune {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  width: 110px;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+
+@media (max-width: 500px) {
+  .card {
+    max-width: 98vw;
+    padding: 18px 6px 40px 6px;
+  }
+  .logo {
+    width: 95vw;
+    margin-top: -20px;
+  }
+  .suicune {
+    width: 70px;
+    right: 2px;
+  }
+}
