@@ -1,108 +1,140 @@
+.logo {
+  background-image: url("../../assets/logoPokemon.png");  /* Ruta relativa: sube dos niveles a src/assets/ */
+  background-size: contain;  /* 'contain' para que se vea completa; cambia a 'cover' si quieres que llene el área */
+  background-position: top center;  /* Prueba sin -85px primero; agrégalo si necesitas desplazar */
+  background-repeat: no-repeat;
+  width: 200px !important;
+  height: 200px !important;
+  position: absolute;  /* Posiciona con respecto a .card */
+  top: -60px;  /* Subido para que quede mitad fuera */
+  left: 50%;  /* Centra horizontalmente */
+  transform: translateX(-50%);  /* Corrige el centrado exacto */
+
+  z-index: 1;
+}
 
 .card {
   background: rgba(255, 255, 255, 0.60);
   border-radius: 38px;
   box-shadow: 0 4px 24px rgb(116, 157, 93);
-  padding: 32px 32px 40px 32px;
-  max-width: 420px;
-  width: 100%;
-  min-height: 520px;
-  margin: 60px auto;
+  padding: 32px 32px 16px 32px;
+  width: 300px !important;
+  height: 434px !important;
+  margin: 60px auto 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  margin-right: 100px !important;
+  margin-bottom: 70px !important;
+  margin-top: 100px !important;
 }
 
-.logo {
-  width: 320px;
-  margin-bottom: 20px;
-  margin-top: -45px;
-  object-fit: contain;
+input[type="date"] {
+  color: #333;
+  font-size: 18px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid #2c6599;
+  background: white;
+  box-shadow: 0 2px 6px rgba(44, 101, 153, 0.20);
+  margin-top: 12px;
 }
 
 form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  align-items: center;
+  gap: 8px;
 }
 
 input {
-  width: 100%;
-  padding: 14px;
-  border-radius: 12px;
-  border: 2px solid #2c6599;
-  font-size: 20px;
-  font-weight: 500;
-  background: white;
-  box-shadow: 0 2px 6px rgba(44, 101, 153, 0.20);
-  outline: none;
-  transition: border 0.2s;
-}
-
-input:focus {
-  border-color: #f44336;
-}
-
-.action-btn {
-  width: 100%;
   padding: 12px;
   border-radius: 12px;
-  background: #4178C2;
-  color: white;
-  border: none;
+  background: white;
+  border-color: #2c6599;
   font-weight: bold;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgb(44, 101, 153, 0.30);
-  margin-top: 8px;
-  transition: background 0.2s;
-}
-.action-btn:hover {
-  background: #2c6599;
+  box-shadow: 0 2px 6px rgb(44, 101, 153, 0.75);
+  margin-top: 12px;
 }
 
-.link-box {
+button {
+  padding: 12px;
+  border-radius: 12px;
+  background: white;
+  border-color: #2c6599;
+  font-weight: bold;
+  font-size: 18px;
+  font-palette: light;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgb(44, 101, 153, 0.75);
   margin-top: 12px;
+
+}
+
+.fondo {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Quité background-position aquí; no afecta al ::before */
+}
+.fondo::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;  /* Ancho completo de la ventana */
+  height: 100vh;  /* Altura completa */
+  background-image: url("../../assets/Video-de-WhatsApp-2025-10-02-a-las-19.08.45_d81dc17a.gif");  /* Tu GIF actualizado */
+  background-size: cover !important;  /* Cubre la pantalla; ajusta si quieres 'contain' para ver todo sin recortar */
+  background-position:center 15%;  /* ¡Cambio clave! Muestra desde arriba, centrado horizontalmente */
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+.gif-fondo {
+  width: 100%;
+  height: 100%;
+
+}
+.link-box {
+  margin-top: 16px;
   width: 100%;
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
+  color: #e0e0e0; /* texto claro para fondo oscuro */
+  letter-spacing: 0.2px;
 }
+
+.link-box span {
+  color: #139209 !important;
+  font-family: 'Poppins', sans-serif !important;
+
+}
+
 .link-accent {
-  color: #f44336;
+  color: #D32F2F;            /* Azul vibrante */
   font-weight: bold;
   text-decoration: none;
-  margin-left: 4px;
-  transition: text-decoration 0.2s;
+  margin-left: 6px;
+  transition: color 0.18s, text-decoration 0.18s;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
 }
+
 .link-accent:hover {
+  color: #139209 !important;
   text-decoration: underline;
+  font-family: 'Poppins', sans-serif !important;
+}
+.form-body {
+  margin-top: 54px;      /* 🔽 Baja todo el bloque de inputs y botón */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;              /* 🧱 Espaciado entre inputs y botón */
 }
 
-.suicune {
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-  width: 110px;
-  height: auto;
-  pointer-events: none;
-  user-select: none;
-  z-index: 1;
-}
-
-@media (max-width: 500px) {
-  .card {
-    max-width: 98vw;
-    padding: 18px 6px 40px 6px;
-  }
-  .logo {
-    width: 95vw;
-    margin-top: -20px;
-  }
-  .suicune {
-    width: 70px;
-    right: 2px;
-  }
-}

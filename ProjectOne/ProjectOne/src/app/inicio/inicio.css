@@ -1,12 +1,45 @@
 .logo {
-  background-image: url("assets/logoPokemon.png");
-  background-size: cover;
-  background-position: center -85px;
+  background-image: url("../../assets/logoPokemon.png");  /* Ruta relativa: sube dos niveles a src/assets/ */
+  background-size: contain;  /* 'contain' para que se vea completa; cambia a 'cover' si quieres que llene el área */
+  background-position: top center;  /* Prueba sin -85px primero; agrégalo si necesitas desplazar */
   background-repeat: no-repeat;
-  margin: 0;
-  width: 220px !important;
-  height: 140px;
-  margin-bottom: 50px !important;
+  width: 200px !important;
+  height: 200px !important;
+  position: absolute;  /* Posiciona con respecto a .card */
+  top: -60px;  /* Subido para que quede mitad fuera */
+  left: 50%;  /* Centra horizontalmente */
+  transform: translateX(-50%);  /* Corrige el centrado exacto */
+
+  z-index: 1;
+}
+
+.fondo {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Quité background-position aquí; no afecta al ::before */
+}
+.fondo::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;  /* Ancho completo de la ventana */
+  height: 100vh;  /* Altura completa */
+  background-image: url("../../assets/Video-de-WhatsApp-2025-10-02-a-las-19.08.45_d81dc17a.gif");  /* Tu GIF actualizado */
+  background-size: cover !important;  /* Cubre la pantalla; ajusta si quieres 'contain' para ver todo sin recortar */
+  background-position:center 15%;  /* ¡Cambio clave! Muestra desde arriba, centrado horizontalmente */
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+.form-body {
+  margin-top: 54px;      /* 🔽 Baja todo el bloque de inputs y botón */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;              /* 🧱 Espaciado entre inputs y botón */
 }
 
 .card {
@@ -14,26 +47,23 @@
   border-radius: 38px;
   box-shadow: 0 4px 24px rgb(116, 157, 93);
   padding: 32px 32px 16px 32px;
-  max-width: 340px;
-  height: 420px !important;
-  margin: 60px auto;
+  width: 300px !important;
+  height: 434px !important;
+  margin: 60px auto 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   margin-right: 100px !important;
-}
-
-.logo {
-  width: 220px !important;
-  margin-bottom: 20px;
-  height: 140px;
+  margin-bottom: 70px !important;
+  margin-top: 100px !important;
 }
 
 form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
 input {
@@ -60,4 +90,37 @@ button {
   margin-top: 8px;
 }
 
+.link-box {
+  margin-top: 16px;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  color: #e0e0e0; /* texto claro para fondo oscuro */
+  letter-spacing: 0.2px;
+}
 
+.link-box span {
+  color: #3B4CCA;
+}
+
+.link-accent {
+  color: #D32F2F;            /* Azul vibrante */
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: 6px;
+  transition: color 0.18s, text-decoration 0.18s;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
+
+.link-accent:hover {
+  color: #139209 !important;
+  text-decoration: underline;
+  font-family: 'Poppins', sans-serif !important;
+}
+.form-body {
+  margin-top: 100px;      /* 🔽 Baja todo el bloque de inputs y botón */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;              /* 🧱 Espaciado entre inputs y botón */
+}
