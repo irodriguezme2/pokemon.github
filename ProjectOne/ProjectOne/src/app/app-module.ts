@@ -1,30 +1,32 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms'; // necesario para [(ngModel)]
+import { RouterModule } from '@angular/router'; // necesario para router-outlet
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgOptimizedImage } from '@angular/common';
 
+// Rutas y componentes propios
 import { AppRoutingModule } from './app-routing-module';
-import { App } from './app';
+import { AppComponent } from './app.component';
 import { InicioComponent } from './inicio/inicio';
 import { RegistroComponent } from './registro/registro';
-import { NgOptimizedImage } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { CalendarModule } from 'primeng/calendar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// PrimeNG 19
+import { DatePickerModule } from 'primeng/datepicker';
 
 @NgModule({
   declarations: [
-    App,
     InicioComponent,
     RegistroComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     FormsModule,
-    CalendarModule,
-    NgOptimizedImage
+    RouterModule,
+    DatePickerModule
   ],
   providers: [],
-  bootstrap: [App]
+  bootstrap: []
 })
 export class AppModule { }
