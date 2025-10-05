@@ -1,14 +1,14 @@
 .logo {
-  background-image: url("../../assets/logoPokemon.png");  /* Ruta relativa: sube dos niveles a src/assets/ */
-  background-size: contain;  /* 'contain' para que se vea completa; cambia a 'cover' si quieres que llene el área */
-  background-position: top center;  /* Prueba sin -85px primero; agrégalo si necesitas desplazar */
+  background-image: url("../../assets/logoPokemon.png"); 
+  background-size: contain;
+  background-position: top center;
   background-repeat: no-repeat;
-  width: 200px !important;
-  height: 200px !important;
-  position: absolute;  /* Posiciona con respecto a .card */
-  top: -60px;  /* Subido para que quede mitad fuera */
-  left: 50%;  /* Centra horizontalmente */
-  transform: translateX(-50%);  /* Corrige el centrado exacto */
+  width: 350px !important;
+  height: 350px !important;
+  position: absolute;
+  top: -130px;
+  left: 50%;
+  transform: translateX(-50%);
 
   z-index: 1;
 }
@@ -20,41 +20,40 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Quité background-position aquí; no afecta al ::before */
 }
 .fondo::before {
   content: "";
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;  /* Ancho completo de la ventana */
-  height: 100vh;  /* Altura completa */
-  background-image: url("../../assets/Video-de-WhatsApp-2025-10-02-a-las-19.08.45_d81dc17a.gif");  /* Tu GIF actualizado */
-  background-size: cover !important;  /* Cubre la pantalla; ajusta si quieres 'contain' para ver todo sin recortar */
-  background-position:center 15%;  /* ¡Cambio clave! Muestra desde arriba, centrado horizontalmente */
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../assets/Video-de-WhatsApp-2025-10-02-a-las-19.08.45_d81dc17a.gif");
+  background-size: cover !important;
+  background-position:center 15%;
   background-repeat: no-repeat;
   z-index: -1;
 }
 .form-body {
-  margin-top: 54px;      /* 🔽 Baja todo el bloque de inputs y botón */
+  margin-top: 54px;
   display: flex;
   flex-direction: column;
-  gap: 2px;              /* 🧱 Espaciado entre inputs y botón */
+  gap: 2px;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.60);
+  background: rgba(255, 255, 255, 0.50);
   border-radius: 38px;
   box-shadow: 0 4px 24px rgb(116, 157, 93);
   padding: 32px 32px 16px 32px;
-  width: 300px !important;
-  height: 434px !important;
+  width: 430px !important;
+  height: 490px !important;
   margin: 60px auto 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  margin-right: 100px !important;
+  margin-right: 120px !important;
   margin-bottom: 70px !important;
   margin-top: 100px !important;
 }
@@ -67,60 +66,92 @@ form {
 }
 
 input {
+  width: 75%;
+  height: 40px;
   padding: 12px;
   border-radius: 12px;
   background: white;
   border-color: #2c6599;
   font-weight: bold;
-  font-size: 18px;
-  cursor: pointer;
+  font-size: 24px;
   box-shadow: 0 2px 6px rgb(44, 101, 153, 0.75);
-  margin-top: 8px;
+  margin-top: 10px;
+  margin-left: 35px;
+  margin-bottom: 8px;
+  z-index: 10;
+  position: relative;
+
+}
+button {
+  width: 200px;
+  height: 73px !important;
+  padding: 12px;
+  border-radius: 22px;
+  background: white;
+  border: 2.5px solid #2c6599;
+  font-weight: bolder;
+  font-size: 35px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(44, 101, 153, 0.75);
+  margin-top: 10px;
+  margin-left: 112px;
+  font-family: 'Press Start 2P', cursive;
+  color: #0b4571;
+
+
 }
 
-button {
-  padding: 12px;
-  border-radius: 12px;
-  background: white;
-  border-color: #2c6599;
-  font-weight: bold;
-  font-size: 18px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgb(44, 101, 153, 0.75);
-  margin-top: 8px;
+button:hover,
+button:focus-visible {
+  background-color: #fffb00;
+  color: #1f578a;
+  box-shadow: 0 8px 32px 0 rgba(44,101,153,0.22), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  transform: translateY(-2px) scale(1.03);
+  border-color: #1f578a;
+  outline: none;
+
 }
 
 .link-box {
   margin-top: 16px;
   width: 100%;
   text-align: center;
-  font-size: 18px;
-  color: #e0e0e0; /* texto claro para fondo oscuro */
+  font-size: 22px;
+  font-weight: bold;
+  color: #e0e0e0;
   letter-spacing: 0.2px;
+  font-family: 'Poppins', sans-serif !important;
+  top: -25px;
 }
 
 .link-box span {
-  color: #3B4CCA;
+  color: #0d2e49;
+  letter-spacing: -1px;
+  top: -25px;
+
 }
 
 .link-accent {
-  color: #D32F2F;            /* Azul vibrante */
+  color: #ffffff;
   font-weight: bold;
   text-decoration: none;
   margin-left: 6px;
   transition: color 0.18s, text-decoration 0.18s;
   cursor: pointer;
   font-family: 'Poppins', sans-serif;
+  letter-spacing: -1px;
 }
 
 .link-accent:hover {
-  color: #139209 !important;
-  text-decoration: underline;
+  color: #D32F2F !important;
+  text-decoration: Highlight;
   font-family: 'Poppins', sans-serif !important;
+
 }
 .form-body {
-  margin-top: 100px;      /* 🔽 Baja todo el bloque de inputs y botón */
+  margin-top: 120px;
   display: flex;
   flex-direction: column;
-  gap: 2px;              /* 🧱 Espaciado entre inputs y botón */
+  gap: 2px;
 }
