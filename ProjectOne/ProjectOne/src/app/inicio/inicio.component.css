@@ -1,5 +1,5 @@
 .logo {
-  background-image: url("../../assets/logoPokemon.png"); 
+  background-image: url("../../assets/logoPokemon.png");
   background-size: contain;
   background-position: top center;
   background-repeat: no-repeat;
@@ -67,7 +67,7 @@ form {
 
 input {
   width: 75%;
-  height: 40px;
+  height: 50px;
   padding: 12px;
   border-radius: 12px;
   background: white;
@@ -80,6 +80,7 @@ input {
   margin-bottom: 8px;
   z-index: 10;
   position: relative;
+  color: black;
 
 }
 button {
@@ -95,7 +96,7 @@ button {
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(44, 101, 153, 0.75);
   margin-top: 10px;
-  margin-left: 112px;
+  margin-left: 75px;
   font-family: 'Press Start 2P', cursive;
   color: #0b4571;
 
@@ -136,7 +137,7 @@ button:focus-visible {
   color: #ffffff;
   font-weight: bold;
   text-decoration: none;
-  margin-left: 6px;
+  margin-left: 5px;
   transition: color 0.18s, text-decoration 0.18s;
   cursor: pointer;
   font-family: 'Poppins', sans-serif;
