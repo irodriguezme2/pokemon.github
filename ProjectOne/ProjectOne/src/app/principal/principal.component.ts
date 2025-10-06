@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-principal',
   standalone: false,
   templateUrl: './principal.component.html',
-  styleUrl: './principal.component.css'
+  styleUrls: ['./principal.component.css']
 })
 export class PrincipalComponent {
-
+  sidebarVisible: boolean = false;
 }

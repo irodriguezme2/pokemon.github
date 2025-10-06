@@ -1,0 +1,65 @@
+.fondo {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fondo::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../assets/Pagina Principal.png");
+  background-size: cover !important;
+  background-position:center 60%;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+.logo {
+  background-image: url("../../assets/logoPokemon.png");
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+  width: 500px !important;
+  height: 500px !important;
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  filter: drop-shadow(0 0 150px #fde97f) drop-shadow(0 0 80px #eae6b8);
+
+}
+.botones {
+  position: absolute;
+  top: 350px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 60px; /* separación entre botones */
+  margin-top: 150px !important;
+  z-index: 2;
+}
+
+.btn-vs {
+  font-family: 'Press Start 2P', cursive; /* tipografía estilo pixel (opcional) */
+  font-size: 28px;
+  color: #c81e1e;
+  background: white;
+  border: 7px solid #c81e1e;
+  border-radius: 30px;
+  padding: 30px 60px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-vs:hover {
+  background: red;
+  color: white;
+  transform: scale(1.05);
+}
+
