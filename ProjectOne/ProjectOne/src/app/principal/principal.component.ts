@@ -6,6 +6,7 @@ import {RouterLink} from '@angular/router';
 @Component({
   selector: 'app-principal',
   templateUrl: './principal.component.html',
+  standalone: true,
   imports: [
     Avatar,
     Drawer,

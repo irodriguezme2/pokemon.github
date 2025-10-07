@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-pokemones',
-  standalone: false,
+  standalone: true,
   templateUrl: './pokemones.component.html',
-  styleUrl: './pokemones.component.css'
+  styleUrls: ['./pokemones.component.css']
 })
 export class PokemonesComponent {
 

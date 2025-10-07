@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-musica',
-  standalone: false,
+  standalone: true,
   templateUrl: './musica.component.html',
-  styleUrl: './musica.component.css'
+  styleUrls: ['./musica.component.css']
 })
 export class MusicaComponent {
 
