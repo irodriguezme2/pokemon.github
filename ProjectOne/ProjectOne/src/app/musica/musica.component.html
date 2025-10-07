@@ -1,1 +1,32 @@
-<p>musica works!</p>
+<div class="musica-card">
+  <h2>Configuración de música</h2>
+  <div class="musica-section">
+    <label>Canción actual</label>
+    <span class="musica-song">{{musicService.currentSongName}}</span>
+    <p-dropdown [options]="songOptions"
+                [(ngModel)]="selectedSong"
+                optionLabel="name"
+                placeholder="Selecciona canción"
+                (onChange)="changeSong($event.value)">
+    </p-dropdown>
+  </div>
+  <div class="musica-section">
+    <label>Volumen</label>
+    <p-slider [min]="0" [max]="1" [step]="0.01"
+              [(ngModel)]="volume"
+              (ngModelChange)="changeVolume($event)"
+              [style]="{ width: '200px' }"></p-slider>
+    <span class="musica-volume-label">{{ (volume*100) | number:'1.0-0' }}%</span>
+    <button class="musica-mute" (click)="toggleMute()">
+      <i class="pi" [ngClass]="musicService.muted ? 'pi-volume-off' : 'pi-volume-up'"
+         [style.color]="musicService.muted ? '#b0b3b8' : '#c81e1e'"
+         [style.textDecoration]="musicService.muted ? 'line-through' : 'none'"></i>
+    </button>
+  </div>
+  <div class="musica-section">
+    <label>Playlist Spotify</label>
+    <a class="musica-spotify-link" href="https://open.spotify.com/playlist/TU_PLAYLIST_ID" target="_blank">
+      <i class="pi pi-spotify"></i> Ver playlist en Spotify
+    </a>
+  </div>
+</div>
