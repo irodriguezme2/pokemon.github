@@ -1,32 +1,33 @@
-<div class="musica-card">
-  <h2>Configuración de música</h2>
-  <div class="musica-section">
-    <label>Canción actual</label>
-    <span class="musica-song">{{musicService.currentSongName}}</span>
-    <p-dropdown [options]="songOptions"
-                [(ngModel)]="selectedSong"
-                optionLabel="name"
-                placeholder="Selecciona canción"
-                (onChange)="changeSong($event.value)">
-    </p-dropdown>
-  </div>
-  <div class="musica-section">
-    <label>Volumen</label>
-    <p-slider [min]="0" [max]="1" [step]="0.01"
-              [(ngModel)]="volume"
-              (ngModelChange)="changeVolume($event)"
-              [style]="{ width: '200px' }"></p-slider>
-    <span class="musica-volume-label">{{ (volume*100) | number:'1.0-0' }}%</span>
-    <button class="musica-mute" (click)="toggleMute()">
-      <i class="pi" [ngClass]="musicService.muted ? 'pi-volume-off' : 'pi-volume-up'"
-         [style.color]="musicService.muted ? '#b0b3b8' : '#c81e1e'"
-         [style.textDecoration]="musicService.muted ? 'line-through' : 'none'"></i>
-    </button>
-  </div>
-  <div class="musica-section">
-    <label>Playlist Spotify</label>
-    <a class="musica-spotify-link" href="https://open.spotify.com/playlist/TU_PLAYLIST_ID" target="_blank">
-      <i class="pi pi-spotify"></i> Ver playlist en Spotify
-    </a>
+<!-- 🔘 Botón flotante (siempre visible) para activar/desactivar música -->
+<button class="music-btn" (click)="toggleMusic()">
+  <i class="pi" [ngClass]="isPlaying ? 'pi-volume-up' : 'pi-volume-off'"></i>
+</button>
+
+<!-- 🎚️ Panel de controles (solo visible si mostrarControles = true) -->
+<div class="overlay" *ngIf="mostrarControles" (click)="cerrarVentana()">
+  <div class="popup-musica" (click)="$event.stopPropagation()">
+    <div class="popup-header">
+      <h3>🎵 Selecciona una canción</h3>
+      <button class="close-btn" (click)="cerrarVentana()">✖</button>
+    </div>
+
+    <ul class="song-list">
+      <li *ngFor="let song of musicService.songsList; let i = index">
+        <button class="song-btn" (click)="reproducir(i)">▶️ {{ song.name }}</button>
+      </li>
+    </ul>
+
+    <div class="controles">
+      <p>Actual: <strong>{{ musicService.currentSongName }}</strong></p>
+
+      <label>
+        Volumen:
+        <input type="range" min="0" max="1" step="0.05" [value]="musicService.volume" (input)="cambiarVolumen($event)" />
+      </label>
+
+      <button class="mute-btn" (click)="toggleMute()">
+        {{ musicService.muted ? '🔇 Desmutear' : '🔊 Silenciar' }}
+      </button>
+    </div>
   </div>
 </div>

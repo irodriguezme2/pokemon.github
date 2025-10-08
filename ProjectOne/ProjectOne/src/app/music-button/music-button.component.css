@@ -19,7 +19,7 @@
   transition: background .18s, color .18s;
 }
 .music-btn:hover {
-  background: #fde97f;
+  background: rgba(253, 233, 127, 0);
 }
 .music-slider {
   position: absolute;

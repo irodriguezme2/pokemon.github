@@ -1,40 +1,47 @@
-import { Component, OnInit } from '@angular/core';
-import { MusicService } from '../music.service';
-import { SliderModule } from 'primeng/slider';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
+import { MusicService } from '../music.service';
+
 @Component({
   selector: 'app-musica',
   standalone: true,
-  imports: [SliderModule, FormsModule, DropdownModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './musica.component.html',
   styleUrls: ['./musica.component.css']
 })
-export class MusicaComponent implements OnInit {
-  songOptions: any[] = [];
-  selectedSong: any = null;
-  volume: number = 0.65;
+export class MusicaComponent {
+  mostrarControles = false; // para mostrar u ocultar el panel completo
+  isPlaying = true;         // estado del botón
 
-  constructor(public musicService: MusicService) {}
-
-  ngOnInit() {
-    this.songOptions = this.musicService.songsList;
-    this.selectedSong = this.songOptions[this.musicService.currentSongIndex];
-    this.volume = this.musicService.volume;
+  constructor(public musicService: MusicService) {
+    this.musicService.play(); // empieza a sonar la música de fondo
   }
 
-  changeSong(song: any) {
-    const idx = this.songOptions.indexOf(song);
-    if (idx >= 0) {
-      this.musicService.play(idx);
-      this.selectedSong = song;
+  toggleMusic() {
+    this.isPlaying = !this.isPlaying;
+    if (this.isPlaying) {
+      this.musicService.unmute();
+      this.musicService.play();
+    } else {
+      this.musicService.mute();
     }
   }
+  mostrarVentana() {
+    this.mostrarControles = true;
+  }
 
-  changeVolume(vol: number) {
+  cerrarVentana() {
+    this.mostrarControles = false;
+  }
+
+  reproducir(index: number) {
+    this.musicService.play(index);
+  }
+
+  cambiarVolumen(event: any) {
+    const vol = parseFloat(event.target.value);
     this.musicService.setVolume(vol);
-    this.volume = vol;
-    if (this.musicService.muted && vol > 0) this.musicService.unmute();
   }
 
   toggleMute() {

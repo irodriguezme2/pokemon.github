@@ -1,1 +1,70 @@
-<p>pokemon works!</p>
+<header>
+  <nav class="nav">
+    <div class="logo-pokemon"></div>
+    <div class="logo-elementos"></div>
+    <ul class="nav-list">
+      <li><button class="btn-header normal" (click)="filterByType('normal')">Normal</button></li>
+      <li><button class="btn-header fire" (click)="filterByType('fire')">Fuego</button></li>
+      <li><button class="btn-header water" (click)="filterByType('water')">Agua</button></li>
+      <li><button class="btn-header grass" (click)="filterByType('grass')">Planta</button></li>
+      <li><button class="btn-header electric" (click)="filterByType('electric')">Eléctrico</button></li>
+      <li><button class="btn-header ice" (click)="filterByType('ice')">Hielo</button></li>
+      <li><button class="btn-header fighting" (click)="filterByType('fighting')">Lucha</button></li>
+      <li><button class="btn-header poison" (click)="filterByType('poison')">Veneno</button></li>
+      <li><button class="btn-header ground" (click)="filterByType('ground')">Tierra</button></li>
+      <li><button class="btn-header flying" (click)="filterByType('flying')">Volador</button></li>
+      <li><button class="btn-header psychic" (click)="filterByType('psychic')">Psíquico</button></li>
+      <li><button class="btn-header bug" (click)="filterByType('bug')">Bicho</button></li>
+      <li><button class="btn-header rock" (click)="filterByType('rock')">Roca</button></li>
+      <li><button class="btn-header ghost" (click)="filterByType('ghost')">Fantasma</button></li>
+      <li><button class="btn-header dark" (click)="filterByType('dark')">Siniestro</button></li>
+      <li><button class="btn-header dragon" (click)="filterByType('dragon')">Dragón</button></li>
+      <li><button class="btn-header steel" (click)="filterByType('steel')">Acero</button></li>
+      <li><button class="btn-header fairy" (click)="filterByType('fairy')">Hada</button></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <div class="fondo">
+  <div class="pokemon-todos">
+    <div class="pokemon" *ngFor="let p of filteredPokemons">
+    <p class="pokemon-id-back">#{{ p.id }}</p>
+      <div class="pokemon-imagen">
+        <img [src]="p.image" [alt]="p.name">
+      </div>
+      <div class="pokemon-info">
+        <div class="nombre-contenedor">
+          <p class="pokemon-id">#{{ p.id }}</p>
+          <h2 class="pokemon-nombre">{{ p.name }}</h2>
+        </div>
+        <div class="pokemon-tipos">
+          <p *ngFor="let t of p.types" class="tipo" [ngClass]="t">{{ t }}</p>
+        </div>
+        <div class="pokemon-stats">
+          <p class="stat">{{ p.height }}m</p>
+          <p class="stat">{{ p.weight }}kg</p>
+        </div>
+        <div class="pokemon-abilities">
+          <p><strong>Habilidades:</strong></p>
+          <ul>
+            <li *ngFor="let ability of p.abilities">{{ ability }}</li>
+          </ul>
+        </div>
+        <div class="pokemon-base-stats">
+          <p><strong>Stats base:</strong></p>
+          <ul>
+            <li *ngFor="let stat of p.stats">
+              {{ stat.name | titlecase }}: {{ stat.value }}
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="load-more-container">
+    <button class="btn btn-header load-more" (click)="loadMore()">Cargar más Pokémon</button>
+  </div>
+  </div>
+</main>
+

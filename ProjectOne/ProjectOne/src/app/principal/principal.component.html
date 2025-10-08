@@ -5,10 +5,12 @@
   </button>
 
   <!-- Sidebar/Drawer -->
-  <p-drawer [(visible)]="visible" position="left" [modal]="true" [dismissible]="true" (onHide)="visible = false" class="custom-sidebar">    <div class="sidebar-content">
+  <p-drawer [(visible)]="visible" position="left" [modal]="true" [dismissible]="true"
+            (onHide)="visible = false" class="custom-sidebar">
+    <div class="sidebar-content">
       <!-- Opciones Sidebar -->
       <div class="sidebar-options">
-        <div class="sidebar-title">MENÚ</div>
+        <div class="sidebar-title"><h2>MENÚ</h2></div>
         <ul>
           <li>
             <a pRipple class="sidebar-option" routerLink="/pokemones" (click)="visible = false">
@@ -19,11 +21,11 @@
           <li>
             <a pRipple class="sidebar-option" routerLink="/equipos" (click)="visible = false">
               <i class="pi pi-users"></i>
-              <span>EquiposComponent</span>
+              <span>Mis equipos</span>
             </a>
           </li>
           <li>
-            <a pRipple class="sidebar-option" routerLink="/musica" (click)="visible = false">
+            <a pRipple class="sidebar-option" (click)="toggleMusicaPopup()">
               <i class="pi pi-music"></i>
               <span>Música</span>
             </a>
@@ -44,9 +46,13 @@
     </div>
   </p-drawer>
 
+  <!-- Resto del contenido -->
   <div class="logo"></div>
   <div class="botones">
     <button class="btn-vs">1 VS 1</button>
     <button class="btn-vs">1 VS PC</button>
   </div>
 </div>
+
+<!-- 👇 Esta línea va FUERA del div.fondo -->
+<app-musica></app-musica>

@@ -1,0 +1,19 @@
+.btn-musica {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffd700;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.btn-musica:hover {
+  transform: scale(1.1);
+  background-color: #ffcc00;
+}

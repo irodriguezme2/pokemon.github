@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'pokemones', component: PokemonesComponent },
   { path: 'equipos', component: EquiposComponent },
   { path: 'musica', component: MusicaComponent }
+
 ];
 
 export const appConfig: ApplicationConfig = {

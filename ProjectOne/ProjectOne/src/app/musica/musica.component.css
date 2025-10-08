@@ -1,66 +1,90 @@
-.musica-card {
-  max-width: 390px;
-  margin: 80px auto;
-  background: rgba(255,255,255,0.98);
-  border-radius: 32px;
-  box-shadow: 0 4px 24px #c81e1e44;
-  padding: 32px 30px;
+/* Fondo semitransparente solo cuando el panel está activo */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Fondo semitransparente solo cuando el panel está activo */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 3000; /* un poco menos que el popup */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-musica {
+  position: fixed; /* O absolute, dependiendo de tu layout */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  z-index: 3; /* Asegúrate que sea mayor al z-index del sidebar */
+
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+
+  width: 300px;
+  max-width: 90vw;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: 'Comic Sans MS', cursive;
 }
-.musica-section {
-  margin-bottom: 22px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.musica-section label {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 17px;
-  color: #c81e1e;
-  margin-bottom: 7px;
-}
-.musica-song {
-  font-size: 23px;
-  font-weight: bold;
-  color: #2c6599;
-  margin-bottom: 10px;
-}
-.musica-volume-label {
-  margin-left: 14px;
-  font-size: 18px;
-  color: #2c6599;
-  font-weight: bold;
-}
-.musica-mute {
-  margin-left: 22px;
-  background: #fff;
+
+
+/* Botón flotante */
+.music-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #ff69b4;
+  color: white;
   border: none;
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  font-size: 25px;
-  display: inline-flex;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  z-index: 2000; /* sobre todo */
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background .18s;
 }
-.musica-mute:hover {
-  background: #fde97f;
-}
-.musica-spotify-link {
-  margin-top: 8px;
-  color: #1db954;
-  font-weight: bold;
-  font-size: 18px;
-  text-decoration: none;
+
+
+
+/* Botón flotante */
+.music-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  z-index: 2000; /* sobre todo */
   display: flex;
   align-items: center;
-  gap: 7px;
-}
-.musica-spotify-link i {
-  font-size: 22px;
+  justify-content: center;
+  cursor: pointer;
 }

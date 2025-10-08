@@ -7,12 +7,11 @@ export class MusicService {
   private _volume = 0.65;
   private _currentSongIndex = 0;
   private songs = [
-    { name: 'Canción 1', src: 'assets/song1.mp3' },
-    { name: 'Canción 2', src: 'assets/song2.mp3' },
-    { name: 'Canción 3', src: 'assets/song3.mp3' },
-    { name: 'Canción 4', src: 'assets/song4.mp3' },
-    { name: 'Canción 5', src: 'assets/song5.mp3' }
+    { name: 'Canción 1', src: 'poke.mp3' },
+    { name: 'Canción 2', src: 'audio2.mp3' },
+    { name: 'Canción 3', src: 'audio3.mp3' }
   ];
+
 
   get muted() { return this._muted; }
   get volume() { return this._volume; }
@@ -23,10 +22,12 @@ export class MusicService {
 
   play(index?: number) {
     if (index !== undefined) this._currentSongIndex = index;
+
     if (this.audio) {
       this.audio.pause();
       this.audio.currentTime = 0;
     }
+
     this.audio = new Audio(this.songs[this._currentSongIndex].src);
     this.audio.loop = true;
     this.audio.volume = this._muted ? 0 : this._volume;

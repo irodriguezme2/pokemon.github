@@ -121,6 +121,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  font-family: 'Comic Sans MS', cursive;
 }
 .sidebar-option {
   display: flex;
@@ -152,6 +153,7 @@
   border-top: 1.5px solid #c81e1e44;
   justify-content: flex-start;
   background: transparent;
+  font-family: 'Press Start 2P', cursive;
 }
 .sidebar-avatar {
   width: 52px;
