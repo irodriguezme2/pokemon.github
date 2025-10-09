@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { RouterOutlet } from '@angular/router';
 import { MusicService } from './music.service';
-import { MusicaComponent } from './musica/musica.component'; // 👈 AGREGA ESTA LÍNEA
+import { MusicaComponent } from './musica/musica.component';
 
 @Component({
   selector: 'app-root',
@@ -12,25 +11,15 @@ import { MusicaComponent } from './musica/musica.component'; // 👈 AGREGA ESTA
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  mostrarBoton = false; // control del botón
+  mostrarBoton = true; // ✅ Siempre visible
 
-  constructor(
-    public musicService: MusicService,
-    private router: Router
-  ) {}
+  constructor(public musicService: MusicService) {}
 
   ngOnInit() {
-    this.musicService.play(); // música de fondo
-
-    // Escuchar cambios de ruta
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      const url = event.urlAfterRedirects;
-
-      // ✅ Mostrar solo en estas rutas:
-      this.mostrarBoton = url.includes('/inicio') || url.includes('/registro');
-    });
+    // ✅ Inicia la música al entrar a la app
+    if (!this.musicService['audio']) {
+      this.musicService.play();
+    }
   }
 
   toggleMute() {

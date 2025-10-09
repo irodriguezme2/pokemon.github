@@ -12,6 +12,7 @@ import { UsuarioComponent } from './app/usuario/usuario.component';
 import { PokemonesComponent } from './app/pokemones/pokemones.component';
 import { EquiposComponent } from './app/equipos/equipos.component';
 import { MusicaComponent } from './app/musica/musica.component';
+import {EleccionComponent} from './app/eleccion/eleccion.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'usuario', component: UsuarioComponent },
   { path: 'pokemones', component: PokemonesComponent },
   { path: 'equipos', component: EquiposComponent },
-  { path: 'musica', component: MusicaComponent }
+  { path: 'musica', component: MusicaComponent },
+  {path : 'eleccion', component:EleccionComponent}
 ];
 
 bootstrapApplication(AppComponent, {

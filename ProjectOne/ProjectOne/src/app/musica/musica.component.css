@@ -1,90 +1,278 @@
-/* Fondo semitransparente solo cuando el panel está activo */
-.overlay {
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap');
+
+.music-btn {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1000;
+  bottom: 24px;
+  right: 24px;
+  background: linear-gradient(135deg, #ff4d4d, #ffe066); /* rojo - amarillo */
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  box-shadow: 0 0 12px rgba(255, 80, 80, 0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  z-index: 3000;
 }
-/* Fondo semitransparente solo cuando el panel está activo */
+
+.music-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(255, 50, 50, 0.8);
+}
+
+.music-btn i {
+  font-size: 2.3rem;
+  color: #fff;
+  text-shadow: 0 0 6px #ff4d4d;
+  pointer-events: none;
+}
+
+/* Overlay */
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 3000; /* un poco menos que el popup */
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 80, 0.6); /* azul oscuro tenue */
+  backdrop-filter: blur(6px);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  z-index: 2000 !important;
 }
 
 .popup-musica {
-  position: fixed; /* O absolute, dependiendo de tu layout */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative!important;
+  background: #ffffff !important;
+  border-radius: 24px!important;
+  border-bottom-color: #0d2e49;
+  width: 320px!important;
+  padding: 24px 20px 30px!important;
+  box-shadow: 0 0 20px rgba(0, 50, 150, 0.4)!important; /* sutil toque azul */
+  text-align: center!important;
+  font-family: 'Pixelify Sans', 'Poppins', Arial, sans-serif!important;
+  overflow: hidden!important;
+  animation: aparecer 0.3s ease!important;
+}
 
-  z-index: 3; /* Asegúrate que sea mayor al z-index del sidebar */
+.popup-musica::before {
+  content: '';
+  position: absolute!important;
+  inset: -4px!important;
+  border-radius: 26px!important;
+  background: conic-gradient(from 0deg, #ff4d4d, #ffe066, #ffffff, #ff4d4d)!important;
+  animation: borderGlow 6s linear infinite!important;
+  z-index: -1!important;
+  pointer-events: none!important;
+}
 
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+.popup-musica > * {
+  position: relative!important;
+  z-index: 2!important;
+}
 
-  width: 300px;
-  max-width: 90vw;
+/* Imagen de la canción */
+.song-image {
+  width: 100%;
+  border-radius: 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 0 10px rgba(255, 50, 50, 0.3);
+}
 
+/* Título */
+.song-title {
+  font-size: 16px;
+  color: #e6b800;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-shadow: 0 0 2px #ff4d4d;
+}
+
+/* Controles */
+.player-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.player-btn {
+  background: #efebbd;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 0 #ffe066;
+  color: #e6b800;
+}
+
+.player-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #ffb3b3, #ffee66);
+}
+
+/* Slider de volumen */
+.controles label {
+  font-size: 14px;
+  color: #e6b800;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  font-family: 'Comic Sans MS', cursive;
+  gap: 6px;
+  width: 100%;
 }
 
+input[type="range"] {
+  appearance: none;
+  width: 90%;
+  height: 6px;
+  background: linear-gradient(to right, #ff4d4d, #ffe066);
+  border-radius: 6px;
+  outline: none;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  transition: all 0.3s ease;
+}
 
-/* Botón flotante */
-.music-btn {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background-color: #ff69b4;
-  color: white;
-  border: none;
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 24px;
-  z-index: 2000; /* sobre todo */
+  background: #fff;
+  border: 2px solid #ff4d4d;
+  cursor: pointer;
+  box-shadow: 0 0 6px #ff4d4d;
+}
+
+input[type="range"]:hover {
+  filter: brightness(1.2);
+}
+
+input[type="range"]:focus {
+  outline: 2px solid #ffe066;
+}
+
+/* Compatibilidad */
+input[type="range"]::-moz-range-thumb,
+input[type="range"]::-ms-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #ff4d4d;
+  box-shadow: 0 0 6px #ff4d4d;
+}
+
+input[type="range"]::-moz-range-track,
+input[type="range"]::-ms-fill-lower,
+input[type="range"]::-ms-fill-upper {
+  background: linear-gradient(to right, #ff4d4d, #ffe066);
+  height: 6px;
+  border-radius: 6px;
+}
+
+/* Botón de cierre en la esquina superior izquierda */
+.close-btn {
+  position: absolute;
+  top: 8px;           /* lo acerca más al borde superior */
+  left: 8px;          /* lo pega más al borde izquierdo */
+  background: rgba(255, 255, 255, 0.3); /* pequeño fondo translúcido */
+  border: 2px solid #ffd6d6;            /* borde rosado suave */
+  border-radius: 50%;                   /* forma redonda */
+  color: #e6b800;                    /* tono rosa intenso */
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  box-shadow: 0 0 8px rgba(255, 170, 200, 0.4);
+}
+
+.close-btn:hover {
+  background: linear-gradient(135deg, #ffb6c1, #fff5d6);
+  color: #fff;
+  transform: scale(1.1) rotate(-5deg);
+
 }
 
 
+/* Animaciones */
+@keyframes aparecer {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
 
-/* Botón flotante */
-.music-btn {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background-color: #ff69b4;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 24px;
-  z-index: 2000; /* sobre todo */
+@keyframes borderGlow {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 50% 0%; }
+  50% { background-position: 100% 50%; }
+  75% { background-position: 50% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Lista de canciones */
+.song-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.song-btn {
+  width: 100%;
+  background: #fff8f8;
+  border: 2px solid #ffe066;
+  border-radius: 10px;
+  padding: 7px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #e6b800;
+  text-align: left;
   cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 50, 150, 0.18);
+}
+
+.song-btn:hover {
+  background: linear-gradient(135deg, #ffdcdc, #fff1b4);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.song-btn.playing {
+  background: linear-gradient(135deg, #ff8080, #ffe789);
+  color: #fff;
+  box-shadow: 0 0 12px #ff4d4d;
+  border-color: transparent;
+}
+
+/* Botón de silencio */
+.mute-btn {
+  margin-top: 0.7rem;
+  width: 100%;
+  background: linear-gradient(135deg, #ff4d4d, #ffe066);
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  padding: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(255, 80, 80, 0.3);
+}
+
+.mute-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #ffe066, #ff4d4d);
+  color: #fff;
 }

@@ -1,14 +1,13 @@
 <div class="fondo">
-  <!-- Botón menú esquina superior izquierda -->
+
   <button class="sidebar-btn" (click)="visible = true">
     <i class="pi pi-bars"></i>
   </button>
 
-  <!-- Sidebar/Drawer -->
   <p-drawer [(visible)]="visible" position="left" [modal]="true" [dismissible]="true"
             (onHide)="visible = false" class="custom-sidebar">
     <div class="sidebar-content">
-      <!-- Opciones Sidebar -->
+
       <div class="sidebar-options">
         <div class="sidebar-title"><h2>MENÚ</h2></div>
         <ul>
@@ -33,7 +32,6 @@
         </ul>
       </div>
 
-      <!-- UsuarioComponent y salir -->
       <div class="sidebar-user">
         <a class="sidebar-profile-link" routerLink="/usuario" (click)="visible = false">
           <p-avatar [image]="user.photo" shape="circle" class="sidebar-avatar"/>
@@ -46,13 +44,11 @@
     </div>
   </p-drawer>
 
-  <!-- Resto del contenido -->
   <div class="logo"></div>
   <div class="botones">
-    <button class="btn-vs">1 VS 1</button>
+    <button class="btn-vs"routerLink="/eleccion">1 VS 1</button>
     <button class="btn-vs">1 VS PC</button>
   </div>
 </div>
 
-<!-- 👇 Esta línea va FUERA del div.fondo -->
 <app-musica></app-musica>
