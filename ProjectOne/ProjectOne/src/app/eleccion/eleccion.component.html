@@ -3,6 +3,12 @@
   <div class="layout-principal">
     <div class="galeria">
       <div class="botones-superiores">
+        <p-split-button
+          label="{{selectedEquipo?.nombre || 'Tus equipos'}}"
+          icon="pi pi-users"
+          [model]="splitButtonItems">
+        </p-split-button>
+
         <p-button
           icon="pi pi-arrow-left"
           label="Anterior"

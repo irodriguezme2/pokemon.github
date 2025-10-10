@@ -3,17 +3,15 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
-import {SplitButton} from 'primeng/splitbutton';
-import { ToastModule } from 'primeng/toast';
-import { MenuItem, MessageService } from 'primeng/api';
-
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { EquiposService, Equipo } from './equipos.service';
 
 interface Pokemon {
   nombre: string;
   imagen: string;
   seleccionado: boolean;
-  tipo?: string[];         // Nuevos campos
-  movimientos?: string[]; // Nuevos campos
+  tipo?: string[];
+  movimientos?: string[];
 }
 
 @Component({
@@ -21,12 +19,11 @@ interface Pokemon {
   standalone: true,
   templateUrl: './eleccion.component.html',
   styleUrls: ['./eleccion.component.css'],
-
   imports: [
     CommonModule,
     ButtonModule,
-    HttpClientModule
-
+    HttpClientModule,
+    SplitButtonModule
   ]
 })
 export class EleccionComponent implements OnInit {
@@ -35,14 +32,35 @@ export class EleccionComponent implements OnInit {
   equipoSeleccionado: Pokemon[] = [];
   pokemonActual: Pokemon | null = null;
 
-  // Parámetros para la API
   limit: number = 12;
   offset: number = 0;
 
-  constructor(private router: Router, private http: HttpClient) {}
+  equipos: Equipo[] = [];
+  splitButtonItems: any[] = [];
+  selectedEquipo: Equipo | null = null;
+
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private equiposService: EquiposService // <-- INYECTA EL SERVICIO
+  ) {}
 
   ngOnInit() {
     this.cargarPokemones();
+    this.equiposService.getEquipos().subscribe(equipos => {
+      this.equipos = equipos;
+      this.splitButtonItems = this.equipos.map(equipo => ({
+        label: equipo.nombre,
+        icon: 'pi pi-users',
+        command: () => this.seleccionarEquipo(equipo)
+      }));
+    });
+  }
+
+  seleccionarEquipo(equipo: Equipo) {
+    this.selectedEquipo = equipo;
+    // Aquí puedes cargar los pokemones del equipo si quieres
+    // this.equipoSeleccionado = equipo.pokemones;
   }
 
   cargarPokemones() {
@@ -75,17 +93,14 @@ export class EleccionComponent implements OnInit {
       this.equipoSeleccionado = this.equipoSeleccionado.filter(p => p !== pokemon);
     }
 
-    // Establecer temporalmente el Pokémon actual (sin detalles)
     this.pokemonActual = pokemon;
 
-    // Obtener detalles desde la API
     const apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemon.nombre}`;
     this.http.get<any>(apiUrl).subscribe({
       next: (data) => {
         const tipos = data.types.map((t: any) => t.type.name);
-        const movimientos = data.moves.slice(0, 5).map((m: any) => m.move.name); // Solo primeros 5
+        const movimientos = data.moves.slice(0, 5).map((m: any) => m.move.name);
 
-        // Actualizar el Pokémon actual con tipos y movimientos
         this.pokemonActual = {
           ...pokemon,
           tipo: tipos,
