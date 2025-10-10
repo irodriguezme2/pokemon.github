@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ButtonModule } from 'primeng/button';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { EquiposService, Equipo } from '../equipos.service';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ButtonModule} from 'primeng/button';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import {Router, RouterLink} from '@angular/router';
+import {Equipo, EquiposService} from '../equipos.service';
 
 interface Pokemon {
   nombre: string;
@@ -15,10 +15,10 @@ interface Pokemon {
 }
 
 @Component({
-  selector: 'app-eleccion',
+  selector: 'app-eleccion-invitado',
   standalone: true,
-  templateUrl: './eleccion.component.html',
-  styleUrls: ['./eleccion.component.css'],
+  templateUrl: './eleccion-invitado.component.html',
+  styleUrl: './eleccion-invitado.component.css',
   imports: [
     CommonModule,
     ButtonModule,
@@ -26,7 +26,7 @@ interface Pokemon {
     SplitButtonModule
   ]
 })
-export class EleccionComponent implements OnInit {
+export class EleccionInvitadoComponent implements OnInit {
   pokemones: Pokemon[] = [];
   equipoSeleccionado: Pokemon[] = [];
   pokemonActual: Pokemon | null = null;

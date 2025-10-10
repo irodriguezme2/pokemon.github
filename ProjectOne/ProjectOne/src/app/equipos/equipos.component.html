@@ -1,4 +1,21 @@
-<div>
-  <input [(ngModel)]="nombreEquipo" placeholder="Nombre del equipo" />
-  <button (click)="crearEquipo()">Crear equipo</button>
+<div class="fondo">
+<div class="container-equipos">
+  <h1 class="titulo">P1 crew:</h1>
+
+  <div class="grid-equipos" *ngIf="equipoSeleccionado.length > 0; else noSeleccion">
+    <div *ngFor="let pokemon of equipoSeleccionado" class="pokemon-card">
+      <img [src]="pokemon.imagen" [alt]="pokemon.nombre" />
+      <p class="pokemon-nombre">{{ pokemon.nombre | titlecase }}</p>
+    </div>
+  </div>
+
+  <ng-template #noSeleccion>
+    <p>No hay pokemones seleccionados.</p>
+  </ng-template>
+
+  <div class="botones">
+    <button pButton type="button" label="Cancelar" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+    <button pButton type="button" label="Siguiente" class="btn-siguiente" (click)="siguiente()" [disabled]="equipoSeleccionado.length === 0">Siguiente equipo</button>
+  </div>
+</div>
 </div>

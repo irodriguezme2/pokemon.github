@@ -13,7 +13,8 @@ import { PokemonesComponent } from './app/pokemones/pokemones.component';
 import { MusicaComponent } from './app/musica/musica.component';
 import { EquiposComponent } from './app/equipos/equipos.component';
 import { EleccionComponent } from './app/eleccion/eleccion.component'
-
+import { EleccionUnoVsPcComponent } from './app/eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
+import {EleccionInvitadoComponent} from './app/eleccion-invitado/eleccion-invitado.component';
 
 
 const routes: Routes = [
@@ -25,7 +26,9 @@ const routes: Routes = [
   { path: 'pokemones', component: PokemonesComponent },
   { path: 'equipos', component: EquiposComponent },
   { path: 'musica', component: MusicaComponent },
-  {path : 'eleccion', component:EleccionComponent}
+  {path : 'eleccion', component:EleccionComponent},
+  { path: 'eleccionuno', component: EleccionUnoVsPcComponent },
+  { path: 'eleccion-invitado', component: EleccionInvitadoComponent }
 ];
 
 bootstrapApplication(AppComponent, {

@@ -15,9 +15,12 @@ import { EquiposComponent } from './equipos/equipos.component';
 import { MusicaComponent } from './musica/musica.component';
 import { EleccionComponent } from './eleccion/eleccion.component';
 import { EleccionUnoVsPcComponent } from './eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
+import { EleccionInvitadoComponent } from './eleccion-invitado/eleccion-invitado.component';
+import {SplitButton} from 'primeng/splitbutton';
 
 @NgModule({
   declarations: [
+
 
   ],
   imports: [
@@ -35,7 +38,8 @@ import { EleccionUnoVsPcComponent } from './eleccion-uno-vs-pc/eleccion-uno-vs-p
     UsuarioComponent,
     InicioComponent,
     RegistroComponent,
-    EleccionUnoVsPcComponent
+    EleccionUnoVsPcComponent,
+    SplitButton
   ],
   providers: [],
   bootstrap: []
