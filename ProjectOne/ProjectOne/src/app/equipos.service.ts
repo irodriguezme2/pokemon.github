@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export interface Equipo {
   id: number;
   nombre: string;
+  pokemones: any[];
 }
 
 @Injectable({
@@ -21,6 +22,4 @@ export class EquiposService {
     this.equipos = [...this.equipos, equipo];
     this.equiposSubject.next(this.equipos);
   }
-
-  // Puedes agregar métodos para eliminar, editar, etc.
 }

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { EquiposService, Equipo } from './equipos.service';
+import { EquiposService, Equipo } from '../equipos.service';
 
 interface Pokemon {
   nombre: string;
