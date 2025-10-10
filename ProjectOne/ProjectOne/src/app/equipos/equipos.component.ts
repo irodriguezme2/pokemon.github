@@ -20,8 +20,9 @@ interface Pokemon {
   imports: [CommonModule, FormsModule]
 })
 export class EquiposComponent implements OnInit {
-  nombreEquipo = '';
-  equipoSeleccionado: Pokemon[] = [];
+  equipoJugador: Pokemon[] = [];
+  equipoInvitado: Pokemon[] = [];
+  equiposGuardados: Equipo[] = [];
 
   constructor(
     private equiposService: EquiposService,
@@ -29,34 +30,20 @@ export class EquiposComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const equipoGuardado = this.equiposService.obtenerEquipoTemporal();
-    if (equipoGuardado?.length) {
-      this.equipoSeleccionado = equipoGuardado;
-    }
-  }
+    this.equipoJugador = this.equiposService.obtenerEquipoTemporalJugador();
+    this.equipoInvitado = this.equiposService.obtenerEquipoTemporalInvitado();
 
-  crearEquipo(): void {
-    if (!this.nombreEquipo.trim()) return;
+    this.equiposService.getEquipos().subscribe(equipos => {
+      this.equiposGuardados = equipos;
+    });
 
-    const nuevoEquipo: Equipo = {
-      id: Date.now(),
-      nombre: this.nombreEquipo,
-      pokemones: this.equipoSeleccionado
-    };
-
-    this.equiposService.agregarEquipo(nuevoEquipo);
-    this.nombreEquipo = '';
   }
 
   cancelar(): void {
-    this.equiposService.guardarEquipoTemporal(this.equipoSeleccionado);
-    this.router.navigate(['/eleccion']);
+    this.router.navigate(['/eleccion-invitado']);
   }
 
-
   siguiente(): void {
-
-    this.equiposService.guardarEquipoTemporal(this.equipoSeleccionado);
-    this.router.navigate(['/eleccion-invitado']);
+    this.router.navigate(['/combate']);
   }
 }

@@ -14,8 +14,9 @@ export class EquiposService {
   private equiposSubject = new BehaviorSubject<Equipo[]>([]);
   private equipos: Equipo[] = [];
 
-  // 🔹 Aquí guardamos temporalmente un equipo sin persistirlo
-  private equipoTemporal: any[] = [];
+  // Cambia: ahora tienes dos equipos temporales
+  private equipoTemporalJugador: any[] = [];
+  private equipoTemporalInvitado: any[] = [];
 
   getEquipos(): Observable<Equipo[]> {
     return this.equiposSubject.asObservable();
@@ -26,12 +27,21 @@ export class EquiposService {
     this.equiposSubject.next(this.equipos);
   }
 
-  // 🔹 Métodos nuevos para guardar equipo temporalmente
-  guardarEquipoTemporal(equipo: any[]) {
-    this.equipoTemporal = equipo;
+  // Métodos para el equipo TEMPORAL DEL JUGADOR
+  guardarEquipoTemporalJugador(equipo: any[]) {
+    this.equipoTemporalJugador = equipo;
   }
 
-  obtenerEquipoTemporal(): any[] {
-    return this.equipoTemporal;
+  obtenerEquipoTemporalJugador(): any[] {
+    return this.equipoTemporalJugador;
+  }
+
+  // Métodos para el equipo TEMPORAL DEL INVITADO
+  guardarEquipoTemporalInvitado(equipo: any[]) {
+    this.equipoTemporalInvitado = equipo;
+  }
+
+  obtenerEquipoTemporalInvitado(): any[] {
+    return this.equipoTemporalInvitado;
   }
 }

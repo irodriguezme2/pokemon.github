@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ButtonModule} from 'primeng/button';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {SplitButtonModule} from 'primeng/splitbutton';
-import {Router, RouterLink} from '@angular/router';
-import {Equipo, EquiposService} from '../equipos.service';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { Router } from '@angular/router';
+import { Equipo, EquiposService } from '../equipos.service';
 
 interface Pokemon {
   nombre: string;
@@ -45,8 +45,8 @@ export class EleccionInvitadoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // 🔹 Recuperar equipo temporal guardado si se volvió desde "Cancelar"
-    const equipoGuardado = this.equiposService.obtenerEquipoTemporal();
+    // Recupera el equipo temporal del INVITADO si existe
+    const equipoGuardado = this.equiposService.obtenerEquipoTemporalInvitado();
     if (equipoGuardado?.length) {
       this.equipoSeleccionado = equipoGuardado;
     }
@@ -157,16 +157,13 @@ export class EleccionInvitadoComponent implements OnInit {
   cambiarEquipo(): void {
     console.log('🔁 Cambiar equipo');
   }
+
   irSiguiente(): void {
     if (this.equipoSeleccionado.length < 6) {
       alert('⚠️ Debes seleccionar exactamente 6 Pokémon para continuar.');
-      return; // ❗ DETIENE la función antes de navegar o guardar
+      return;
     }
-
-    // ✅ Solo se ejecuta si hay 6 pokémon
-    this.equiposService.guardarEquipoTemporal(this.equipoSeleccionado);
-    this.router.navigate(['/equipos']); // O la ruta que uses
+    this.equiposService.guardarEquipoTemporalInvitado(this.equipoSeleccionado);
+    this.router.navigate(['/equipos']);
   }
-
-
 }
