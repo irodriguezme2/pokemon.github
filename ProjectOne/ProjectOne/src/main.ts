@@ -10,9 +10,11 @@ import { RegistroComponent } from './app/registro/registro.component';
 import { PrincipalComponent } from './app/principal/principal.component';
 import { UsuarioComponent } from './app/usuario/usuario.component';
 import { PokemonesComponent } from './app/pokemones/pokemones.component';
-import { EquiposComponent } from './app/equipos/equipos.component';
 import { MusicaComponent } from './app/musica/musica.component';
-import {EleccionComponent} from './app/eleccion/eleccion.component';
+import { EquiposComponent } from './app/equipos/equipos.component';
+import { EleccionComponent } from './app/eleccion/eleccion.component'
+
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },

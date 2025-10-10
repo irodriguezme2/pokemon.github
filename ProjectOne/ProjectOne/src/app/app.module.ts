@@ -14,6 +14,7 @@ import { PokemonesComponent } from './pokemones/pokemones.component';
 import { EquiposComponent } from './equipos/equipos.component';
 import { MusicaComponent } from './musica/musica.component';
 import { EleccionComponent } from './eleccion/eleccion.component';
+import { EleccionUnoVsPcComponent } from './eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { EleccionComponent } from './eleccion/eleccion.component';
     PokemonesComponent,
     UsuarioComponent,
     InicioComponent,
-    RegistroComponent
+    RegistroComponent,
+    EleccionUnoVsPcComponent
   ],
   providers: [],
   bootstrap: []

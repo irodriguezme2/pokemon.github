@@ -10,6 +10,8 @@ import {UsuarioComponent} from './usuario/usuario.component';
 import {PokemonesComponent} from './pokemones/pokemones.component';
 import {EquiposComponent} from './equipos/equipos.component';
 import {MusicaComponent} from './musica/musica.component';
+import {EleccionComponent} from './eleccion/eleccion.component';
+import {EleccionUnoVsPcComponent} from './eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -19,7 +21,9 @@ const routes: Routes = [
   { path: 'usuario', component: UsuarioComponent },
   { path: 'pokemones', component: PokemonesComponent },
   { path: 'equipos', component: EquiposComponent },
-  { path: 'musica', component: MusicaComponent }
+  { path: 'musica', component: MusicaComponent },
+  { path: 'eleccion-uno-vs-pc', component: EleccionUnoVsPcComponent },
+  { path: 'eleccion', component: EleccionComponent }
 
 ];
 
