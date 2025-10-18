@@ -17,11 +17,10 @@ import { EleccionComponent } from './eleccion/eleccion.component';
 import { EleccionUnoVsPcComponent } from './eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
 import { EleccionInvitadoComponent } from './eleccion-invitado/eleccion-invitado.component';
 import {SplitButton} from 'primeng/splitbutton';
+import { BatallaComponent } from './batalla/batalla.component';
 
 @NgModule({
   declarations: [
-
-
   ],
   imports: [
     BrowserModule,

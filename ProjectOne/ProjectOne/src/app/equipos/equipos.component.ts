@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { EquiposService, Equipo } from '../equipos.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {ButtonDirective} from 'primeng/button';
 
 interface Pokemon {
   nombre: string;
@@ -17,7 +18,7 @@ interface Pokemon {
   standalone: true,
   templateUrl: './equipos.component.html',
   styleUrls: ['./equipos.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, ButtonDirective, RouterLink]
 })
 export class EquiposComponent implements OnInit {
   equipoJugador: Pokemon[] = [];
@@ -40,10 +41,8 @@ export class EquiposComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(['/eleccion-invitado']);
+    this.router.navigate(['/eleccion']);
   }
 
-  siguiente(): void {
-    this.router.navigate(['/combate']);
-  }
+
 }

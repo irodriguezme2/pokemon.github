@@ -12,6 +12,7 @@ import {EquiposComponent} from './equipos/equipos.component';
 import {MusicaComponent} from './musica/musica.component';
 import {EleccionComponent} from './eleccion/eleccion.component';
 import {EleccionUnoVsPcComponent} from './eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
+import {BatallaComponent} from './batalla/batalla.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -23,7 +24,8 @@ const routes: Routes = [
   { path: 'equipos', component: EquiposComponent },
   { path: 'musica', component: MusicaComponent },
   { path: 'eleccion-uno-vs-pc', component: EleccionUnoVsPcComponent },
-  { path: 'eleccion', component: EleccionComponent }
+  { path: 'eleccion', component: EleccionComponent },
+  { path: 'batalla', component: BatallaComponent }
 
 ];
 
