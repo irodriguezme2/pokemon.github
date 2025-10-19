@@ -103,3 +103,30 @@
   letter-spacing: -1px;
 
 }
+.container-stats{
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  width: 1000px;
+
+}
+.btn-ataque{
+  background-color: rgb(161, 188, 255);
+  color: black;
+  border-radius: 10px;
+  border-color: #1e4565;
+  border-width: 2px;
+  width: 400px;
+  height: 75px;
+  text-align: center;
+  font-family: 'Press Start 2P', cursive;
+  font-weight: normal;
+  font-size: 24px;
+  margin-left: 40px;
+  margin-top: 25px;
+}
+.btn-ataque:hover{
+  background-color: rgb(255, 62, 62);
+  transform: scale(1.05);
+  box-shadow: 0 0 3rem -0.5rem rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}

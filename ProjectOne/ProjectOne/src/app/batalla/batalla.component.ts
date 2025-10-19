@@ -1,12 +1,18 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'app-batalla',
-  templateUrl: './batalla.component.html',
-  styleUrls: ['./batalla.component.css']
+    selector: 'app-batalla',
+    templateUrl: './batalla.component.html',
+    imports: [
+
+    ],
+    styleUrls: ['./batalla.component.css']
 })
 export class BatallaComponent {
+
   player = {
+
+
     name: 'Nidoking',
     hp: 80,
     image: 'assets/nidoking.png',
