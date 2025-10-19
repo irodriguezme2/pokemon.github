@@ -1,21 +1,105 @@
 .fondo {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.fondo::before {
   content: "";
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-image: url("../../assets/battleBackground.jpg");
   background-size: cover !important;
   background-position:center 60%;
   background-repeat: no-repeat;
   z-index: -1;
+}
+.bar {
+  background-color: white !important;
+  width: 100%;
+  height: 300px;
+  position: absolute;
+  margin-top: 700px;
+
+}
+.hp-p1{
+  background-color: white;
+  width: 930px;
+  height: 90px;
+  margin-top: 75px;
+  margin-left: 50px;
+  border-radius: 20px;
+  position: absolute;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+}
+.hp-p2{
+  background-color: white;
+  width: 930px;
+  height: 90px;
+  margin-top: 75px;
+  margin-left: 1080px;
+  border-radius: 20px;
+  position: absolute;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+}
+.hp-text{
+  background-color: rgba(255, 255, 255, 0);
+  color: #f4e860;
+  font-style: normal;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px  1px 0 #000,
+    1px  1px 0 #000;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 42px;
+  font-weight: bolder;
+  font-family: 'Press Start 2P', cursive;
+  width: 80px;
+  height: 45px;
+  margin-left: 20px;
+  margin-top: 3px;
+  position: fixed;
+}
+.vida{
+  width: 780px;
+  height: 48px;
+  background-color: #ff4d4d;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 2px solid #000;
+  margin-left: 120px;
+  margin-top: 20px;
+
+}
+
+.vida-barra {
+  height: 100%;
+  width: 75%;
+  background-color: #4caf50;
+  border-radius: 15px 0 0 15px;
+  transition: width 0.3s ease;
+}
+
+.pokemon-nombre{
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  z-index: 1;
+  color: #5e7cdd;
+  text-align: center;
+  font-family: 'Press Start 2P', cursive;
+  text-shadow:
+    -1px -1px 0 #001047,
+    1px -1px 0 #ffffff,
+    -1px  1px 0 #001047,
+    1px  1px 0 #ffffff;
+  font-size: 50px;
+  font-weight: normal;
+  margin-left: 80px;
+  margin-top: -38px;
+  letter-spacing: -1px;
+
 }
