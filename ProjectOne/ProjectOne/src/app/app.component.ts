@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MusicService } from './music.service';
+import { MusicService } from './musica/music.service';
 import { MusicaComponent } from './musica/musica.component';
 import {BatallaComponent} from './batalla/batalla.component';
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MusicService } from '../music.service';
+import { MusicService } from '../musica/music.service';
 import { SliderModule } from 'primeng/slider';
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe, NgClass } from '@angular/common';

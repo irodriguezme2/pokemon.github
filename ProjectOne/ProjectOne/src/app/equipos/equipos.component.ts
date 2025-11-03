@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EquiposService, Equipo } from '../equipos.service';
+import { EquiposService, Equipo } from './equipos.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {ButtonDirective} from 'primeng/button';
