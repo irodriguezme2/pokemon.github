@@ -17,9 +17,14 @@ import { EleccionComponent } from './eleccion/eleccion.component';
 import { EleccionUnoVsPcComponent } from './eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
 import { EleccionInvitadoComponent } from './eleccion-invitado/eleccion-invitado.component';
 import {SplitButton} from 'primeng/splitbutton';
+import { CombateComponent } from './combate/combate.component';
+import { CombatePCComponent } from './combate-pc/combate-pc.component';
 
 @NgModule({
   declarations: [
+
+
+
 
 
   ],
@@ -31,9 +36,12 @@ import {SplitButton} from 'primeng/splitbutton';
     RippleModule,
     AvatarModule,
     EleccionComponent,
+    EleccionInvitadoComponent,
     PrincipalComponent,
     MusicaComponent,
     EquiposComponent,
+    CombateComponent,
+    CombatePCComponent,
     PokemonesComponent,
     UsuarioComponent,
     InicioComponent,

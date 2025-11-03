@@ -23,8 +23,8 @@
     </ng-template>
 
     <div class="botones">
-      <button pButton type="button" label="Cancelar" class="btn-cancelar" (click)="cancelar()">Escoger Nuevamente</button>
-      <button pButton type="button" label="Siguiente" class="btn-siguiente" (click)="siguiente()" [disabled]="equipoJugador.length === 0">Comenzar Combate</button>
+      <button pButton type="button" class="btn-cancelar" (click)="cancelar()">Escoger Nuevamente</button>
+      <button pButton type="button" class="btn-siguiente" (click)="siguiente()" [disabled]="equipoJugador.length === 0">Comenzar Combate</button>
     </div>
   </div>
 </div>
