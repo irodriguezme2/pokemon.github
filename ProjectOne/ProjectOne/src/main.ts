@@ -16,7 +16,7 @@ import { EleccionComponent } from './app/eleccion/eleccion.component'
 import { EleccionUnoVsPcComponent } from './app/eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
 import {EleccionInvitadoComponent} from './app/eleccion-invitado/eleccion-invitado.component';
 import {CombateComponent} from './app/combate/combate.component';
-
+import {BatallaComponent} from './app/batalla/batalla.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -30,7 +30,8 @@ const routes: Routes = [
   {path : 'eleccion', component:EleccionComponent},
   { path: 'eleccionuno', component: EleccionUnoVsPcComponent },
   { path: 'eleccion-invitado', component: EleccionInvitadoComponent },
-  { path: 'combate', component: CombateComponent }
+  { path: 'combate', component: CombateComponent },
+  { path: 'batalla', component: BatallaComponent }
 ];
 
 bootstrapApplication(AppComponent, {

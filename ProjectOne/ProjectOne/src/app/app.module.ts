@@ -19,13 +19,11 @@ import { EleccionInvitadoComponent } from './eleccion-invitado/eleccion-invitado
 import {SplitButton} from 'primeng/splitbutton';
 import { CombateComponent } from './combate/combate.component';
 import { CombatePCComponent } from './combate-pc/combate-pc.component';
+import { BatallaComponent } from './batalla/batalla.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-
-
-
-
 
   ],
   imports: [
@@ -47,7 +45,9 @@ import { CombatePCComponent } from './combate-pc/combate-pc.component';
     InicioComponent,
     RegistroComponent,
     EleccionUnoVsPcComponent,
-    SplitButton
+    SplitButton,
+    BatallaComponent,
+    CommonModule
   ],
   providers: [],
   bootstrap: []
