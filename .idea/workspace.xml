@@ -19,12 +19,12 @@
     &quot;assignee&quot;: &quot;7Linxx&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/irodriguezme2/pokemon.github.git&quot;,
-    &quot;accountId&quot;: &quot;5491cf94-5730-498c-9863-71fe4ecc2d3f&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/irodriguezme2/pokemon.github.git",
+    "accountId": "6bc0f953-c7c8-4109-89cc-defbe928e13b"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -41,7 +41,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "front",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/Nueva carpeta/pokemon.github",
+    "last_opened_file_path": "D:/Github desktop portable/Github desktop portable/Pojects/pokemon.github",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -71,6 +71,7 @@
       <workItem from="1760962913915" duration="22000" />
       <workItem from="1760963008175" duration="222000" />
       <workItem from="1760963232713" duration="884000" />
+      <workItem from="1762371423909" duration="11000" />
     </task>
     <servers />
   </component>
