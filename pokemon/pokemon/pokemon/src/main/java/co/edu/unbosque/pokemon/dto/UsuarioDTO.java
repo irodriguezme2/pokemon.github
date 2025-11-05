@@ -3,23 +3,27 @@ package co.edu.unbosque.pokemon.dto;
 import java.util.Date;
 import java.util.Objects;
 
+import co.edu.unbosque.pokemon.entity.Usuario.Role;
+
 public class UsuarioDTO {
 
 	private Long id;
 	private String correo;
 	private String nombreUsuario;
 	private String contrasenia;
+	private Role rol; 
 	private Date fechaNacimiento;
 
 	public UsuarioDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UsuarioDTO(String correo, String nombreUsuario, String contrasenia, Date fechaNacimiento) {
+	public UsuarioDTO(String correo, String nombreUsuario, String contrasenia,Role rol,  Date fechaNacimiento) {
 
 		this.correo = correo;
 		this.nombreUsuario = nombreUsuario;
 		this.contrasenia = contrasenia;
+		this.rol = rol; 
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
@@ -61,6 +65,20 @@ public class UsuarioDTO {
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}	
+	
+	/**
+	 * @return the rol
+	 */
+	public Role getRol() {
+		return rol;
+	}
+
+	/**
+	 * @param rol the rol to set
+	 */
+	public void setRol(Role rol) {
+		this.rol = rol;
 	}
 
 	@Override

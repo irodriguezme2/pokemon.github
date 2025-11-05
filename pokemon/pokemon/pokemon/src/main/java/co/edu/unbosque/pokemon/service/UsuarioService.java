@@ -6,9 +6,8 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import co.edu.unbosque.pokemon.util.AESUtil;
 import co.edu.unbosque.pokemon.dto.UsuarioDTO;
 import co.edu.unbosque.pokemon.entity.Usuario;
 import co.edu.unbosque.pokemon.repository.UsuarioRepository;
@@ -20,6 +19,8 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 	private UsuarioRepository userRepo;
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public UsuarioService() {
 		// TODO Auto-generated constructor stub
@@ -28,14 +29,17 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 	@Override
 	public int create(UsuarioDTO newData) {
 		Usuario user = modelMapper.map(newData, Usuario.class);
+		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 		if (userRepo.findByCorreo(newData.getCorreo()).isPresent()) {
-
 			Optional<Usuario> adminiss = userRepo.findByCorreo(newData.getCorreo());
 			System.out.println(adminiss.get().getCorreo());
 			return 1;
+		} else if (user.getCorreo().matches(regex) == false) {
+			return 2; 
 		} else {
 			userRepo.save(user);
 			return 0;
+
 		}
 	}
 
@@ -89,16 +93,33 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		}
 	}
 
-	public int validateCredentials(String correo, String password) {
-		password = AESUtil.decrypt("keyfrontfirstenc", "iviviviviviviviv", password);
-		for (UsuarioDTO u : getAll()) {
-			if (u.getCorreo().equals(correo)) {
-				if (u.getContrasenia().equals(password)) {
-					return 0;
-				}
+	public boolean findUsernameAlreadyTaken(Usuario newUser) {
+		Optional<Usuario> found = userRepo.findByNombreUsuario(newUser.getUsername());
+		if (found.isPresent()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public int validateCredentials(String username, String password) {
+		// Buscar usuario por nombre de usuario
+		Optional<Usuario> userOpt = userRepo.findByNombreUsuario(username);
+
+		// Verificar si el usuario existe y la contraseña coincide
+		if (userOpt.isPresent()) {
+			Usuario user = userOpt.get();
+			if (passwordEncoder.matches(password, user.getPassword())) {
+				return 0; // Éxito
 			}
 		}
-		return 1;
+
+		return 1; // Credenciales inválidas
+	}
+
+	public boolean findUsernameAlreadyTaken(String username) {
+		Optional<Usuario> found = userRepo.findByNombreUsuario(username);
+		return found.isPresent();
 	}
 
 }
