@@ -10,13 +10,18 @@ import org.springframework.stereotype.Service;
 
 import co.edu.unbosque.pokemon.dto.EquipoDTO;
 import co.edu.unbosque.pokemon.entity.Equipo;
+import co.edu.unbosque.pokemon.entity.Pokemon;
 import co.edu.unbosque.pokemon.repository.EquipoRepository;
+import co.edu.unbosque.pokemon.repository.PokemonRepository;
 
 @Service
 public class EquipoService implements CRUDOperation<EquipoDTO> {
 
 	@Autowired
 	private EquipoRepository equiRepo;
+
+	@Autowired
+	private PokemonRepository pokeRepo;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -30,6 +35,25 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 			equiRepo.save(entity);
 			return 0;
 		}
+	}
+
+	public int create(String nombre, long id, String... pokemones) {
+		if (pokemones.length != 6) {
+			return 1;
+		} else {
+			ArrayList<Pokemon> listaPokemones = new ArrayList<>();
+			for (String nombrePokemon : pokemones) {
+				Optional<Pokemon> p = pokeRepo.findByNombre(nombrePokemon.toLowerCase());
+				if (p.isEmpty()) {
+					return 2;
+				}
+				listaPokemones.add(p.get());
+			}
+			Equipo equi = new Equipo(nombre, id, listaPokemones);
+			equiRepo.save(equi);
+			return 0;
+		}
+
 	}
 
 	@Override
@@ -63,7 +87,12 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 			Equipo temp = found.get();
 			temp.setNombre(newData.getNombre());
 			temp.setIdUsuario(newData.getIdUsuario());
-			temp.setListaPokemon(newData.getListaPokemon());
+			ArrayList<Pokemon> listaPokemones = new ArrayList<>();
+			for (int i = 0; i < 6; i++) {
+				Pokemon poke = modelMapper.map(newData.getListaPokemon().get(i), Pokemon.class);
+				listaPokemones.add(poke);
+			}
+			temp.setListaPokemon(listaPokemones);
 			equiRepo.save(temp);
 			return 0;
 		}
