@@ -21,13 +21,9 @@ import { CombateComponent } from './component/combate/combate.component';
 import { CombatePCComponent } from './component/combate-pc/combate-pc.component';
 import { BatallaComponent } from './component/batalla/batalla.component';
 import { CommonModule } from '@angular/common';
-import { Intento } from './component/intento/intento';
 
 @NgModule({
   declarations: [
-
-  
-    Intento
   ],
   imports: [
     BrowserModule,
