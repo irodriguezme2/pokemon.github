@@ -1,5 +1,5 @@
 .logo-pokemon {
-  background-image: url("../../assets/logoPokemon.png");
+  background-image: url("../../../assets/logoPokemon.png");
   background-size: contain;
   background-position: top center;
   background-repeat: no-repeat;
@@ -13,7 +13,7 @@
 
 }
 .logo-elementos {
-  background-image: url("../../assets/elementos.png");
+  background-image: url("../../../assets/elementos.png");
   background-size: contain;
   background-position: top center;
   background-repeat: no-repeat;
@@ -354,7 +354,7 @@ main {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url("../../assets/poke.png");
+  background-image: url("../../../assets/poke.png");
   background-size: cover !important;
   background-position:center 60%;
   background-repeat: no-repeat;

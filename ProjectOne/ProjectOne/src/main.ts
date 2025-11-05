@@ -5,18 +5,18 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 
 import { AppComponent } from './app/app.component';
-import { InicioComponent } from './app/inicio/inicio.component';
-import { RegistroComponent } from './app/registro/registro.component';
-import { PrincipalComponent } from './app/principal/principal.component';
-import { UsuarioComponent } from './app/usuario/usuario.component';
-import { PokemonesComponent } from './app/pokemones/pokemones.component';
-import { MusicaComponent } from './app/musica/musica.component';
-import { EquiposComponent } from './app/equipos/equipos.component';
-import { EleccionComponent } from './app/eleccion/eleccion.component'
-import { EleccionUnoVsPcComponent } from './app/eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
-import {EleccionInvitadoComponent} from './app/eleccion-invitado/eleccion-invitado.component';
-import {CombateComponent} from './app/combate/combate.component';
-import {BatallaComponent} from './app/batalla/batalla.component';
+import { InicioComponent } from './app/component/inicio/inicio.component';
+import { RegistroComponent } from './app/component/registro/registro.component';
+import { PrincipalComponent } from './app/component/principal/principal.component';
+import { UsuarioComponent } from './app/component/usuario/usuario.component';
+import { PokemonesComponent } from './app/component/pokemones/pokemones.component';
+import { MusicaComponent } from './app/component/musica/musica.component';
+import { EquiposComponent } from './app/component/equipos/equipos.component';
+import { EleccionComponent } from './app/component/eleccion/eleccion.component'
+import { EleccionUnoVsPcComponent } from './app/component/eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
+import {EleccionInvitadoComponent} from './app/component/eleccion-invitado/eleccion-invitado.component';
+import {CombateComponent} from './app/component/combate/combate.component';
+import {BatallaComponent} from './app/component/batalla/batalla.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },

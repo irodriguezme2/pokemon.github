@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MusicService } from './musica/music.service';
-import { MusicaComponent } from './musica/musica.component';
-import {BatallaComponent} from './batalla/batalla.component';
+import { MusicService } from './component/musica/music.service';
+import { MusicaComponent } from './component/musica/musica.component';
+import {BatallaComponent} from './component/batalla/batalla.component';
 
 @Component({
   selector: 'app-root',

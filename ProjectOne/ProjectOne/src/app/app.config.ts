@@ -3,17 +3,17 @@ import { provideRouter, Routes } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import {InicioComponent} from './inicio/inicio.component';
-import {RegistroComponent} from './registro/registro.component';
-import {PrincipalComponent} from './principal/principal.component';
-import {UsuarioComponent} from './usuario/usuario.component';
-import {PokemonesComponent} from './pokemones/pokemones.component';
-import {EquiposComponent} from './equipos/equipos.component';
-import {MusicaComponent} from './musica/musica.component';
-import {EleccionComponent} from './eleccion/eleccion.component';
-import {EleccionUnoVsPcComponent} from './eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
-import {CombateComponent} from './combate/combate.component';
-import {BatallaComponent} from './batalla/batalla.component';
+import {InicioComponent} from './component/inicio/inicio.component';
+import {RegistroComponent} from './component/registro/registro.component';
+import {PrincipalComponent} from './component/principal/principal.component';
+import {UsuarioComponent} from './component/usuario/usuario.component';
+import {PokemonesComponent} from './component/pokemones/pokemones.component';
+import {EquiposComponent} from './component/equipos/equipos.component';
+import {MusicaComponent} from './component/musica/musica.component';
+import {EleccionComponent} from './component/eleccion/eleccion.component';
+import {EleccionUnoVsPcComponent} from './component/eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
+import {CombateComponent} from './component/combate/combate.component';
+import {BatallaComponent} from './component/batalla/batalla.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },

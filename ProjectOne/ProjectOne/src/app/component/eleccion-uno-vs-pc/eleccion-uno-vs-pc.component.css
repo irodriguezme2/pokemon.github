@@ -19,7 +19,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url("../../assets/muelle.gif");
+  background-image: url("../../../assets/muelle.gif");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -305,7 +305,7 @@
   color: black !important;
 }
 :host ::ng-deep .tipo-normal {
-  background-color: #bda6c8 !important;
+  background-color: #a8a878 !important;
   color: black !important;
 }
 

@@ -19,7 +19,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url("../../assets/muelle.gif");
+  background-image: url("../../../assets/muelle.gif");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -35,7 +35,7 @@
   border-radius: 20px;
   padding: 0.5rem 2rem;
   width: 800px;
-  height: 150px;
+  height: 100px;
   text-align: center;
   align-content: center;
   margin-left: auto;
@@ -230,7 +230,7 @@
   }
   .titulo {
     width: auto;
-    height: 250px !important;
+    height: auto;
     font-size: 4rem;
     padding: 1rem;
     font-family: 'Press Start 2P', cursive !important;
