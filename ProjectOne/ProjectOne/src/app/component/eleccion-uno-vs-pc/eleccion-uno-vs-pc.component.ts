@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Button} from 'primeng/button';
 import {NgClass, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
 import {SplitButton} from 'primeng/splitbutton';
-import {Equipo, EquiposService} from '../equipos/equipos.service';
+import {Equipo, EquiposService} from '../../service/equipos.service';
 import {Router, RouterLink} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 
