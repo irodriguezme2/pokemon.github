@@ -9,16 +9,18 @@ public class MovimientoDTO implements Serializable {
 	private String nombre;
 	private int danio;
 	private String tipo;
+	private int pp;
 
 	public MovimientoDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public MovimientoDTO(String nombre, int danio, String tipo) {
+	public MovimientoDTO(String nombre, int danio, String tipo, int pp) {
 		super();
 		this.nombre = nombre;
 		this.danio = danio;
 		this.tipo = tipo;
+		this.pp = pp;
 	}
 
 	@Override
@@ -80,9 +82,24 @@ public class MovimientoDTO implements Serializable {
 		this.tipo = tipo;
 	}
 
+	/**
+	 * @return the pp
+	 */
+	public int getPp() {
+		return pp;
+	}
+
+	/**
+	 * @param pp the pp to set
+	 */
+	public void setPp(int pp) {
+		this.pp = pp;
+	}
+
 	@Override
 	public String toString() {
-		return "Movimiento [id=" + id + ", nombre=" + nombre + ", danio=" + danio + ", tipo=" + tipo + "]";
+		return "MovimientoDTO [id=" + id + ", nombre=" + nombre + ", danio=" + danio + ", tipo=" + tipo + ", pp=" + pp
+				+ "]";
 	}
 
 }

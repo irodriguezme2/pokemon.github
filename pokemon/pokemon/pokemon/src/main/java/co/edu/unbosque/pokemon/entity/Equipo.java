@@ -106,7 +106,5 @@ public class Equipo {
 		return "Equipo [id=" + id + ", nombre=" + nombre + ", idUsuario=" + idUsuario + ", listaPokemon=" + listaPokemon
 				+ "]";
 	}
-	
-	
 
 }

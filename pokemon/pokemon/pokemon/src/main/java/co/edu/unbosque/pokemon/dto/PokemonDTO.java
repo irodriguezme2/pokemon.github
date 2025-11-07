@@ -7,19 +7,56 @@ public class PokemonDTO {
 	private long id;
 	private String nombre;
 	private List<String> tipo;
-	private int puntosSalud = 100;
+	private List<EstadisticaDTO> estadistica;
 	private List<MovimientoDTO> movimiento;
+	private AbilityDTO ability;
+	private int hpActual;
+	private Estado estado;
+
+	public enum Estado {
+
+		NORMAL, PARALIZADO, DORMIDO, QUEMADO, CONGELADO, ENVENENADO
+	}
 
 	public PokemonDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PokemonDTO(String nombre, List<String> tipo, int puntosSalud, List<MovimientoDTO> movimiento) {
+	public PokemonDTO(String nombre, List<String> tipo, List<EstadisticaDTO> estadistica,
+			List<MovimientoDTO> movimiento, AbilityDTO ability) {
 		super();
 		this.nombre = nombre;
 		this.tipo = tipo;
-		this.puntosSalud = puntosSalud;
+		this.estadistica = estadistica;
 		this.movimiento = movimiento;
+		this.ability = ability;
+		this.hpActual = getStatValue("hp");
+		this.estado = Estado.NORMAL;
+	}
+
+	public int getStatValue(String statName) {
+		if (estadistica == null)
+			return 0;
+		for (EstadisticaDTO e : estadistica) {
+			if (e.getNombre().equalsIgnoreCase(statName)) {
+				return e.getValor();
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * @return the ability
+	 */
+	public AbilityDTO getAbility() {
+		return ability;
+	}
+
+	/**
+	 * @param ability the ability to set
+	 */
+	public void setAbility(AbilityDTO ability) {
+		this.ability = ability;
 	}
 
 	/**
@@ -65,20 +102,6 @@ public class PokemonDTO {
 	}
 
 	/**
-	 * @return the puntosSalud
-	 */
-	public int getPuntosSalud() {
-		return puntosSalud;
-	}
-
-	/**
-	 * @param puntosSalud the puntosSalud to set
-	 */
-	public void setPuntosSalud(int puntosSalud) {
-		this.puntosSalud = puntosSalud;
-	}
-
-	/**
 	 * @return the movimiento
 	 */
 	public List<MovimientoDTO> getMovimiento() {
@@ -92,13 +115,56 @@ public class PokemonDTO {
 		this.movimiento = movimiento;
 	}
 
-	@Override
-	public String toString() {
-		return "PokemonDTO [id=" + id + ", nombre=" + nombre + ", tipo=" + tipo + ", puntosSalud=" + puntosSalud
-				+ ", movimiento=" + movimiento + "]";
+	/**
+	 * @return the estadistica
+	 */
+	public List<EstadisticaDTO> getEstadistica() {
+		return estadistica;
 	}
 
-	
+	/**
+	 * @param estadistica the estadistica to set
+	 */
+	public void setEstadistica(List<EstadisticaDTO> estadistica) {
+		this.estadistica = estadistica;
+	}
 
+	/**
+	 * @return the hpActual
+	 */
+	public int getHpActual() {
+		return hpActual;
+	}
+
+	/**
+	 * @param hpActual the hpActual to set
+	 */
+	public void setHpActual(int hpActual) {
+		this.hpActual = hpActual;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public Estado getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+	public void restaurarHP() {
+		this.hpActual = getStatValue("hp");
+		this.estado = Estado.NORMAL;
+	}
+
+	@Override
+	public String toString() {
+		return "PokemonDTO [id=" + id + ", nombre=" + nombre + ", tipo=" + tipo + ", movimiento=" + movimiento + "]";
+	}
 
 }
