@@ -30,16 +30,15 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 	public int create(UsuarioDTO newData) {
 		Usuario user = modelMapper.map(newData, Usuario.class);
 		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-		if (userRepo.findByCorreo(newData.getCorreo()).isPresent()) {
-			Optional<Usuario> adminiss = userRepo.findByCorreo(newData.getCorreo());
-			System.out.println(adminiss.get().getCorreo());
+		if (findUsernameAlreadyTaken(user)) {
 			return 1;
-		} else if (user.getCorreo().matches(regex) == false) {
-			return 2; 
 		} else {
+			user.setContrasenia(passwordEncoder.encode(user.getPassword()));
+			if (newData.getRol() != null) {
+				newData.setRol(newData.getRol());
+			}
 			userRepo.save(user);
 			return 0;
-
 		}
 	}
 
@@ -120,6 +119,34 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 	public boolean findUsernameAlreadyTaken(String username) {
 		Optional<Usuario> found = userRepo.findByNombreUsuario(username);
 		return found.isPresent();
+	}
+
+	public long count() {
+		return userRepo.count();
+	}
+
+	public boolean exist(Long id) {
+		return userRepo.existsById(id);
+	}
+
+	public int deleteById(Long id) {
+		Optional<Usuario> found = userRepo.findById(id);
+		if (found.isPresent()) {
+			userRepo.delete(found.get());
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	public int deleteByUsername(String username) {
+		Optional<Usuario> found = userRepo.findByNombreUsuario(username);
+		if (found.isPresent()) {
+			userRepo.delete(found.get());
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 }

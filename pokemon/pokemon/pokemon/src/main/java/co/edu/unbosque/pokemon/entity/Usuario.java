@@ -18,7 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "useraccount")
+@Table(name = "usuarioPokemon")
 public class Usuario implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -44,17 +44,37 @@ public class Usuario implements UserDetails {
 	}
 
 	public enum Role {
-		USER,
+		USER,ADMIN,
 	}
 
 	public Usuario(String correo, String nombreUsuario, String contrasenia, Role rol, Date fechaNacimiento) {
-		super();
+		this();
 		this.correo = correo;
 		this.nombreUsuario = nombreUsuario;
 		this.contrasenia = contrasenia;
 		this.role = rol;
 		this.fechaNacimiento = fechaNacimiento;
 	}
+
+	
+	
+	public Usuario(String correo, String contrasenia) {
+		this();
+		this.correo = correo;
+		this.contrasenia = contrasenia;
+	}
+
+
+
+
+	public Usuario(String nombreUsuario, Role role, String contrasenia) {
+		this();
+		this.nombreUsuario = nombreUsuario;
+		this.role = role;
+		this.contrasenia = contrasenia;
+	}
+
+
 
 	@Override
 	public int hashCode() {

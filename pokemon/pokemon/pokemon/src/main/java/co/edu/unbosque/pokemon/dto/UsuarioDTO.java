@@ -18,13 +18,28 @@ public class UsuarioDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UsuarioDTO(String correo, String nombreUsuario, String contrasenia,Role rol,  Date fechaNacimiento) {
+	public UsuarioDTO(String correo, String nombreUsuario, String contrasenia, Role rol,  Date fechaNacimiento) {
 
 		this.correo = correo;
 		this.nombreUsuario = nombreUsuario;
 		this.contrasenia = contrasenia;
 		this.rol = rol; 
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	
+	
+	public UsuarioDTO(String correo, String contrasenia, Role rol) {
+		super();
+		this.correo = correo;
+		this.contrasenia = contrasenia;
+		this.rol = rol;
+	}
+
+	public UsuarioDTO(String correo, String contrasenia) {
+		super();
+		this.correo = correo;
+		this.contrasenia = contrasenia;
 	}
 
 	public Long getId() {
