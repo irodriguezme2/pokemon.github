@@ -2,6 +2,7 @@ package co.edu.unbosque.pokemon.entity;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Random;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,23 +19,28 @@ public class Usuario {
 	private String nombreUsuario;
 	private String contrasenia;
 	private Date fechaNacimiento;
+	private boolean esHombre;
+	private boolean verificado;
+	private int token;
 
 	public Usuario() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Usuario(long id, String correo, String nombreUsuario, String contrasenia, Date fechaNacimiento) {
+	public Usuario(long id, String correo, String nombreUsuario, String contrasenia, Date fechaNacimiento,
+			boolean esHombre) {
 		super();
 		this.id = id;
 		this.correo = correo;
 		this.nombreUsuario = nombreUsuario;
 		this.contrasenia = contrasenia;
 		this.fechaNacimiento = fechaNacimiento;
+		this.esHombre = esHombre;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contrasenia, correo, fechaNacimiento, id, nombreUsuario);
+		return Objects.hash(contrasenia, correo, esHombre, fechaNacimiento, id, nombreUsuario);
 	}
 
 	@Override
@@ -47,8 +53,8 @@ public class Usuario {
 			return false;
 		Usuario other = (Usuario) obj;
 		return Objects.equals(contrasenia, other.contrasenia) && Objects.equals(correo, other.correo)
-				&& Objects.equals(fechaNacimiento, other.fechaNacimiento) && id == other.id
-				&& Objects.equals(nombreUsuario, other.nombreUsuario);
+				&& esHombre == other.esHombre && Objects.equals(fechaNacimiento, other.fechaNacimiento)
+				&& id == other.id && Objects.equals(nombreUsuario, other.nombreUsuario);
 	}
 
 	public long getId() {
@@ -91,10 +97,34 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
+	public boolean isEsHombre() {
+		return esHombre;
+	}
+
+	public void setEsHombre(boolean esHombre) {
+		this.esHombre = esHombre;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", correo=" + correo + ", nombreUsuario=" + nombreUsuario + ", contrasenia="
-				+ contrasenia + ", fechaNacimiento=" + fechaNacimiento + "]";
+				+ contrasenia + ", fechaNacimiento=" + fechaNacimiento + ", esHombre=" + esHombre + "]";
+	}
+
+	public boolean isVerificado() {
+		return verificado;
+	}
+
+	public void setVerificado(boolean verificado) {
+		this.verificado = verificado;
+	}
+
+	public int getToken() {
+		return token;
+	}
+
+	public void setToken(int token) {
+		this.token = token;
 	}
 
 }
