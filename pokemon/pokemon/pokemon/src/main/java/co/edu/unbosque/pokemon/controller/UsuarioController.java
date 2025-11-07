@@ -35,8 +35,8 @@ public class UsuarioController {
 
 	@PostMapping(path = "/crear")
 	public ResponseEntity<String> crear(@RequestParam String correo, String nombre, String contrasenia,
-			Date fechaNacimiento) {
-		UsuarioDTO newUser = new UsuarioDTO(correo, nombre, contrasenia, Role.USER, fechaNacimiento);
+			Date fechaNacimiento, boolean esHombre) {
+		UsuarioDTO newUser = new UsuarioDTO(correo, nombre, contrasenia, Role.USER, fechaNacimiento, esHombre);
 		int status = userSer.create(newUser);
 		if (status == 0) {
 			return new ResponseEntity<>("Usuario creado con éxito", HttpStatus.CREATED);
@@ -48,6 +48,17 @@ public class UsuarioController {
 		} else {
 			return new ResponseEntity<String>("Error al crear el Usuario", HttpStatus.NOT_ACCEPTABLE);
 
+		}
+	}
+
+	@GetMapping("/verificar")
+	public ResponseEntity<String> verificarCuenta(@RequestParam int token) {
+		boolean verificado = userSer.verificarUsuarioPorToken(token);
+
+		if (verificado) {
+			return new ResponseEntity<>("✅ Cuenta verificada con éxito. ¡Ya puedes iniciar sesión!", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("❌ Token inválido o expirado.", HttpStatus.NOT_FOUND);
 		}
 	}
 

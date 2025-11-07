@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,6 +31,9 @@ public class Usuario implements UserDetails {
 	private Role role;
 	private String contrasenia;
 	private Date fechaNacimiento;
+	private boolean esHombre;
+	private boolean verificado;
+	private int token;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
@@ -39,6 +43,7 @@ public class Usuario implements UserDetails {
 		this.accountNonExpired = true;
 		this.accountNonLocked = true;
 		this.credentialsNonExpired = true;
+    this.verificado = false;
 		this.enabled = true;
 		this.role = Role.USER;
 	}
@@ -47,13 +52,14 @@ public class Usuario implements UserDetails {
 		USER,ADMIN,
 	}
 
-	public Usuario(String correo, String nombreUsuario, String contrasenia, Role rol, Date fechaNacimiento) {
+	public Usuario(String correo, String nombreUsuario, String contrasenia, Role rol, Date fechaNacimiento, boolean esHombre) {
 		this();
 		this.correo = correo;
 		this.nombreUsuario = nombreUsuario;
 		this.contrasenia = contrasenia;
 		this.role = rol;
 		this.fechaNacimiento = fechaNacimiento;
+		this.esHombre = esHombre;
 	}
 
 	
@@ -78,7 +84,7 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contrasenia, correo, fechaNacimiento, id, nombreUsuario);
+		return Objects.hash(contrasenia, correo, esHombre, fechaNacimiento, id, nombreUsuario);
 	}
 
 	@Override
@@ -91,8 +97,8 @@ public class Usuario implements UserDetails {
 			return false;
 		Usuario other = (Usuario) obj;
 		return Objects.equals(contrasenia, other.contrasenia) && Objects.equals(correo, other.correo)
-				&& Objects.equals(fechaNacimiento, other.fechaNacimiento) && id == other.id
-				&& Objects.equals(nombreUsuario, other.nombreUsuario);
+				&& esHombre == other.esHombre && Objects.equals(fechaNacimiento, other.fechaNacimiento)
+				&& id == other.id && Objects.equals(nombreUsuario, other.nombreUsuario);
 	}
 
 	public long getId() {
@@ -135,10 +141,34 @@ public class Usuario implements UserDetails {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
+	public boolean isEsHombre() {
+		return esHombre;
+	}
+
+	public void setEsHombre(boolean esHombre) {
+		this.esHombre = esHombre;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", correo=" + correo + ", nombreUsuario=" + nombreUsuario + ", contrasenia="
-				+ contrasenia + ", fechaNacimiento=" + fechaNacimiento + "]";
+				+ contrasenia + ", fechaNacimiento=" + fechaNacimiento + ", esHombre=" + esHombre + "]";
+	}
+
+	public boolean isVerificado() {
+		return verificado;
+	}
+
+	public void setVerificado(boolean verificado) {
+		this.verificado = verificado;
+	}
+
+	public int getToken() {
+		return token;
+	}
+
+	public void setToken(int token) {
+		this.token = token;
 	}
 
 	@Override
