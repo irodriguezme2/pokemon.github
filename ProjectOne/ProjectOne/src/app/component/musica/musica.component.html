@@ -1,0 +1,40 @@
+<!-- 🔘 Botón flotante (siempre visible) para activar/desactivar música -->
+<button class="music-btn" (click)="toggleMusic()">
+  <i class="pi" [ngClass]="isPlaying ? 'pi-volume-up' : 'pi-volume-off'"></i>
+</button>
+
+<!-- 🎚️ Panel de controles (solo visible si mostrarControles = true) -->
+<div class="overlay" *ngIf="mostrarControles" (click)="cerrarVentana()">
+  <div class="popup-musica" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="cerrarVentana()">✖</button>
+    <div class="popup-header">
+      <h3>🎵 Selecciona una canción</h3>
+    </div>
+    <ul class="song-list">
+      <li *ngFor="let song of musicService.songsList; let i = index">
+        <button
+          class="song-btn"
+          [ngClass]="{'playing': musicService.currentSongIndex === i}"
+          (click)="reproducir(i)">
+          ▶️ {{ song.name }}
+        </button>
+      </li>
+    </ul>
+    <div class="controles">
+      <p>Actual: <strong>{{ musicService.currentSongName }}</strong></p>
+      <label>
+        Volumen:
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.05"
+          [value]="musicService.volume"
+          (input)="cambiarVolumen($event)" />
+      </label>
+      <button class="mute-btn" (click)="toggleMute()">
+        {{ musicService.muted ? '🔇 Desmutear' : '🔊 Silenciar' }}
+      </button>
+    </div>
+  </div>
+</div>

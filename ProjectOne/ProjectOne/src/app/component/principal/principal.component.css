@@ -1,0 +1,201 @@
+.fondo {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fondo::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../../assets/Pagina Principal.png");
+  background-size: cover !important;
+  background-position:center 60%;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+.logo {
+  background-image: url("../../../assets/logoPokemon.png");
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+  width: 500px !important;
+  height: 500px !important;
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  filter: drop-shadow(0 0 150px #fde97f) drop-shadow(0 0 80px #eae6b8);
+
+}
+.botones {
+  position: absolute;
+  top: 350px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 60px; /* separación entre botones */
+  margin-top: 150px !important;
+  z-index: 2;
+}
+
+.btn-vs {
+  font-family: 'Press Start 2P', cursive; /* tipografía estilo pixel (opcional) */
+  font-size: 28px;
+  color: #c81e1e;
+  background: white;
+  border: 7px solid #c81e1e;
+  border-radius: 30px;
+  padding: 30px 60px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-vs:hover {
+  background: red;
+  color: white;
+  transform: scale(1.05);
+}
+/* Botón sidebar esquina superior izquierda */
+.sidebar-btn {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  z-index: 100;
+  background: white;
+  border: 3px solid #c81e1e;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 32px;
+  color: #c81e1e;
+  box-shadow: 0 4px 24px rgba(200,30,30,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .2s;
+}
+.sidebar-btn:hover {
+  background: #c81e1e;
+  color: #fff;
+  border-color: #c81e1e;
+  transform: scale(1.08);
+}
+
+/* Sidebar/Drawer personalizado */
+.custom-sidebar .p-drawer-content {
+  background: white !important;
+  min-width: 300px;
+  box-shadow: 0 0 40px #c81e1e22;
+  border-right: 6px solid #c81e1e;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.sidebar-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.sidebar-options {
+  padding: 32px 24px 0 24px;
+}
+.sidebar-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 20px;
+  color: #c81e1e;
+  margin-bottom: 22px;
+  text-align: left;
+  letter-spacing: 2px;
+}
+.sidebar-options ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive;
+}
+.sidebar-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 22px;
+  padding: 16px 0;
+  color: #c81e1e;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.sidebar-option:hover, .sidebar-option:focus {
+  background: #fde97f;
+  color: #881212;
+}
+.sidebar-option i {
+  font-size: 24px;
+  margin-right: 5px;
+}
+
+/* UsuarioComponent en sidebar abajo */
+.sidebar-user {
+  width: 100%;
+  padding: 32px 24px 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-top: 1.5px solid #c81e1e44;
+  justify-content: flex-start;
+  background: transparent;
+  font-family: 'Press Start 2P', cursive;
+}
+.sidebar-avatar {
+  width: 52px;
+  height: 52px;
+  border: 3px solid #c81e1e;
+  margin-right: 10px;
+}
+.sidebar-username {
+  font-weight: bold;
+  font-size: 20px;
+  color: #c81e1e;
+  font-family: 'Poppins', sans-serif;
+  flex: 1;
+}
+.sidebar-logout {
+  background: #c81e1e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 12px;
+  transition: background .15s;
+}
+.sidebar-logout:hover {
+  background: #881212;
+}
+
+.sidebar-profile-link {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  text-decoration: none;
+  flex: 1;
+  cursor: pointer;
+  transition: background .15s;
+}
+.sidebar-profile-link:hover .sidebar-username {
+  color: #881212;
+}

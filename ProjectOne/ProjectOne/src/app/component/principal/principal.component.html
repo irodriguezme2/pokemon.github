@@ -1,0 +1,54 @@
+<div class="fondo">
+
+  <button class="sidebar-btn" (click)="visible = true">
+    <i class="pi pi-bars"></i>
+  </button>
+
+  <p-drawer [(visible)]="visible" position="left" [modal]="true" [dismissible]="true"
+            (onHide)="visible = false" class="custom-sidebar">
+    <div class="sidebar-content">
+
+      <div class="sidebar-options">
+        <div class="sidebar-title"><h2>MENÚ</h2></div>
+        <ul>
+          <li>
+            <a pRipple class="sidebar-option" routerLink="/pokemones" (click)="visible = false">
+              <i class="pi pi-star"></i>
+              <span>Pokemones</span>
+            </a>
+          </li>
+          <li>
+            <a pRipple class="sidebar-option" routerLink="/equipos" (click)="visible = false">
+              <i class="pi pi-users"></i>
+              <span>Mis equipos</span>
+            </a>
+          </li>
+          <li>
+            <a pRipple class="sidebar-option" (click)="toggleMusicaPopup()">
+              <i class="pi pi-music"></i>
+              <span>Música</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-user">
+        <a class="sidebar-profile-link" routerLink="/usuario" (click)="visible = false">
+          <p-avatar [image]="user.photo" shape="circle" class="sidebar-avatar"/>
+          <span class="sidebar-username">{{ user.nickname }}</span>
+        </a>
+        <button class="sidebar-logout" pRipple (click)="logout()">
+          <i class="pi pi-sign-out"></i>
+        </button>
+      </div>
+    </div>
+  </p-drawer>
+
+  <div class="logo"></div>
+  <div class="botones">
+    <button class="btn-vs" routerLink="/eleccion">1 VS 1</button>
+    <button class="btn-vs" routerLink="/eleccion-uno-vs-pc">1 VS PC</button>
+  </div>
+</div>
+
+<app-musica></app-musica>

@@ -1,0 +1,42 @@
+.music-btn-container {
+  position: absolute;
+  top: 24px;
+  right: 40px;
+  z-index: 100;
+}
+.music-btn {
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  box-shadow: 0 2px 8px #2c6599aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 32px;
+  transition: background .18s, color .18s;
+}
+.music-btn:hover {
+  background: rgba(253, 233, 127, 0);
+}
+.music-slider {
+  position: absolute;
+  top: 60px;
+  right: 0px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px 16px;
+  box-shadow: 0 4px 14px #2c659966;
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.music-volume-label {
+  margin-top: 8px;
+  font-size: 18px;
+  color: #2c6599;
+  font-weight: bold;
+}

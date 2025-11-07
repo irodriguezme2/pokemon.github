@@ -1,0 +1,178 @@
+.logo {
+  background-image: url("../../../assets/logoPokemon.png");
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 350px !important;
+  height: 350px !important;
+  position: absolute;
+  top: -170px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+.card {
+  background: rgba(255, 255, 255, 0.50);
+  border-radius: 38px;
+  box-shadow: 0 4px 24px rgb(41, 81, 244);
+  padding: 32px 32px 16px 32px;
+  width: 430px !important;
+  height: 540px !important;
+  margin: 60px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative !important;
+  margin-right: 120px !important;
+  margin-bottom: 70px !important;
+  margin-top: 120px !important;
+}
+
+.card, .form-body {
+  overflow: visible !important;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+input {
+  width: 75%;
+  height: 45px;
+  padding: 12px;
+  border-radius: 12px;
+  background: white;
+  border-color: #2c6599;
+  font-weight: bold;
+  font-size: 24px;
+  box-shadow: 0 2px 6px rgb(44, 101, 153, 0.75);
+  margin-top: 9px;
+  margin-left: 35px;
+  margin-bottom: 8px;
+  z-index: 10;
+  position: relative;
+  color: black;
+}
+
+button {
+  width: 200px;
+  height: 73px !important;
+  padding: 12px;
+  border-radius: 22px;
+  background: white;
+  border-color: #2c6599;
+  font-weight: bolder;
+  font-size: 30px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgb(44, 101, 153, 0.75);
+  margin-top: 12px;
+  margin-left: 80px;
+  font-family: 'Comic Sans MS', cursive;
+  color: #0b4571;
+}
+button:hover,
+button:focus-visible {
+  background-color: #fffb00;
+  color: #1f578a;
+  box-shadow: 0 8px 32px 0 rgba(44,101,153,0.22), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  transform: translateY(-2px) scale(1.03);
+  border-color: #1f578a;
+  outline: none;
+
+}
+
+.fondo {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fondo::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../../assets/gifLentoRegistro.gif");
+  background-size: cover;
+  background-position-y:90%;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+.gif-fondo {
+  width: 100%;
+  height: 100%;
+
+}
+.link-box {
+  margin-top: 16px;
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #e0e0e0;
+  letter-spacing: 0.2px;
+  font-family: 'Poppins', sans-serif !important;
+  top: -25px;
+}
+
+.link-box span {
+  color: #0d2e49;
+  letter-spacing: -1px;
+  top: -25px;
+
+}
+
+.link-accent {
+  color: #fc6ca5;
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: 6px;
+  transition: color 0.18s, text-decoration 0.18s;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -1px;
+}
+
+.link-accent:hover {
+  color: #154b7a !important;
+  text-decoration: Highlight;
+  font-family: 'Poppins', sans-serif !important;
+}
+.form-body {
+  margin-top: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.p-datepicker{
+  text-align: center;
+  border-radius: 12px !important;
+  margin-top: 8px;
+  margin-left: 37px;
+  border-color: #2c6599 !important;
+  width: 1000px !important;
+  height: 45px;
+  font-family: 'Poppins', sans-serif !important;
+  color: black !important;
+  font-weight: bolder;
+  font-size: 24px;
+
+}
+
+:host ::ng-deep .p-datepicker{
+  border-radius: 12px !important;
+  border-color: #2c6599 !important;
+  width: 2000px !important;
+
+}

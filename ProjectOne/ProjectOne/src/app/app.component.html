@@ -1,0 +1,13 @@
+<router-outlet></router-outlet>
+
+<!-- Botón flotante -->
+<button
+  *ngIf="mostrarBoton"
+  class="btn-musica"
+  (click)="toggleMute()"
+>
+  {{ musicService.muted ? '🔇' : '🔊' }}
+</button>
+
+<!-- Mantiene la música activa -->
+<app-musica></app-musica>
