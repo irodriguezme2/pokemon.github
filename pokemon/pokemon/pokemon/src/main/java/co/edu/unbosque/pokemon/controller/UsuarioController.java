@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import co.edu.unbosque.pokemon.dto.UsuarioDTO;
+import co.edu.unbosque.pokemon.entity.Usuario.Role;
 import co.edu.unbosque.pokemon.service.UsuarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@CrossOrigin(origins = { "*" })
+@CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8081" })
 @RequestMapping(path = { "/usuario" })
+@Transactional
+@Tag(name = "Gestión de Usuarios", description = "Endpoints para administrar usuarios")
+@SecurityRequirement(name = "bearerAuth")
 public class UsuarioController {
 	@Autowired
 	private UsuarioService userSer;
@@ -29,13 +36,15 @@ public class UsuarioController {
 	@PostMapping(path = "/crear")
 	public ResponseEntity<String> crear(@RequestParam String correo, String nombre, String contrasenia,
 			Date fechaNacimiento) {
-		UsuarioDTO newUser = new UsuarioDTO(correo, nombre, contrasenia, fechaNacimiento);
+		UsuarioDTO newUser = new UsuarioDTO(correo, nombre, contrasenia, Role.USER, fechaNacimiento);
 		int status = userSer.create(newUser);
 		if (status == 0) {
 			return new ResponseEntity<>("Usuario creado con éxito", HttpStatus.CREATED);
 		} else if (status == 1) {
 			return new ResponseEntity<String>("Usuario ya existente, por favor ingrese otro nombre",
 					HttpStatus.NOT_ACCEPTABLE);
+		} else if (status == 2) {
+			return new ResponseEntity<String>("Correo incorrecto", HttpStatus.NOT_ACCEPTABLE);
 		} else {
 			return new ResponseEntity<String>("Error al crear el Usuario", HttpStatus.NOT_ACCEPTABLE);
 
