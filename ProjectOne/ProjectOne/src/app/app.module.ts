@@ -21,9 +21,13 @@ import { CombateComponent } from './component/combate/combate.component';
 import { CombatePCComponent } from './component/combate-pc/combate-pc.component';
 import { BatallaComponent } from './component/batalla/batalla.component';
 import { CommonModule } from '@angular/common';
+// @ts-ignore
+import { MisEquiposComponent } from './mis-equipos/mis-equipos.component';
 
 @NgModule({
   declarations: [
+
+
   ],
   imports: [
     BrowserModule,

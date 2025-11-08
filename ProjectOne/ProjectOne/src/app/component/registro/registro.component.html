@@ -3,10 +3,29 @@
     <div class="logo"></div>
     <form>
       <div class="form-body">
-        <input type="text" placeholder="UsuarioComponent">
+        <input type="text" placeholder="Usuario">
         <input type="password" placeholder="Contraseña">
         <input type="email" placeholder="Correo">
         <p-datepicker name="fecha" [(ngModel)]="date2" showIcon="true" placeholder="Fecha de nacimiento"></p-datepicker>
+
+        <div class="avatar-box">
+          <p>Elige tu avatar:</p>
+          <div class="avatar-options">
+            <button
+              type="button"
+              class="avatar-btn avatar1"
+              [class.selected]="selectedAvatar === 'avatar1'"
+              (click)="selectedAvatar = 'avatar1'">
+            </button>
+
+            <button
+              type="button"
+              class="avatar-btn avatar2"
+              [class.selected]="selectedAvatar === 'avatar2'"
+              (click)="selectedAvatar = 'avatar2'">
+            </button>
+          </div>
+        </div>
         <button class="action-btn" type="submit">Registrar</button>
       </div>
       <div class="link-box">

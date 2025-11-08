@@ -3,12 +3,12 @@
   background-size: contain;
   background-position: top center;
   background-repeat: no-repeat;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 50px;
+  margin-bottom: 60px !important;
   width: 350px !important;
   height: 350px !important;
   position: absolute;
-  top: -170px;
+  top: -160px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -19,15 +19,15 @@
   box-shadow: 0 4px 24px rgb(41, 81, 244);
   padding: 32px 32px 16px 32px;
   width: 430px !important;
-  height: 540px !important;
+  height: 740px !important;
   margin: 60px auto 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative !important;
   margin-right: 120px !important;
-  margin-bottom: 70px !important;
-  margin-top: 120px !important;
+  margin-bottom: 100px !important;
+  margin-top: 150px !important;
 }
 
 .card, .form-body {
@@ -38,7 +38,7 @@ form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 input {
   width: 75%;
@@ -56,6 +56,10 @@ input {
   z-index: 10;
   position: relative;
   color: black;
+}
+p{
+  font-family: "Press Start 2P", cursive;
+  margin-bottom: 70px;
 }
 
 button {
@@ -77,7 +81,7 @@ button {
 }
 button:hover,
 button:focus-visible {
-  background-color: #fffb00;
+  background-color: #f6fbfd;
   color: #1f578a;
   box-shadow: 0 8px 32px 0 rgba(44,101,153,0.22), 0 1.5px 8px 0 rgba(0,0,0,0.10);
   transform: translateY(-2px) scale(1.03);
@@ -114,7 +118,7 @@ button:focus-visible {
 
 }
 .link-box {
-  margin-top: 16px;
+  margin-top: 20px !important;
   width: 100%;
   text-align: center;
   font-size: 22px;
@@ -175,4 +179,54 @@ button:focus-visible {
   border-color: #2c6599 !important;
   width: 2000px !important;
 
+}
+/* 🎨 Avatares */
+.avatar-box {
+  margin-top: 2px;
+  text-align: center;
+}
+
+.avatar-options {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.avatar-btn {
+  margin-top: -50px !important;
+  margin-left: -20px !important;
+  width: 150px !important;
+  height: 150px !important;
+  border: none;
+  outline: none;
+  background: none; /* elimina fondo por defecto */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: none; /* sin recuadro */
+}
+
+/* Imagen de cada avatar */
+.avatar1 {
+  background-image: url("../../../assets/nina.png");
+}
+
+.avatar2 {
+  background-image: url("../../../assets/nino.png");
+}
+
+/* Efecto al pasar el mouse */
+.avatar-btn:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+/* Cuando está seleccionado */
+.avatar-btn.selected {
+  box-shadow: 0 0 15px 4px #f6fbfd; /* brillo dorado */
+  transform: scale(1.1);
 }
