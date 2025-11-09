@@ -22,12 +22,16 @@ import { CombatePCComponent } from './component/combate-pc/combate-pc.component'
 import { BatallaComponent } from './component/batalla/batalla.component';
 import { CommonModule } from '@angular/common';
 // @ts-ignore
-import { MisEquiposComponent } from './mis-equipos/mis-equipos.component';
+import { MisEquiposComponent } from './component/mis-equipos/mis-equipos.component';
+import { PremiacionComponent } from './component/premiacion/premiacion.component';
+import {RouterLink} from '@angular/router';
 
 @NgModule({
   declarations: [
 
 
+
+    PremiacionComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,8 @@ import { MisEquiposComponent } from './mis-equipos/mis-equipos.component';
     EleccionUnoVsPcComponent,
     SplitButton,
     BatallaComponent,
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
   providers: [],
   bootstrap: []

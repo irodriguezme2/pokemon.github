@@ -1,0 +1,59 @@
+<div class="fondo">
+
+  <!-- Título principal -->
+  <h1 class="titulo">¡Mis Equipos!</h1>
+  <div class="container-equipos">
+
+
+    <!-- Lista de equipos del jugador -->
+    <div class="equipos-lista" *ngIf="equiposJugador.length > 0; else noEquipos">
+      <div *ngFor="let equipo of equiposJugador" class="equipo-card">
+        <!-- Nombre del equipo -->
+        <h2 class="nombre-equipo">{{ equipo.nombre | titlecase }}</h2>
+
+        <!-- Grid de Pokémon -->
+        <div class="grid-equipos">
+          <div *ngFor="let pokemon of equipo.pokemones" class="pokemon-card">
+            <img [src]="pokemon.imagen" [alt]="pokemon.nombre" class="pokemon-img" />
+            <p class="pokemon-nombre">{{ pokemon.nombre | titlecase }}</p>
+          </div>
+        </div>
+
+        <!-- Botón eliminar -->
+        <button
+          pButton
+          type="button"
+          class="botones"
+          (click)="eliminarEquipo(equipo)"
+          label="Eliminar Equipo"
+          icon="pi pi-trash">
+        </button>
+      </div>
+    </div>
+
+    <!-- Si no hay equipos -->
+    <ng-template #noEquipos>
+      <p class="sin-equipos">Aún no has creado ningún equipo 😢</p>
+    </ng-template>
+
+  </div>
+</div>
+
+<!-- ⚠️ Diálogo de advertencia -->
+<p-dialog
+  [(visible)]="dialogMensajeVisible"
+  [modal]="true"
+  [closable]="false"
+  class="dialog-mensaje">
+  <h2 class="dialog-titulo">⚠️ Confirmación</h2>
+  <p class="dialog-mensaje-texto">{{ mensajeDialogo }}</p>
+  <div class="dialog-botones">
+    <p-button
+      label="Eliminar"
+      icon="pi pi-check"
+      severity="danger"
+      (onClick)="confirmarEliminacion()">
+    </p-button>
+  </div>
+</p-dialog>
+

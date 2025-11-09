@@ -5,6 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { Router } from '@angular/router';
 import { Equipo, EquiposService } from '../../service/equipos.service';
+import {Dialog} from 'primeng/dialog';
 
 interface Pokemon {
   nombre: string;
@@ -23,7 +24,8 @@ interface Pokemon {
     CommonModule,
     ButtonModule,
     HttpClientModule,
-    SplitButtonModule
+    SplitButtonModule,
+    Dialog
   ]
 })
 export class EleccionInvitadoComponent implements OnInit {
@@ -37,6 +39,10 @@ export class EleccionInvitadoComponent implements OnInit {
   equipos: Equipo[] = [];
   splitButtonItems: any[] = [];
   selectedEquipo: Equipo | null = null;
+
+  // 💬 Diálogo de mensajes personalizados
+  dialogMensajeVisible: boolean = false;
+  mensajeDialogo: string = '';
 
   constructor(
     private router: Router,
@@ -65,8 +71,14 @@ export class EleccionInvitadoComponent implements OnInit {
 
   seleccionarEquipo(equipo: Equipo) {
     this.selectedEquipo = equipo;
-    // Opcional: this.equipoSeleccionado = equipo.pokemones;
+
+    // ✅ Guardar el equipo del invitado correctamente
+    this.equiposService.guardarEquipoTemporalInvitado(equipo.pokemones);
+
+    // 🔄 Redirigir a la página donde se mostrarán los Pokémon del equipo elegido
+    this.router.navigate(['/equipos']);
   }
+
 
   cargarPokemones() {
     const apiUrl = `https://pokeapi.co/api/v2/pokemon?limit=${this.limit}&offset=${this.offset}`;
@@ -101,9 +113,8 @@ export class EleccionInvitadoComponent implements OnInit {
   seleccionarPokemon(pokemon: Pokemon) {
     const yaSeleccionado = this.equipoSeleccionado.find(p => p.nombre === pokemon.nombre);
 
-    // Evitar seleccionar más de 6
     if (!yaSeleccionado && this.equipoSeleccionado.length >= 6) {
-      alert('⚠️ Solo puedes seleccionar hasta 6 Pokémon para tu equipo.');
+      this.mostrarMensaje('⚠️ Solo puedes seleccionar hasta 6 Pokémon para tu equipo.');
       return;
     }
 
@@ -160,10 +171,15 @@ export class EleccionInvitadoComponent implements OnInit {
 
   irSiguiente(): void {
     if (this.equipoSeleccionado.length < 6) {
-      alert('⚠️ Debes seleccionar exactamente 6 Pokémon para continuar.');
+      this.mostrarMensaje('⚠️ Debes seleccionar exactamente 6 Pokémon para continuar.');
       return;
     }
     this.equiposService.guardarEquipoTemporalInvitado(this.equipoSeleccionado);
     this.router.navigate(['/equipos']);
+  }
+
+  mostrarMensaje(texto: string): void {
+    this.mensajeDialogo = texto;
+    this.dialogMensajeVisible = true;
   }
 }

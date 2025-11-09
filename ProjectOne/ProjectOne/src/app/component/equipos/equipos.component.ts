@@ -45,7 +45,7 @@ export class EquiposComponent implements OnInit {
   }
 
   siguiente(): void {
-    this.router.navigate(['/batalla']);
+    this.router.navigate(['/combate']);
   }
 
 }

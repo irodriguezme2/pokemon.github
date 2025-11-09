@@ -1,32 +1,58 @@
 <div class="combate-container">
-  <!-- 🔹 Barra superior con info de HP -->
+  <div *ngIf="mensaje" class="mensaje-superior">
+    {{ mensaje }}
+  </div>
   <div class="info-superior">
     <div class="pokemon-info jugador">
-      <h3>{{ pokemonJugador.nombre | titlecase }}</h3>
+      <div class="nombre">{{ pokemonJugador?.nombre | titlecase }}</div>
       <div class="hp-bar">
-        <div class="hp" [style.width.%]="pokemonJugador.hp"></div>
+        <div
+          class="hp"
+          [style.width]="(pokemonJugador?.hp || 0) + '%'"
+          [ngClass]="{
+            verde: (pokemonJugador?.hp || 0) > 50,
+            amarillo: (pokemonJugador?.hp || 0) <= 50 && (pokemonJugador?.hp || 0) > 20,
+            rojo: (pokemonJugador?.hp || 0) <= 40
+          }"
+        ></div>
       </div>
     </div>
 
     <div class="pokemon-info invitado">
-      <h3>{{ pokemonInvitado.nombre | titlecase }}</h3>
+      <div class="nombre">{{ pokemonInvitado?.nombre | titlecase }}</div>
       <div class="hp-bar">
-        <div class="hp" [style.width.%]="pokemonInvitado.hp"></div>
+        <div
+          class="hp"
+          [style.width]="(pokemonInvitado?.hp || 0) + '%'"
+          [ngClass]="{
+            verde: (pokemonInvitado?.hp || 0) > 50,
+            amarillo: (pokemonInvitado?.hp || 0) <= 50 && (pokemonInvitado?.hp || 0) > 20,
+            rojo: (pokemonInvitado?.hp || 0) <= 20
+          }"
+        ></div>
       </div>
     </div>
   </div>
 
   <!-- 🔹 Escenario principal -->
   <div class="escenario">
-    <img class="sprite jugador" [src]="pokemonJugador.imagen" alt="jugador" />
-    <img class="sprite invitado" [src]="pokemonInvitado.imagen" alt="invitado" />
+    <img
+      class="sprite jugador"
+      [src]="pokemonJugador?.imagen"
+      [alt]="pokemonJugador?.nombre"
+    />
+    <img
+      class="sprite invitado"
+      [src]="pokemonInvitado?.imagen"
+      [alt]="pokemonInvitado?.nombre"
+    />
   </div>
 
   <!-- 🔹 Panel inferior (Jugador) -->
   <div class="panel jugador-panel">
     <!-- Menú principal -->
     <div class="menu-principal" *ngIf="mostrandoMenu">
-      <div class="texto">¿Qué debería hacer {{ pokemonJugador.nombre }}?</div>
+      <div class="texto">¿Qué debería hacer {{ pokemonJugador?.nombre }}?</div>
       <div class="opciones">
         <button (click)="elegirAtacar()">ATACAR</button>
         <button (click)="elegirCambiar()">POKÉMON</button>
@@ -44,22 +70,27 @@
     <!-- Menú de cambio -->
     <div class="equipos" *ngIf="mostrandoCambio">
       <div class="miniaturas jugador">
-        <img
-          *ngFor="let p of equipoJugador"
-          [src]="p.imagen"
-          [alt]="p.nombre"
-          (click)="cambiarPokemon(p)"
-          [class.activo]="p.nombre === pokemonJugador.nombre"
-        />
+        <ng-container *ngFor="let p of equipoJugador">
+          <img
+            *ngIf="p.vivo"
+            [src]="p.imagen"
+            [alt]="p.nombre"
+            (click)="cambiarPokemon(p)"
+            [class.activo]="p.nombre === pokemonJugador?.nombre"
+          />
+        </ng-container>
       </div>
     </div>
-  </div>
+
 
   <!-- 🔹 Panel del invitado -->
-  <div class="panel invitado-panel" *ngIf="mostrandoMenuInvitado || mostrandoAtaquesInvitado || mostrandoCambioInvitado">
+  <div
+    class="panel invitado-panel"
+    *ngIf="mostrandoMenuInvitado || mostrandoAtaquesInvitado || mostrandoCambioInvitado"
+  >
     <!-- Menú principal -->
     <div class="menu-principal" *ngIf="mostrandoMenuInvitado">
-      <div class="texto">¿Qué debería hacer {{ pokemonInvitado.nombre }}?</div>
+      <div class="texto">¿Qué debería hacer {{ pokemonInvitado?.nombre }}?</div>
       <div class="opciones">
         <button (click)="elegirAtacarInvitado()">ATACAR</button>
         <button (click)="elegirCambiarInvitado()">POKÉMON</button>
@@ -68,7 +99,10 @@
 
     <!-- Menú de ataques del invitado -->
     <div class="ataques" *ngIf="mostrandoAtaquesInvitado">
-      <button *ngFor="let mov of movimientosInvitado" (click)="usarMovimientoInvitado(mov)">
+      <button
+        *ngFor="let mov of movimientosInvitado"
+        (click)="usarMovimientoInvitado(mov)"
+      >
         {{ mov.nombre }}
       </button>
     </div>
@@ -76,17 +110,31 @@
     <!-- Menú de cambio del invitado -->
     <div class="equipos" *ngIf="mostrandoCambioInvitado">
       <div class="miniaturas invitado">
-        <img
-          *ngFor="let p of equipoInvitado"
-          [src]="p.imagen"
-          [alt]="p.nombre"
-          (click)="cambiarPokemonInvitado(p)"
-          [class.activo]="p.nombre === pokemonInvitado.nombre"
-        />
+        <ng-container *ngFor="let p of equipoInvitado">
+          <img
+            *ngIf="p.vivo"
+            [src]="p.imagen"
+            [alt]="p.nombre"
+            (click)="cambiarPokemonInvitado(p)"
+            [class.activo]="p.nombre === pokemonInvitado?.nombre"
+          />
+        </ng-container>
       </div>
     </div>
-  </div>
 
-  <!-- 🔹 Mensaje central -->
-  <div class="mensaje">{{ mensaje }}</div>
+
 </div>
+  </div>
+</div>
+    <!-- ⚠️ Diálogo de advertencia -->
+    <p-dialog
+      [(visible)]="dialogMensajeVisible"
+      [modal]="true"
+      [closable]="false"
+      class="dialog-mensaje">
+      <h3 class="dialog-mensaje-titulo">¡Atención!</h3>
+      <p class="dialog-mensaje-texto">{{ mensajeDialogo }}</p>
+      <div class="dialog-botones">
+        <p-button label="OK" icon="pi pi-check" (onClick)="dialogMensajeVisible = false"></p-button>
+      </div>
+    </p-dialog>
