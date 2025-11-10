@@ -53,7 +53,7 @@ export class CombateComponent implements OnInit {
   mostrandoCambioInvitado = false;
   movimientosInvitado: Movimiento[] = [];
 
-  // 💬 Diálogo de mensajes personalizados
+
   dialogMensajeVisible: boolean = false;
   mensajeDialogo: string = '';
 
@@ -121,26 +121,42 @@ export class CombateComponent implements OnInit {
     else pokemon.colorHp = 'rojo';
   }
 
-  cargarMovimientos(nombre: string, esJugador: boolean) {
+  async cargarMovimientos(nombre: string, esJugador: boolean) {
     if (!nombre) return;
     const nombreFormateado = nombre.toLowerCase().replace(/\s+/g, '-');
 
-    this.http
-      .get<any>(`https://pokeapi.co/api/v2/pokemon/${nombreFormateado}`)
-      .subscribe({
-        next: (data) => {
-          const movs = data.moves.slice(0, 4).map((m: any) => ({
-            nombre: m.move.name,
-          }));
-          if (esJugador) this.movimientos = movs;
-          else this.movimientosInvitado = movs;
-        },
-        error: (err) => {
-          console.error('❌ Error al obtener movimientos:', err);
-          this.mensaje =
-            '⚠️ No se pudieron cargar los movimientos desde la PokéAPI.';
-        },
+    try {
+      const data: any = await this.http
+        .get(`https://pokeapi.co/api/v2/pokemon/${nombreFormateado}`)
+        .toPromise();
+
+      // 🔹 Tomamos los primeros 4 movimientos del Pokémon
+      const primeros4 = data.moves.slice(0, 4);
+
+      // 🔹 Llamamos a cada uno para obtener su detalle (nombre en español, tipo, poder)
+      const detalles = await Promise.all(
+        primeros4.map((m: any) => this.http.get(m.move.url).toPromise())
+      );
+
+      const movs = detalles.map((d: any) => {
+        const nombreEsp =
+          d.names.find((n: any) => n.language.name === 'es')?.name ||
+          d.name.replace(/-/g, ' ');
+
+        return {
+          nombre: nombreEsp,
+          tipo: d.type.name,
+          poder: d.power || '—',
+        };
       });
+
+      if (esJugador) this.movimientos = movs;
+      else this.movimientosInvitado = movs;
+    } catch (err) {
+      console.error('❌ Error al obtener movimientos:', err);
+      this.mensaje =
+        '⚠️ No se pudieron cargar los movimientos desde la PokéAPI.';
+    }
   }
 
   // ======== Menús Jugador ========
@@ -204,14 +220,14 @@ export class CombateComponent implements OnInit {
     setTimeout(() => {
       if (siguiente) {
         if (esJugador) {
-          // 🧍‍♂️ El jugador perdió su Pokémon
+
           this.pokemonJugador = { ...siguiente };
           this.cargarMovimientos(siguiente.nombre, true);
           this.mensaje = `¡Has enviado a ${siguiente.nombre}!`;
           this.turnoJugador = false;
           this.mostrandoMenuInvitado = true;
         } else {
-          // 🧑‍💻 El invitado perdió su Pokémon
+
           this.pokemonInvitado = { ...siguiente };
           this.cargarMovimientos(siguiente.nombre, false);
           this.mensaje = `¡El invitado envió a ${siguiente.nombre}!`;
