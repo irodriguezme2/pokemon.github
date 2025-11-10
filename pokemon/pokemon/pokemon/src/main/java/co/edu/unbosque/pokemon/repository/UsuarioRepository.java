@@ -14,6 +14,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	public Optional<Usuario> findByCorreo(String correo);
 
+	public Optional<Usuario> findByToken(int token);
+
 	public void deleteByCorreo(String username);
 
 }

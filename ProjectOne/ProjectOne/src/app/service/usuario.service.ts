@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Usuario} from '../model/usuario.model';
+import {Usuario, UsuarioDTO} from '../model/usuario.model';
 import {Observable} from 'rxjs';
 
 const baseUrl = 'http://localhost:8081/usuario';
@@ -11,31 +11,52 @@ const baseUrl = 'http://localhost:8081/usuario';
 export class UsuarioService {
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(baseUrl);
+  crearUsuario(usuario: Usuario): Observable<any> {
+    const params = new HttpParams()
+      .set('correo', usuario.correo)
+      .set('nombre', usuario.nombre)
+      .set('contrasenia', usuario.contrasenia)
+      .set('fechaNacimiento', usuario.fechaNacimiento.toISOString().split('T')[0])
+      .set('esHombre', usuario.esHombre.toString());
+
+    return this.http.post(`${this.baseUrl}/crear`, null, {
+      params: params,
+      responseType: 'text'
+    });
   }
 
-  get(id: any): Observable<Usuario> {
-    return this.http.get<Usuario>(`${baseUrl}/${id}`);
+  crearUsuarioJSON(usuario: UsuarioDTO): Observable<any> {
+    return this.http.post(`${this.baseUrl}/createjson`, usuario, {
+      responseType: 'text'
+    });
   }
 
-  create(data: any): Observable<any> {
-    return this.http.post(baseUrl, data);
+  login(correo: string, contrasenia: string): Observable<any> {
+    const params = new HttpParams()
+      .set('username', correo)
+      .set('password', contrasenia);
+
+    return this.http.post(`${this.baseUrl}/checklogin`, null, {
+      params: params,
+      responseType: 'text'
+    });
   }
 
-  update(id: any, data: any): Observable<any> {
-    return this.http.put(`${baseUrl}/${id}`, data);
+  verificarCuenta(token: number): Observable<any> {
+    const params = new HttpParams().set('token', token.toString());
+    return this.http.get(`${this.baseUrl}/verificar`, {
+      params: params,
+      responseType: 'text'
+    });
   }
 
-  delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
+  obtenerTodosUsuarios(): Observable<UsuarioDTO[]> {
+    return this.http.get<UsuarioDTO[]>(`${this.baseUrl}/getall`);
   }
 
-  deleteAll(): Observable<any> {
-    return this.http.delete(baseUrl);
-  }
-
-  findByTitle(title: any): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(`${baseUrl}?title=${title}`);
+  eliminarUsuario(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/deletebyid/${id}`, {
+      responseType: 'text'
+    });
   }
 }

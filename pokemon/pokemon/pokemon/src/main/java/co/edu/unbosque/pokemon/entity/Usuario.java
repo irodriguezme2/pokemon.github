@@ -43,16 +43,17 @@ public class Usuario implements UserDetails {
 		this.accountNonExpired = true;
 		this.accountNonLocked = true;
 		this.credentialsNonExpired = true;
-    this.verificado = false;
+		this.verificado = false;
 		this.enabled = true;
 		this.role = Role.USER;
 	}
 
 	public enum Role {
-		USER,ADMIN,
+		USER, ADMIN,
 	}
 
-	public Usuario(String correo, String nombreUsuario, String contrasenia, Role rol, Date fechaNacimiento, boolean esHombre) {
+	public Usuario(String correo, String nombreUsuario, String contrasenia, Role rol, Date fechaNacimiento,
+			boolean esHombre) {
 		this();
 		this.correo = correo;
 		this.nombreUsuario = nombreUsuario;
@@ -62,16 +63,11 @@ public class Usuario implements UserDetails {
 		this.esHombre = esHombre;
 	}
 
-	
-	
 	public Usuario(String correo, String contrasenia) {
 		this();
 		this.correo = correo;
 		this.contrasenia = contrasenia;
 	}
-
-
-
 
 	public Usuario(String nombreUsuario, Role role, String contrasenia) {
 		this();
@@ -79,8 +75,6 @@ public class Usuario implements UserDetails {
 		this.role = role;
 		this.contrasenia = contrasenia;
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -264,7 +258,5 @@ public class Usuario implements UserDetails {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
-	
 
 }

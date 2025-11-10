@@ -3,6 +3,7 @@ package co.edu.unbosque.pokemon.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 	private ModelMapper modelMapper;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EnvioCorreoService envioCorreo;
+
+
 
 	public UsuarioService() {
 		// TODO Auto-generated constructor stub
@@ -29,15 +35,31 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 	@Override
 	public int create(UsuarioDTO newData) {
 		Usuario user = modelMapper.map(newData, Usuario.class);
-		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+		Random tokenR = new Random();
+		int token = 10000 + tokenR.nextInt(90000);
+
 		if (findUsernameAlreadyTaken(user)) {
-			return 1;
+			Optional<Usuario> users = userRepo.findByCorreo(newData.getCorreo());
+			if (users.get().isVerificado()) {
+				System.out.println(users.get().getCorreo() + "Usuario ya verificado");
+				return 1;
+			} else {
+				user.setVerificado(false);
+				user.setToken(token);
+				userRepo.save(user);
+				envioCorreo.enviarCorreoVerificacion(user.getCorreo(), token);
+				return 2;
+			}
+
 		} else {
 			user.setContrasenia(passwordEncoder.encode(user.getPassword()));
 			if (newData.getRol() != null) {
 				newData.setRol(newData.getRol());
 			}
+			user.setVerificado(false);
+			user.setToken(token);
 			userRepo.save(user);
+			envioCorreo.enviarCorreoVerificacion(user.getCorreo(), token);
 			return 0;
 		}
 	}
@@ -148,5 +170,20 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 			return 1;
 		}
 	}
+	
+	public boolean verificarUsuarioPorToken(int token) {
+		Optional<Usuario> userOpt = userRepo.findByToken(token);
+
+		if (userOpt.isPresent()) {
+			Usuario user = userOpt.get();
+			user.setVerificado(true);
+			user.setToken(0); 
+			userRepo.save(user);
+			return true;
+		}
+		return false;
+	}
+
+
 
 }
