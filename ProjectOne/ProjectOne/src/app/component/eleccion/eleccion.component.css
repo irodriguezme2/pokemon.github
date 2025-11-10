@@ -341,3 +341,151 @@
 .boton-siguiente:hover .p-button {
   background-color: var(--color-azul-oscuro);
 }
+/* 🎬 Animación tipo aparición retro */
+@keyframes aparecerDialogo {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* 🎮 Contenedor principal del diálogo */
+:host ::ng-deep .dialog-nombre-equipo.p-dialog {
+  width: 26rem !important;
+  min-height: 25rem !important;
+  max-width: 80vw !important;
+  border: 4px solid #2e2e2e !important;
+  background-color: #fde97f !important;
+  border-radius: 20px !important;
+  box-shadow: 0px 0px 20px rgba(255, 221, 115, 0.8);
+  animation: aparecerDialogo 0.4s ease-out;
+  font-family: 'Press Start 2P', monospace, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 🌟 Contenido del diálogo */
+:host ::ng-deep .dialog-nombre-equipo .p-dialog-content {
+  text-align: center;
+  padding: 2rem !important;
+}
+
+:host ::ng-deep .dialog-titulo {
+  color: #c81e1e;
+  font-size: 30px !important;
+  border: 6px solid #0d2e49 !important;
+  border-radius: 0; /* 👈 bordes cuadrados tipo pixel */
+  padding: 10px;
+  background-color: #f6fbfd !important; /* un fondo suave para resaltar */
+  font-family: 'Press Start 2P', cursive !important;
+  margin-top: -10px !important;
+  margin-bottom: 20px !important;
+  line-height: 1.4;
+  display: inline-block;
+  box-shadow:
+    4px 4px 0 #0d2e49, /* 👈 sombra pixelada azul oscuro */
+    8px 8px 0 #1c6aa8; /* 👈 segunda sombra azul más clara */
+}
+
+
+
+/* ✏️ Subtítulo */
+:host ::ng-deep .dialog-subtitulo {
+  color: #454444;
+  font-size: 0.9rem !important;
+  margin-bottom: 1.5rem !important;
+  font-family: 'Press Start 2P', cursive !important;
+  line-height: 1.5;
+}
+
+/* 🧩 Campo de texto */
+:host ::ng-deep.input-nombre {
+  width: 85%;
+  margin: 0.5rem auto 1.5rem auto;
+  font-size: 1rem !important;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid #d5980a;
+  padding: 0.6rem;
+  font-family: 'Press Start 2P', cursive !important;
+  background-color: #fff;
+  color: #131212;
+}
+
+/* 🔘 Botones del diálogo */
+.dialog-botones {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* 🎮 Estilo retro de botones */
+:host ::ng-deep.dialog-nombre-equipo .p-button {
+  font-family: 'Press Start 2P', monospace, sans-serif;
+  font-size: 0.9rem;
+  border-radius: 10px !important;
+  transition: all 0.2s ease-in-out;
+  background-color: #b10a0a !important;
+  color: white;
+  border-color: #0d2e49;
+}
+
+.dialog-nombre-equipo .p-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #f6fbfd !important;
+}
+
+/* 🌫️ Fondo del overlay desenfocado */
+.p-dialog-mask {
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+
+
+/* 💬 Diálogo de mensajes */
+:host ::ng-deep.dialog-mensaje .p-dialog {
+  border: 4px solid #0d3b60 !important;
+  background-color: #fffbe7 !important;
+  border-radius: 18px !important;
+  box-shadow: 0 0 25px rgba(255, 221, 115, 0.8);
+  text-align: center;
+  font-family: 'Press Start 2P', cursive !important;
+  width: 27rem !important;
+  animation: aparecerDialogo 0.3s ease-out;
+}
+
+.dialog-mensaje-titulo {
+  font-size: 1.3rem;
+  color: #0d3b60;
+  text-shadow: 3px 3px #fbd976;
+  margin-bottom: 1rem;
+}
+
+.dialog-mensaje-texto {
+  color: #444;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.dialog-mensaje .p-button {
+  background-color: #2c6599 !important;
+  border: none !important;
+  color: white;
+  font-family: 'Press Start 2P', cursive !important;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.dialog-mensaje .p-button:hover {
+  background-color: #0d3b60 !important;
+  transform: scale(1.05);
+}
+

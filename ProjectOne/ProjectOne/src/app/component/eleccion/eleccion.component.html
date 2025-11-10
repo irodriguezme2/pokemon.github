@@ -1,11 +1,11 @@
 <div class="container-eleccion">
   <h1 class="titulo">Elige tu equipo</h1>
+
   <div class="layout-principal">
     <div class="galeria">
       <div class="botones-superiores">
         <p-split-button
           label="{{selectedEquipo?.nombre || 'Tus equipos'}}"
-          icon="pi pi-users"
           [model]="splitButtonItems">
         </p-split-button>
 
@@ -13,21 +13,21 @@
           icon="pi pi-arrow-left"
           label="Anterior"
           severity="info"
-          (onClick)="anterior()"
-        ></p-button>
+          (onClick)="anterior()">
+        </p-button>
 
         <p-button
           icon="pi pi-arrow-right"
-          label="Mas Pokemones"
-          (onClick)="siguiente()"
-        ></p-button>
+          label="Más Pokemones"
+          (onClick)="siguiente()">
+        </p-button>
       </div>
+
       <div class="card">
         <div
           *ngFor="let p of pokemones"
           class="pokemon-card"
-          (click)="seleccionarPokemon(p)"
-        >
+          (click)="seleccionarPokemon(p)">
           <img [src]="p.imagen" [alt]="p.nombre" />
           <p class="pokemon-nombre">{{ p.nombre }}</p>
           <span *ngIf="p.seleccionado" class="badge-verde"></span>
@@ -40,14 +40,13 @@
         <img [src]="pokemonActual.imagen" [alt]="pokemonActual.nombre" />
         <h2>{{ pokemonActual.nombre | titlecase }}</h2>
 
-        <!-- Tipos con color por clase -->
+        <!-- Tipos -->
         <div *ngIf="pokemonActual.tipo?.length">
           <h3>Elemento:</h3>
           <ul>
             <li
               *ngFor="let tipo of pokemonActual.tipo"
-              [ngClass]="'tipo-' + tipo.toLowerCase()"
-            >
+              [ngClass]="'tipo-' + tipo.toLowerCase()">
               {{ tipo }}
             </li>
           </ul>
@@ -61,13 +60,63 @@
         </div>
       </div>
 
-      <div  class="boton-siguiente" *ngIf="pokemonActual">
+      <div class="boton-siguiente" *ngIf="pokemonActual">
         <p-button
           icon="pi pi-arrow-right"
           label="SIGUIENTE"
-          (onClick)="irSiguiente()"
-        ></p-button>
+          (onClick)="mostrarDialogoNombre()">
+        </p-button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- 🎮 Panel emergente estilo videojuego -->
+<p-dialog
+  [(visible)]="dialogVisible"
+  [modal]="true"
+  [closable]="false"
+  [draggable]="false"
+  [resizable]="false"
+  class="dialog-nombre-equipo"
+>
+
+  <h2 class="dialog-titulo">¡Nombra tu equipo!</h2>
+  <p class="dialog-subtitulo">Elige un nombre para tu escuadrón Pokémon:</p>
+
+  <input
+    type="text"
+    pInputText
+    [(ngModel)]="nombreEquipo"
+    class="input-nombre" />
+
+  <div class="dialog-botones">
+    <p-button
+      label="Cancelar"
+      icon="pi pi-times"
+      severity="secondary"
+      (onClick)="cerrarDialogo()">
+    </p-button>
+
+    <p-button
+      label="Guardar"
+      icon="pi pi-check"
+      (onClick)="guardarNombreEquipo()"
+      [disabled]="!nombreEquipo.trim()">
+    </p-button>
+  </div>
+</p-dialog>
+
+<!-- ⚠️ Diálogo de advertencia -->
+<p-dialog
+  [(visible)]="dialogMensajeVisible"
+  [modal]="true"
+  [closable]="false"
+  class="dialog-mensaje">
+  <h3 class="dialog-mensaje-titulo">¡Atención!</h3>
+  <p class="dialog-mensaje-texto">{{ mensajeDialogo }}</p>
+  <div class="dialog-botones">
+    <p-button label="OK" icon="pi pi-check" (onClick)="dialogMensajeVisible = false"></p-button>
+  </div>
+</p-dialog>
+
