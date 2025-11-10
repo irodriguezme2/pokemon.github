@@ -10,6 +10,7 @@ import java.time.Duration;
 
 import com.google.gson.GsonBuilder;
 
+import co.edu.unbosque.pokemon.dto.EstadisticaJsonDTO;
 import co.edu.unbosque.pokemon.dto.MovimientoJsonDTO;
 import co.edu.unbosque.pokemon.dto.PokemonJsonDTO;
 
@@ -59,13 +60,13 @@ public class ClienteHTTP {
 		PokemonJsonDTO pokemonJsonDTO = new GsonBuilder().create().fromJson(json, PokemonJsonDTO.class);
 		return pokemonJsonDTO;
 	}
-	
+
 	// Consumir la api. Solicitud
-	public static MovimientoJsonDTO doGetMovimientoJsonDTO (String url) {
+	public static MovimientoJsonDTO doGetMovimientoJsonDTO(String url) {
 		HttpRequest solicitud = HttpRequest.newBuilder().GET().uri(URI.create(url))
 				.header("Content-Type", "application/json").build();
 		HttpResponse<String> respuesta = null;
-		
+
 		try {
 			respuesta = CLIENTE.send(solicitud, HttpResponse.BodyHandlers.ofString());
 		} catch (IOException e) {
@@ -80,6 +81,27 @@ public class ClienteHTTP {
 		// Convierte el json en un objeto
 		MovimientoJsonDTO movimientoJsonDTO = new GsonBuilder().create().fromJson(json, MovimientoJsonDTO.class);
 		return movimientoJsonDTO;
+	}
+
+	public static EstadisticaJsonDTO doGetEstadisticaJsonDTO(String url) {
+		HttpRequest solicitud = HttpRequest.newBuilder().GET().uri(URI.create(url))
+				.header("Content-Type", "application/json").build();
+		HttpResponse<String> respuesta = null;
+
+		try {
+			respuesta = CLIENTE.send(solicitud, HttpResponse.BodyHandlers.ofString());
+		} catch (IOException e) {
+			System.out.println("Error al solicitar");
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			System.out.println("Error de interrupción de la comunicación");
+			e.printStackTrace();
+		}
+		System.out.println("Código de respuesta " + respuesta.statusCode());
+		String json = respuesta.body();
+		// Convierte el json en un objeto
+		EstadisticaJsonDTO estadisticaJsonDTO = new GsonBuilder().create().fromJson(json, EstadisticaJsonDTO.class);
+		return estadisticaJsonDTO;
 	}
 
 	public static void main(String[] args) {

@@ -3,32 +3,31 @@ package co.edu.unbosque.pokemon.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-
 @Entity
-public class Movimiento implements Serializable{
-	
-	private @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) long id; 
-	@Column(unique = true, name = "nombre")
+public class Movimiento implements Serializable {
+
+	private @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) long id;
 	private String nombre;
-	private int danio; 
-	private String tipo; 
-	
+	private int danio;
+	private String tipo;
+	private int puntosPoder;
+
 	public Movimiento() {
 		// TODO Auto-generated constructor stub
 	}
 
-
-	public Movimiento(String nombre, int danio, String tipo) {
+	public Movimiento(String nombre, int danio, String tipo, int puntosPoder) {
 		super();
+
 		this.nombre = nombre;
 		this.danio = danio;
 		this.tipo = tipo;
+		this.puntosPoder = puntosPoder;
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public class Movimiento implements Serializable{
 		Movimiento other = (Movimiento) obj;
 		return danio == other.danio && Objects.equals(nombre, other.nombre) && Objects.equals(tipo, other.tipo);
 	}
-	
+
 	/**
 	 * @return the nombre
 	 */
@@ -90,12 +89,38 @@ public class Movimiento implements Serializable{
 		this.tipo = tipo;
 	}
 
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the puntosPoder
+	 */
+	public int getPuntosPoder() {
+		return puntosPoder;
+	}
+
+	/**
+	 * @param puntosPoder the puntosPoder to set
+	 */
+	public void setPuntosPoder(int puntosPoder) {
+		this.puntosPoder = puntosPoder;
+	}
 
 	@Override
 	public String toString() {
-		return "Movimiento [id=" + id + ", nombre=" + nombre + ", danio=" + danio + ", tipo=" + tipo + "]";
+		return "Movimiento [id=" + id + ", nombre=" + nombre + ", danio=" + danio + ", tipo=" + tipo + ", puntosPoder="
+				+ puntosPoder + "]";
 	}
-	
-	
 
 }

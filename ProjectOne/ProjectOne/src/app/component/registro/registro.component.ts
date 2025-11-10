@@ -18,6 +18,7 @@ import { Usuario } from '../../models/usuario.model';
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent {
+  // 🔹 Variables del formulario
   date2: Date | null = null;
   usuario: Usuario = {
     correo: '',
@@ -118,5 +119,16 @@ export class RegistroComponent {
       esHombre: true
     };
     this.date2 = null;
+  selectedAvatar: string = ''; // Guarda el avatar elegido
+
+  // 🔹 Método para enviar el formulario
+  onSubmit() {
+    if (!this.selectedAvatar) {
+      alert('Por favor selecciona un avatar antes de registrarte.');
+      return;
+    }
+
+    // Aquí puedes continuar con el registro, incluyendo el avatar seleccionado
+    console.log('Avatar elegido:', this.selectedAvatar);
   }
 }

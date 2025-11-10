@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 import { EquiposService, Equipo } from '../../service/equipos.service';
 
 interface Pokemon {
@@ -23,7 +26,10 @@ interface Pokemon {
     CommonModule,
     ButtonModule,
     HttpClientModule,
-    SplitButtonModule
+    SplitButtonModule,
+    DialogModule,
+    InputTextModule,
+    FormsModule
   ]
 })
 export class EleccionComponent implements OnInit {
@@ -38,6 +44,14 @@ export class EleccionComponent implements OnInit {
   splitButtonItems: any[] = [];
   selectedEquipo: Equipo | null = null;
 
+  // 🟦 Panel para guardar equipo
+  dialogVisible: boolean = false;
+  nombreEquipo: string = '';
+
+  // 💬 Diálogo de mensajes personalizados
+  dialogMensajeVisible: boolean = false;
+  mensajeDialogo: string = '';
+
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -45,7 +59,6 @@ export class EleccionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Recupera el equipo temporal del JUGADOR si existe
     const equipoGuardado = this.equiposService.obtenerEquipoTemporalJugador();
     if (equipoGuardado?.length) {
       this.equipoSeleccionado = equipoGuardado;
@@ -65,7 +78,8 @@ export class EleccionComponent implements OnInit {
 
   seleccionarEquipo(equipo: Equipo) {
     this.selectedEquipo = equipo;
-    // Opcional: this.equipoSeleccionado = equipo.pokemones;
+    this.equiposService.guardarEquipoTemporalJugador(equipo.pokemones);
+    this.router.navigate(['/eleccion-invitado']);
   }
 
   cargarPokemones() {
@@ -87,9 +101,7 @@ export class EleccionComponent implements OnInit {
 
         this.pokemones = nuevosPokemones;
       },
-      error: (err) => {
-        console.error('Error al cargar los Pokémon:', err);
-      }
+      error: (err) => console.error('Error al cargar los Pokémon:', err)
     });
   }
 
@@ -101,13 +113,11 @@ export class EleccionComponent implements OnInit {
   seleccionarPokemon(pokemon: Pokemon) {
     const yaSeleccionado = this.equipoSeleccionado.find(p => p.nombre === pokemon.nombre);
 
-    // Evitar seleccionar más de 6
     if (!yaSeleccionado && this.equipoSeleccionado.length >= 6) {
-      alert('⚠️ Solo puedes seleccionar hasta 6 Pokémon para tu equipo.');
+      this.mostrarMensaje('⚠️ Solo puedes seleccionar hasta 6 Pokémon para tu equipo.');
       return;
     }
 
-    // Alternar estado seleccionado
     pokemon.seleccionado = !pokemon.seleccionado;
 
     if (pokemon.seleccionado) {
@@ -116,10 +126,8 @@ export class EleccionComponent implements OnInit {
       this.equipoSeleccionado = this.equipoSeleccionado.filter(p => p.nombre !== pokemon.nombre);
     }
 
-    // Mostrar info en el panel lateral
     this.pokemonActual = pokemon;
 
-    // Si ya tiene tipo y movimientos, no volver a pedir
     if (pokemon.tipo?.length && pokemon.movimientos?.length) return;
 
     const apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemon.nombre}`;
@@ -131,14 +139,11 @@ export class EleccionComponent implements OnInit {
         pokemon.tipo = tipos;
         pokemon.movimientos = movimientos;
 
-        // Asegurar que el panel lateral se actualiza
         if (this.pokemonActual?.nombre === pokemon.nombre) {
           this.pokemonActual = { ...pokemon };
         }
       },
-      error: (err) => {
-        console.error('Error al cargar detalles del Pokémon:', err);
-      }
+      error: (err) => console.error('Error al cargar detalles del Pokémon:', err)
     });
   }
 
@@ -158,12 +163,37 @@ export class EleccionComponent implements OnInit {
     console.log('🔁 Cambiar equipo');
   }
 
-  irSiguiente(): void {
+  // 🧾 Panel para ingresar nombre del equipo
+  mostrarDialogoNombre(): void {
     if (this.equipoSeleccionado.length < 6) {
-      alert('⚠️ Debes seleccionar exactamente 6 Pokémon para continuar.');
+      this.mostrarMensaje('⚠️ Debes seleccionar exactamente 6 Pokémon para continuar.');
       return;
     }
+    this.dialogVisible = true;
+  }
+
+  cerrarDialogo(): void {
+    this.dialogVisible = false;
+    this.nombreEquipo = '';
+  }
+
+  guardarNombreEquipo(): void {
+    const nuevoEquipo: Equipo = {
+      id: Date.now(),
+      nombre: this.nombreEquipo.trim(),
+      pokemones: this.equipoSeleccionado
+    };
+
+    this.equiposService.agregarEquipo(nuevoEquipo);
+    this.dialogVisible = false;
+
     this.equiposService.guardarEquipoTemporalJugador(this.equipoSeleccionado);
     this.router.navigate(['/eleccion-invitado']);
+  }
+
+  // 💬 Mostrar mensaje bonito tipo ventana emergente
+  mostrarMensaje(texto: string): void {
+    this.mensajeDialogo = texto;
+    this.dialogMensajeVisible = true;
   }
 }

@@ -7,16 +7,18 @@ public class PokemonJsonDTO {
 	private String name;
 	private ArrayList<TypeDTO> types;
 	private ArrayList<MoveDTO> moves;
+	private ArrayList<EstadisticaJsonDTO> stats;
 
 	public PokemonJsonDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PokemonJsonDTO(String name, ArrayList<TypeDTO> types, ArrayList<MoveDTO> moves) {
+	public PokemonJsonDTO(String name, ArrayList<TypeDTO> types, ArrayList<MoveDTO> moves, ArrayList<EstadisticaJsonDTO> stats) {
 		super();
 		this.name = name;
 		this.types = types;
 		this.moves = moves;
+		this.stats = stats;
 	}
 
 	/**
@@ -59,6 +61,14 @@ public class PokemonJsonDTO {
 	 */
 	public void setMoves(ArrayList<MoveDTO> moves) {
 		this.moves = moves;
+	}
+
+	public ArrayList<EstadisticaJsonDTO> getStats() {
+		return stats;
+	}
+
+	public void setStats(ArrayList<EstadisticaJsonDTO> stats) {
+		this.stats = stats;
 	}
 
 	@Override

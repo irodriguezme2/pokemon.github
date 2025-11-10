@@ -19,11 +19,18 @@ import { EleccionInvitadoComponent } from './component/eleccion-invitado/eleccio
 import {SplitButton} from 'primeng/splitbutton';
 import { CombateComponent } from './component/combate/combate.component';
 import { CombatePCComponent } from './component/combate-pc/combate-pc.component';
-import { BatallaComponent } from './component/batalla/batalla.component';
 import { CommonModule } from '@angular/common';
+// @ts-ignore
+import { MisEquiposComponent } from './component/mis-equipos/mis-equipos.component';
+import { PremiacionComponent } from './component/premiacion/premiacion.component';
+import {RouterLink} from '@angular/router';
 
 @NgModule({
   declarations: [
+
+
+
+    PremiacionComponent
   ],
   imports: [
     BrowserModule,
@@ -45,8 +52,8 @@ import { CommonModule } from '@angular/common';
     RegistroComponent,
     EleccionUnoVsPcComponent,
     SplitButton,
-    BatallaComponent,
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
   providers: [],
   bootstrap: []

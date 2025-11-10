@@ -18,6 +18,7 @@ interface Pokemon {
   selector: 'app-eleccion-uno-vs-pc',
   standalone: true,
   templateUrl: './eleccion-uno-vs-pc.component.html',
+  styleUrls: ['./eleccion-uno-vs-pc.component.css'],
   imports: [
     Button,
     NgForOf,
@@ -26,8 +27,7 @@ interface Pokemon {
     TitleCasePipe,
     NgClass,
     RouterLink
-  ],
-  styleUrl: './eleccion-uno-vs-pc.component.css'
+  ]
 })
 export class EleccionUnoVsPcComponent implements OnInit{
   pokemones: Pokemon[] = [];
@@ -132,7 +132,16 @@ export class EleccionUnoVsPcComponent implements OnInit{
   }
 
   irSiguiente(): void {
-    console.log('➡️ Ir a la siguiente pantalla con equipo:', this.equipoSeleccionado);
+    if (this.equipoSeleccionado.length === 0) {
+      alert('Selecciona al menos un Pokémon antes de continuar.');
+      return;
+    }
+
+    // Guarda el equipo seleccionado temporalmente en el almacenamiento local
+    localStorage.setItem('equipoJugador', JSON.stringify(this.equipoSeleccionado));
+
+    // Redirige al componente de combate
+    this.router.navigate(['/combate']);
   }
 
 }

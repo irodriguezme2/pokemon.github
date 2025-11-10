@@ -1,32 +1,41 @@
 <div class="fondo">
   <div class="container-equipos">
-    <h1 class="titulo">Equipo P1:</h1>
-    <div class="grid-equipos" *ngIf="equipoJugador.length > 0; else noP1">
-      <div *ngFor="let pokemon of equipoJugador" class="pokemon-card">
-        <img [src]="pokemon.imagen" [alt]="pokemon.nombre" />
-        <p class="pokemon-nombre">{{ pokemon.nombre | titlecase }}</p>
-      </div>
-    </div>
-    <ng-template #noP1>
-      <p>No hay pokemones seleccionados para P1.</p>
-    </ng-template>
+    <div class="equipos-wrapper">
 
-    <h1 class="titulo">Equipo Invitado:</h1>
-    <div class="grid-equipos" *ngIf="equipoInvitado.length > 0; else noInvitado">
-      <div *ngFor="let pokemon of equipoInvitado" class="pokemon-card">
-        <img [src]="pokemon.imagen" [alt]="pokemon.nombre" />
-        <p class="pokemon-nombre">{{ pokemon.nombre | titlecase }}</p>
+      <!-- Equipo P1 -->
+      <div class="equipo">
+        <h1 class="titulo">Equipo jugador:</h1>
+        <div class="grid-equipos" *ngIf="equipoJugador.length > 0; else noP1">
+          <div *ngFor="let pokemon of equipoJugador" class="pokemon-card">
+            <img [src]="pokemon.imagen" [alt]="pokemon.nombre" />
+            <p class="pokemon-nombre">{{ pokemon.nombre | titlecase }}</p>
+          </div>
+        </div>
+        <ng-template #noP1>
+          <p>No hay pokemones seleccionados para P1.</p>
+        </ng-template>
       </div>
-    </div>
-    <ng-template #noInvitado>
-      <p>No hay pokemones seleccionados para Invitado.</p>
-    </ng-template>
 
+      <!-- Equipo Invitado -->
+      <div class="equipo">
+        <h1 class="titulo">Equipo Invitado:</h1>
+        <div class="grid-equipos" *ngIf="equipoInvitado.length > 0; else noInvitado">
+          <div *ngFor="let pokemon of equipoInvitado" class="pokemon-card">
+            <img [src]="pokemon.imagen" [alt]="pokemon.nombre" />
+            <p class="pokemon-nombre">{{ pokemon.nombre | titlecase }}</p>
+          </div>
+        </div>
+        <ng-template #noInvitado>
+          <p>No hay pokemones seleccionados para Invitado.</p>
+        </ng-template>
+      </div>
+
+    </div>
+
+    <!-- Botones -->
     <div class="botones">
       <button pButton type="button" class="btn-cancelar" (click)="cancelar()">Escoger Nuevamente</button>
       <button pButton type="button" class="btn-siguiente" (click)="siguiente()" [disabled]="equipoJugador.length === 0">Comenzar Combate</button>
-      <button pButton type="button"  class="btn-cancelar" (click)="cancelar()">Cancelar</button>
-      <button pButton type="button"  class="btn-siguiente" (click)="siguiente()" >Siguiente</button>
     </div>
   </div>
 </div>

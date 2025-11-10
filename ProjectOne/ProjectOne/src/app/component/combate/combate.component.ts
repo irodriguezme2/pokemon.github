@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { EquiposService } from '../../service/equipos.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {Button} from 'primeng/button';
+import {Dialog} from 'primeng/dialog';
 
 interface Movimiento {
   nombre: string;
@@ -11,18 +13,21 @@ interface Movimiento {
 }
 
 interface Pokemon {
-  id: number;
+  id?: number;
   nombre: string;
   imagen: string;
   tipo?: string[];
   movimientos?: Movimiento[];
-  hp?: number;
+  hp: number;
+  url?: string;
+  colorHp?: string;
+  vivo?: boolean;
 }
 
 @Component({
   selector: 'app-combate',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, Button, Dialog],
   templateUrl: './combate.component.html',
   styleUrls: ['./combate.component.css'],
 })
@@ -48,6 +53,10 @@ export class CombateComponent implements OnInit {
   mostrandoCambioInvitado = false;
   movimientosInvitado: Movimiento[] = [];
 
+
+  dialogMensajeVisible: boolean = false;
+  mensajeDialogo: string = '';
+
   constructor(
     private equiposService: EquiposService,
     private router: Router,
@@ -59,64 +68,98 @@ export class CombateComponent implements OnInit {
     this.equipoInvitado = this.equiposService.obtenerEquipoTemporalInvitado();
 
     if (!this.equipoJugador.length || !this.equipoInvitado.length) {
-      alert('⚠️ Debes elegir ambos equipos primero.');
-      this.router.navigate(['/eleccion']);
+      this.mostrarDialogo('⚠️ Debes elegir ambos equipos primero.');
+      setTimeout(() => this.router.navigate(['/eleccion']), 2000);
       return;
     }
 
     this.iniciarCombate();
   }
 
+  /** 🔹 Obtener sprite animado tipo GIF */
+  obtenerGif(poke: any): string {
+    const id = poke.id || poke.url?.split('/').filter(Boolean).pop();
+    return id
+      ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`
+      : poke.imagen || '';
+  }
+
   iniciarCombate() {
-    // Primer Pokémon de cada equipo
-    this.pokemonJugador = { ...this.equipoJugador[0], hp: 100 };
-    this.pokemonInvitado = { ...this.equipoInvitado[0], hp: 100 };
+    // Asignar GIFs, HP inicial y estado "vivo"
+    this.equipoJugador = this.equipoJugador.map((p) => ({
+      ...p,
+      imagen: this.obtenerGif(p),
+      hp: 100,
+      colorHp: 'verde',
+      vivo: true,
+    }));
 
-    // Sprites 3D modernos
-    const obtenerGif = (poke: any) => {
-      const id = poke.id || poke.url?.split('/').filter(Boolean).pop();
-      if (id)
-        return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`;
-      return poke.imagen;
-    };
+    this.equipoInvitado = this.equipoInvitado.map((p) => ({
+      ...p,
+      imagen: this.obtenerGif(p),
+      hp: 100,
+      colorHp: 'verde',
+      vivo: true,
+    }));
 
-    this.pokemonJugador.imagen = obtenerGif(this.pokemonJugador);
-    this.pokemonInvitado.imagen = obtenerGif(this.pokemonInvitado);
+    // Seleccionar los primeros
+    this.pokemonJugador = { ...this.equipoJugador[0] };
+    this.pokemonInvitado = { ...this.equipoInvitado[0] };
 
     this.turnoJugador = true;
     this.mensaje = '¡Es tu turno!';
     this.mostrandoMenu = true;
 
+    // Cargar movimientos
     this.cargarMovimientos(this.pokemonJugador.nombre, true);
     this.cargarMovimientos(this.pokemonInvitado.nombre, false);
-
   }
 
-  /** Cargar movimientos reales desde la PokéAPI */
-  cargarMovimientos(nombre: string, esJugador: boolean) {
-    if (!nombre) return;
+  actualizarColorHp(pokemon: Pokemon) {
+    if (pokemon.hp > 60) pokemon.colorHp = 'verde';
+    else if (pokemon.hp > 30) pokemon.colorHp = 'amarillo';
+    else pokemon.colorHp = 'rojo';
+  }
 
+  async cargarMovimientos(nombre: string, esJugador: boolean) {
+    if (!nombre) return;
     const nombreFormateado = nombre.toLowerCase().replace(/\s+/g, '-');
 
-    this.http.get<any>(`https://pokeapi.co/api/v2/pokemon/${nombreFormateado}`).subscribe({
-      next: (data) => {
-        const movs = data.moves.slice(0, 4).map((m: any) => ({
-          nombre: m.move.name
-        }));
-        if (esJugador) this.movimientos = movs;
-        else this.movimientosInvitado = movs;
-      },
-      error: (err) => {
-        console.error('❌ Error al obtener movimientos:', err);
-        this.mensaje = '⚠️ No se pudieron cargar los movimientos desde la PokéAPI.';
-        if (esJugador) this.movimientos = [];
-        else this.movimientosInvitado = [];
-      }
-    });
+    try {
+      const data: any = await this.http
+        .get(`https://pokeapi.co/api/v2/pokemon/${nombreFormateado}`)
+        .toPromise();
+
+      // 🔹 Tomamos los primeros 4 movimientos del Pokémon
+      const primeros4 = data.moves.slice(0, 4);
+
+      // 🔹 Llamamos a cada uno para obtener su detalle (nombre en español, tipo, poder)
+      const detalles = await Promise.all(
+        primeros4.map((m: any) => this.http.get(m.move.url).toPromise())
+      );
+
+      const movs = detalles.map((d: any) => {
+        const nombreEsp =
+          d.names.find((n: any) => n.language.name === 'es')?.name ||
+          d.name.replace(/-/g, ' ');
+
+        return {
+          nombre: nombreEsp,
+          tipo: d.type.name,
+          poder: d.power || '—',
+        };
+      });
+
+      if (esJugador) this.movimientos = movs;
+      else this.movimientosInvitado = movs;
+    } catch (err) {
+      console.error('❌ Error al obtener movimientos:', err);
+      this.mensaje =
+        '⚠️ No se pudieron cargar los movimientos desde la PokéAPI.';
+    }
   }
 
-
-  // ===== Menús jugador =====
+  // ======== Menús Jugador ========
   mostrarMenu() {
     this.mostrandoMenu = true;
     this.mostrandoAtaques = false;
@@ -126,47 +169,98 @@ export class CombateComponent implements OnInit {
   elegirAtacar() {
     this.mostrandoMenu = false;
     this.mostrandoAtaques = true;
-    this.mostrandoCambio = false;
   }
 
   elegirCambiar() {
     this.mostrandoMenu = false;
-    this.mostrandoAtaques = false;
     this.mostrandoCambio = true;
   }
 
   usarMovimiento(movimiento: Movimiento) {
     const daño = Math.floor(Math.random() * 20) + 10;
-    this.pokemonInvitado.hp = Math.max(0, (this.pokemonInvitado.hp ?? 0) - daño);
-    this.mensaje = `${this.pokemonJugador.nombre} usó ${movimiento.nombre}!`;
+    this.pokemonInvitado.hp = Math.max(0, this.pokemonInvitado.hp - daño);
+    this.actualizarColorHp(this.pokemonInvitado);
 
+    this.mensaje = `${this.pokemonJugador.nombre} usó ${movimiento.nombre}!`;
     this.mostrandoAtaques = false;
     this.turnoJugador = false;
 
-    // 👉 Ahora pasa el turno al invitado
     setTimeout(() => {
+      if (this.pokemonInvitado.hp <= 0) {
+        this.derrotarPokemon(this.pokemonInvitado, false);
+        return;
+      }
       this.mensaje = 'Turno del invitado';
       this.mostrandoMenuInvitado = true;
-    }, 2000);
+    }, 1500);
+  }
+
+  derrotarPokemon(pokemon: Pokemon, esJugador: boolean) {
+    // 🔹 Marcar como muerto
+    pokemon.vivo = false;
+    pokemon.hp = 0;
+
+    // 🔹 Actualizar el equipo para reflejar el cambio
+    if (esJugador) {
+      this.equipoJugador = this.equipoJugador.map((p) =>
+        p.nombre === pokemon.nombre ? { ...p, vivo: false, hp: 0 } : p
+      );
+    } else {
+      this.equipoInvitado = this.equipoInvitado.map((p) =>
+        p.nombre === pokemon.nombre ? { ...p, vivo: false, hp: 0 } : p
+      );
+    }
+
+    this.mensaje = `💥 ${pokemon.nombre} fue derrotado!`;
+
+    // 🔹 Buscar siguiente Pokémon vivo
+    const equipo = esJugador ? this.equipoJugador : this.equipoInvitado;
+    const siguiente = equipo.find((p) => p.vivo);
+
+    setTimeout(() => {
+      if (siguiente) {
+        if (esJugador) {
+
+          this.pokemonJugador = { ...siguiente };
+          this.cargarMovimientos(siguiente.nombre, true);
+          this.mensaje = `¡Has enviado a ${siguiente.nombre}!`;
+          this.turnoJugador = false;
+          this.mostrandoMenuInvitado = true;
+        } else {
+
+          this.pokemonInvitado = { ...siguiente };
+          this.cargarMovimientos(siguiente.nombre, false);
+          this.mensaje = `¡El invitado envió a ${siguiente.nombre}!`;
+          this.turnoJugador = true;
+          this.mostrandoMenu = true;
+        }
+      } else {
+        // 🏁 No quedan Pokémon vivos
+        this.mostrarDialogo(
+          esJugador ? ' ¡Has perdido el combate!' : ' ¡Has ganado el combate!'
+        );
+        setTimeout(() => this.router.navigate(['/eleccion']), 2500);
+
+
+        setTimeout(() => this.router.navigate(['/eleccion']), 2500);
+      }
+    }, 1500);
   }
 
   cambiarPokemon(p: Pokemon) {
-    if (!p) return;
-    if (p.nombre === this.pokemonJugador?.nombre) return;
+    if (!p || !p.vivo || p.nombre === this.pokemonJugador.nombre) return;
 
-    // Cambia al nuevo Pokémon y asegura HP por defecto
-    this.pokemonJugador = { ...p, hp: p.hp ?? 100 };
+    this.pokemonJugador = {
+      ...p,
+      imagen: this.obtenerGif(p),
+    };
+    this.actualizarColorHp(this.pokemonJugador);
+
     this.mensaje = `¡Has cambiado a ${p.nombre}!`;
-
-    // Cargar movimientos del nuevo (cargarMovimientos espera nombre:string)
     this.cargarMovimientos(p.nombre, true);
-
-    // Cerrar vista de cambio y pasar turno MANUAL al invitado (humano)
     this.mostrandoCambio = false;
     this.turnoJugador = false;
 
-    // Mostrar menú del invitado para que él/elija su acción
-    // (pequeño retardo para que el cambio se vea en pantalla)
     setTimeout(() => {
       this.mensaje = 'Turno del invitado';
       this.mostrandoMenuInvitado = true;
@@ -174,15 +268,52 @@ export class CombateComponent implements OnInit {
   }
 
   escapar() {
-    alert('Has escapado del combate.');
-    this.router.navigate(['/eleccion']);
+    this.mostrarDialogo('¡Has escapado del combate!');
+    setTimeout(() => this.router.navigate(['/premiacion']), 2500);
   }
 
-  // ===== Menús invitado =====
+  // ======== Menús Invitado ========
   mostrarMenuInvitado() {
     this.mostrandoMenuInvitado = true;
+  }
+
+  usarMovimientoInvitado(movimiento: Movimiento) {
+    const daño = Math.floor(Math.random() * 15) + 5;
+    this.pokemonJugador.hp = Math.max(0, this.pokemonJugador.hp - daño);
+    this.actualizarColorHp(this.pokemonJugador);
+
+    this.mensaje = `${this.pokemonInvitado.nombre} usó ${movimiento.nombre}!`;
     this.mostrandoAtaquesInvitado = false;
+    this.turnoJugador = true;
+
+    setTimeout(() => {
+      if (this.pokemonJugador.hp <= 0) {
+        this.derrotarPokemon(this.pokemonJugador, true);
+        return;
+      }
+      this.mensaje = 'Turno del jugador';
+      this.mostrandoMenu = true;
+    }, 1500);
+  }
+
+  cambiarPokemonInvitado(p: Pokemon) {
+    if (!p || !p.vivo || p.nombre === this.pokemonInvitado.nombre) return;
+
+    this.pokemonInvitado = {
+      ...p,
+      imagen: this.obtenerGif(p),
+    };
+    this.actualizarColorHp(this.pokemonInvitado);
+
+    this.mensaje = `¡El invitado cambió a ${p.nombre}!`;
+    this.cargarMovimientos(p.nombre, false);
     this.mostrandoCambioInvitado = false;
+
+    setTimeout(() => {
+      this.mensaje = 'Turno del jugador';
+      this.turnoJugador = true;
+      this.mostrandoMenu = true;
+    }, 800);
   }
 
   elegirAtacarInvitado() {
@@ -194,34 +325,14 @@ export class CombateComponent implements OnInit {
     this.mostrandoMenuInvitado = false;
     this.mostrandoCambioInvitado = true;
   }
-
-  usarMovimientoInvitado(movimiento: Movimiento) {
-    const daño = Math.floor(Math.random() * 15) + 5;
-    this.pokemonJugador.hp = Math.max(0, (this.pokemonJugador.hp ?? 0) - daño);
-    this.mensaje = `${this.pokemonInvitado.nombre} usó ${movimiento.nombre}!`;
-
-    this.mostrandoAtaquesInvitado = false;
-    this.turnoJugador = true;
-
-    setTimeout(() => {
-      this.mensaje = 'Turno del jugador';
-      this.mostrandoMenu = true;
-    }, 2000);
+  mostrarDialogo(mensaje: string) {
+    this.mensajeDialogo = mensaje;
+    this.dialogMensajeVisible = true;
   }
-  cambiarPokemonInvitado(p: Pokemon) {
-    if (!p) return;
-    if (p.nombre === this.pokemonInvitado?.nombre) return;
 
-    this.pokemonInvitado = { ...p, hp: p.hp ?? 100 };
-    this.mensaje = `¡El invitado cambió a ${p.nombre}!`;
-
-    this.cargarMovimientos(p.nombre, false);
-    this.mostrandoCambioInvitado = false;
-
-    setTimeout(() => {
-      this.mensaje = 'Turno del jugador';
-      this.turnoJugador = true;
-      this.mostrandoMenu = true;
-    }, 800);
+  cerrarDialogo() {
+    this.dialogMensajeVisible = false;
+    this.router.navigate(['/premiacion']);
   }
+
 }

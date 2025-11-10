@@ -1,13 +1,15 @@
 .container-equipos {
-  max-width: 600px;
+  max-width: 90%;
   margin: auto;
   background: rgba(255 255 255 / 0.75);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 12px;
   text-align: center;
   font-family: 'Poppins', sans-serif;
   margin-top: 70px !important;
 }
+
+/* Fondo */
 .fondo {
   position: relative;
   z-index: 0;
@@ -29,18 +31,36 @@
   z-index: -1;
 }
 
+/* 🔹 NUEVO contenedor para mostrar los equipos lado a lado */
+.equipos-wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap; /* para que se acomode si la pantalla es pequeña */
+  gap: 50px;
+}
+
+/* Cada bloque de equipo */
+.equipo {
+  flex: 2 2 45%; /* ocupa 45% del ancho */
+  min-width: 400px;
+}
+
+/* Títulos */
 .titulo {
-  background: #f7e94a;
+  background: #e8d929;
   padding: 1rem;
   font-weight: 900;
   font-size: 1.8rem;
   border-radius: 12px;
   margin-bottom: 1rem;
+  font-family: 'Press Start 2P', cursive !important;
 }
 
+/* Grid de pokémon */
 .grid-equipos {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -63,27 +83,34 @@
   font-size: 1.1rem;
 }
 
+/* Botones */
 .botones {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 20px;
 }
 
 .btn-cancelar {
-  background-color: #d83a3a;
+  background-color: #b10a0a;
   color: white;
   font-weight: bold;
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-family: 'Press Start 2P', cursive !important;
 }
 
 .btn-siguiente {
-  background-color: #2a75bb;
+  background-color: #145183;
   color: white;
   font-weight: bold;
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-family: 'Press Start 2P', cursive !important;
+}
+:host ::ng-deep .boton-siguiente:hover .p-button {
+  background-color: #B8A038;
 }

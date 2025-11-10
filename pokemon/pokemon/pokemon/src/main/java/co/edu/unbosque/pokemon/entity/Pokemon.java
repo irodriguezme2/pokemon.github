@@ -6,14 +6,15 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Pokemon {
@@ -23,43 +24,53 @@ public class Pokemon {
 	private String nombre;
 	@ElementCollection
 	private List<String> tipo;
-	@Min(value = 0, message = "El valor mínimo es 0")
-	@Max(value = 100, message = "El valor mínimo es 100")
-	private int puntosSalud = 100;
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pokemon_id")
 	private List<Movimiento> movimiento;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "pokemon_id")
+	private List<Estadistica> estadistica;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ability_id")
+	private Ability ability;
+	private int hpActual;
+	@Enumerated(EnumType.STRING)
+	private Estado estado;
+
+	public enum Estado {
+
+		NORMAL, BURN, POISON, BADLY_POISONED, PARALYSIS, SLEEP, FREEZE, CONFUSION, FLINCH, CURSED, BOUND, INFATUATION;
+	}
 
 	public Pokemon() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Pokemon(String nombre, List<String> tipo,
-			@Min(value = 0, message = "El valor mínimo es 0") @Max(value = 100, message = "El valor mínimo es 100") int puntosSalud,
-			List<Movimiento> movimiento) {
+	public Pokemon(String nombre, List<String> tipo, List<Movimiento> movimiento, List<Estadistica> estadistica) {
 		super();
 		this.nombre = nombre;
 		this.tipo = tipo;
-		this.puntosSalud = puntosSalud;
 		this.movimiento = movimiento;
+		this.estadistica = estadistica;
+		this.hpActual = obtenerHPBase();
+		this.estado = Estado.NORMAL;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, movimiento, nombre, puntosSalud, tipo);
+	private int obtenerHPBase() {
+		return estadistica.stream().filter(e -> "hp".equalsIgnoreCase(e.getNombre())).mapToInt(Estadistica::getValor)
+				.findFirst().orElse(50);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pokemon other = (Pokemon) obj;
-		return id == other.id && Objects.equals(movimiento, other.movimiento) && Objects.equals(nombre, other.nombre)
-				&& puntosSalud == other.puntosSalud && Objects.equals(tipo, other.tipo);
+	public int getStatValue(String statName) {
+		if (estadistica == null)
+			return 0;
+		for (Estadistica e : estadistica) {
+			if (e.getNombre().equalsIgnoreCase(statName)) {
+				return e.getValor();
+			}
+		}
+		return 0;
 	}
 
 	/**
@@ -105,20 +116,6 @@ public class Pokemon {
 	}
 
 	/**
-	 * @return the puntosSalud
-	 */
-	public int getPuntosSalud() {
-		return puntosSalud;
-	}
-
-	/**
-	 * @param puntosSalud the puntosSalud to set
-	 */
-	public void setPuntosSalud(int puntosSalud) {
-		this.puntosSalud = puntosSalud;
-	}
-
-	/**
 	 * @return the movimiento
 	 */
 	public List<Movimiento> getMovimiento() {
@@ -132,10 +129,90 @@ public class Pokemon {
 		this.movimiento = movimiento;
 	}
 
+	/**
+	 * @return the estadistica
+	 */
+	public List<Estadistica> getEstadistica() {
+		return estadistica;
+	}
+
+	/**
+	 * @param estadistica the estadistica to set
+	 */
+	public void setEstadistica(List<Estadistica> estadistica) {
+		this.estadistica = estadistica;
+	}
+
+	/**
+	 * @return the ability
+	 */
+	public Ability getAbility() {
+		return ability;
+	}
+
+	/**
+	 * @param ability the ability to set
+	 */
+	public void setAbility(Ability ability) {
+		this.ability = ability;
+	}
+
+	/**
+	 * @return the hpActual
+	 */
+	public int getHpActual() {
+		return hpActual;
+	}
+
+	/**
+	 * @param hpActual the hpActual to set
+	 */
+	public void setHpActual(int hpActual) {
+		this.hpActual = Math.max(0, hpActual);
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public Estado getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+	public void restaurarHP() {
+		this.hpActual = getStatValue("hp");
+		this.estado = Estado.NORMAL;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(estadistica, id, movimiento, nombre, tipo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pokemon other = (Pokemon) obj;
+		return Objects.equals(estadistica, other.estadistica) && id == other.id
+				&& Objects.equals(movimiento, other.movimiento) && Objects.equals(nombre, other.nombre)
+				&& Objects.equals(tipo, other.tipo);
+	}
+
 	@Override
 	public String toString() {
-		return "Pokemon [id=" + id + ", nombre=" + nombre + ", tipo=" + tipo + ", puntosSalud=" + puntosSalud
-				+ ", movimiento=" + movimiento + "]";
+		return "Pokemon [id=" + id + ", nombre=" + nombre + ", tipo=" + tipo + ", movimiento=" + movimiento
+				+ ", estadistica=" + estadistica + "]";
 	}
 
 }
