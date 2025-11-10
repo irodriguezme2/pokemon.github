@@ -19,7 +19,6 @@ import { EleccionInvitadoComponent } from './component/eleccion-invitado/eleccio
 import {SplitButton} from 'primeng/splitbutton';
 import { CombateComponent } from './component/combate/combate.component';
 import { CombatePCComponent } from './component/combate-pc/combate-pc.component';
-import { BatallaComponent } from './component/batalla/batalla.component';
 import { CommonModule } from '@angular/common';
 // @ts-ignore
 import { MisEquiposComponent } from './component/mis-equipos/mis-equipos.component';
@@ -53,7 +52,6 @@ import {RouterLink} from '@angular/router';
     RegistroComponent,
     EleccionUnoVsPcComponent,
     SplitButton,
-    BatallaComponent,
     CommonModule,
     RouterLink
   ],
