@@ -11,24 +11,25 @@ public class UsuarioDTO {
 	private String correo;
 	private String nombreUsuario;
 	private String contrasenia;
-	private Role rol; 
+	private Role rol;
+	private boolean esHombre;
 	private Date fechaNacimiento;
 
 	public UsuarioDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UsuarioDTO(String correo, String nombreUsuario, String contrasenia, Role rol,  Date fechaNacimiento) {
-
+	public UsuarioDTO(String correo, String nombreUsuario, String contrasenia, Role rol, Date fechaNacimiento,
+			boolean esHombre) {
+		this();
 		this.correo = correo;
 		this.nombreUsuario = nombreUsuario;
 		this.contrasenia = contrasenia;
-		this.rol = rol; 
+		this.rol = rol;
 		this.fechaNacimiento = fechaNacimiento;
+		this.esHombre = esHombre;
 	}
 
-	
-	
 	public UsuarioDTO(String correo, String contrasenia, Role rol) {
 		super();
 		this.correo = correo;
@@ -80,8 +81,8 @@ public class UsuarioDTO {
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
-	}	
-	
+	}
+
 	/**
 	 * @return the rol
 	 */
@@ -119,6 +120,20 @@ public class UsuarioDTO {
 	public String toString() {
 		return "UsuarioDTO [id=" + id + ", correo=" + correo + ", nombreUsuario=" + nombreUsuario + ", contrasenia="
 				+ contrasenia + ", fechaNacimiento=" + fechaNacimiento + "]";
+	}
+
+	/**
+	 * @return the esHombre
+	 */
+	public boolean isEsHombre() {
+		return esHombre;
+	}
+
+	/**
+	 * @param esHombre the esHombre to set
+	 */
+	public void setEsHombre(boolean esHombre) {
+		this.esHombre = esHombre;
 	}
 
 }

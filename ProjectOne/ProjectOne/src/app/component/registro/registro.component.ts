@@ -2,8 +2,13 @@ import { Component } from '@angular/core';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import { MusicButtonComponent } from '../music-button/music-button.component';
 import { MusicaComponent } from '../musica/musica.component';
+import { UsuarioService } from '../../services/usuario.service';
+import { Usuario } from '../../models/usuario.model';
 
 @Component({
   selector: 'app-registro',
@@ -15,6 +20,105 @@ import { MusicaComponent } from '../musica/musica.component';
 export class RegistroComponent {
   // 🔹 Variables del formulario
   date2: Date | null = null;
+  usuario: Usuario = {
+    correo: '',
+    nombre: '',
+    contrasenia: '',
+    fechaNacimiento: new Date(),
+    esHombre: true
+  };
+
+  constructor(
+    private usuarioService: UsuarioService,
+    private messageService: MessageService
+  ) {}
+
+  registrarUsuario() {
+    if (!this.validarFormulario()) {
+      return;
+    }
+
+    // Asignar la fecha seleccionada
+    if (this.date2) {
+      this.usuario.fechaNacimiento = this.date2;
+    }
+
+    this.usuarioService.crearUsuario(this.usuario).subscribe({
+      next: (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Usuario registrado correctamente'
+        });
+        this.limpiarFormulario();
+      },
+      error: (error) => {
+        let mensajeError = 'Error al registrar usuario';
+
+        if (error.error) {
+          if (error.error.includes('Usuario ya existente')) {
+            mensajeError = 'El nombre de usuario ya existe';
+          } else if (error.error.includes('Correo incorrecto')) {
+            mensajeError = 'El correo electrónico no es válido';
+          } else if (error.error.includes('correo ya existente')) {
+            mensajeError = 'El correo electrónico ya está registrado';
+          }
+        }
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: mensajeError
+        });
+      }
+    });
+  }
+
+  private validarFormulario(): boolean {
+    if (!this.usuario.nombre || !this.usuario.correo || !this.usuario.contrasenia || !this.date2) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Advertencia',
+        detail: 'Por favor, complete todos los campos'
+      });
+      return false;
+    }
+
+    if (!this.validarCorreo(this.usuario.correo)) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Advertencia',
+        detail: 'Por favor, ingrese un correo electrónico válido'
+      });
+      return false;
+    }
+
+    if (this.usuario.contrasenia.length < 6) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Advertencia',
+        detail: 'La contraseña debe tener al menos 6 caracteres'
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  private validarCorreo(correo: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(correo);
+  }
+
+  private limpiarFormulario() {
+    this.usuario = {
+      correo: '',
+      nombre: '',
+      contrasenia: '',
+      fechaNacimiento: new Date(),
+      esHombre: true
+    };
+    this.date2 = null;
   selectedAvatar: string = ''; // Guarda el avatar elegido
 
   // 🔹 Método para enviar el formulario
