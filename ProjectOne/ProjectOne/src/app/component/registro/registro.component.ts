@@ -2,18 +2,15 @@ import { Component } from '@angular/core';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
-import { MusicButtonComponent } from '../music-button/music-button.component';
 import { MusicaComponent } from '../musica/musica.component';
-import { UsuarioService } from '../../services/usuario.service';
-import { Usuario } from '../../models/usuario.model';
+import { UsuarioService } from '../../service/usuario.service';
+import { Usuario } from '../../model/usuario.model';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [DatePickerModule, FormsModule, RouterModule, MusicButtonComponent, MusicaComponent],
+  imports: [DatePickerModule, FormsModule, RouterModule, MusicaComponent],
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css']
 })
@@ -28,6 +25,7 @@ export class RegistroComponent {
     esHombre: true
   };
 
+  selectedAvatar : string | null = null;
   constructor(
     private usuarioService: UsuarioService,
     private messageService: MessageService
@@ -119,16 +117,5 @@ export class RegistroComponent {
       esHombre: true
     };
     this.date2 = null;
-  selectedAvatar: string = ''; // Guarda el avatar elegido
-
-  // 🔹 Método para enviar el formulario
-  onSubmit() {
-    if (!this.selectedAvatar) {
-      alert('Por favor selecciona un avatar antes de registrarte.');
-      return;
-    }
-
-    // Aquí puedes continuar con el registro, incluyendo el avatar seleccionado
-    console.log('Avatar elegido:', this.selectedAvatar);
   }
 }

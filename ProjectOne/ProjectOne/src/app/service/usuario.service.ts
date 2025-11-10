@@ -1,15 +1,15 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Usuario, UsuarioDTO} from '../model/usuario.model';
 import {Observable} from 'rxjs';
 
-const baseUrl = 'http://localhost:8081/usuario';
 @Injectable({
   providedIn: 'root',
 })
 
 export class UsuarioService {
   constructor(private http: HttpClient) {}
+  private baseUrl  = 'http://localhost:8081/usuario';
 
   crearUsuario(usuario: Usuario): Observable<any> {
     const params = new HttpParams()
