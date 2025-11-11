@@ -6,16 +6,17 @@ import { MessageService } from 'primeng/api';
 import { MusicaComponent } from '../musica/musica.component';
 import { UsuarioService } from '../../service/usuario.service';
 import { Usuario } from '../../model/usuario.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [DatePickerModule, FormsModule, RouterModule, MusicaComponent],
+  imports: [CommonModule, DatePickerModule, FormsModule, RouterModule, MusicaComponent],
+  providers: [MessageService],
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent {
-  // 🔹 Variables del formulario
   date2: Date | null = null;
   usuario: Usuario = {
     correo: '',
@@ -25,24 +26,22 @@ export class RegistroComponent {
     esHombre: true
   };
 
-  selectedAvatar : string | null = null;
+  selectedAvatar: string | null = null;
+
   constructor(
     private usuarioService: UsuarioService,
     private messageService: MessageService
   ) {}
 
   registrarUsuario() {
-    if (!this.validarFormulario()) {
-      return;
-    }
+    if (!this.validarFormulario()) return;
 
-    // Asignar la fecha seleccionada
     if (this.date2) {
       this.usuario.fechaNacimiento = this.date2;
     }
 
     this.usuarioService.crearUsuario(this.usuario).subscribe({
-      next: (response) => {
+      next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Éxito',

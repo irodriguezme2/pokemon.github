@@ -121,6 +121,7 @@ export class CombateComponent implements OnInit {
     else pokemon.colorHp = 'rojo';
   }
 
+
   async cargarMovimientos(nombre: string, esJugador: boolean) {
     if (!nombre) return;
     const nombreFormateado = nombre.toLowerCase().replace(/\s+/g, '-');
@@ -130,10 +131,8 @@ export class CombateComponent implements OnInit {
         .get(`https://pokeapi.co/api/v2/pokemon/${nombreFormateado}`)
         .toPromise();
 
-      // 🔹 Tomamos los primeros 4 movimientos del Pokémon
       const primeros4 = data.moves.slice(0, 4);
 
-      // 🔹 Llamamos a cada uno para obtener su detalle (nombre en español, tipo, poder)
       const detalles = await Promise.all(
         primeros4.map((m: any) => this.http.get(m.move.url).toPromise())
       );
@@ -159,7 +158,6 @@ export class CombateComponent implements OnInit {
     }
   }
 
-  // ======== Menús Jugador ========
   mostrarMenu() {
     this.mostrandoMenu = true;
     this.mostrandoAtaques = false;
