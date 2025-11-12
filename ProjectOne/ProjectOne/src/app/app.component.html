@@ -1,11 +1,3 @@
 <router-outlet></router-outlet>
 
-<button
-  *ngIf="mostrarBoton"
-  class="btn-musica"
-  (click)="toggleMute()"
->
-  {{ musicService.muted ? '🔇' : '🔊' }}
-</button>
-
 <app-musica></app-musica>

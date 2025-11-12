@@ -1,39 +1,90 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import {Equipo} from '../model/equipo.model';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+export interface Equipo {
+  id: number;
+  nombre: string;
+  pokemones: any[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class EquipoService {
-  private equipoJugador!: Equipo;
-  private equipoPC!: Equipo;
-  private apiUrl = 'http://localhost:8081/equipo';
+export class EquiposService {
+  private equiposSubject = new BehaviorSubject<Equipo[]>([]);
+  private equipos: Equipo[] = [];
 
-  constructor(private http: HttpClient) {}
+  // Equipos temporales (antes de guardarlos oficialmente)
+  private equipoTemporalJugador: any[] = [];
+  private equipoTemporalInvitado: any[] = [];
 
-  crearEquipo(nombre: string, id: number, pokemones: string[]): Observable<string> {
-    let params = new HttpParams()
-      .set('nombre', nombre)
-      .set('id', id.toString());
+  constructor() {
+    // ✅ Cargar equipos guardados al iniciar
+    const guardados = localStorage.getItem('equipos');
+    if (guardados) {
+      this.equipos = JSON.parse(guardados);
+      this.equiposSubject.next(this.equipos);
+    }
 
-    // Agrega cada pokémon al parámetro pokemones[]
-    pokemones.forEach(p => {
-      params = params.append('pokemones', p);
-    });
-
-    return this.http.post(`${this.apiUrl}/crear`, null, {
-      params,
-      responseType: 'text' // porque el backend devuelve texto
-    });
-  }
-  setEquipoJugador(equipo: Equipo) {
-    this.equipoJugador = equipo;
+    // ✅ Cargar equipos temporales si existen
+    const jugadorTemp = localStorage.getItem('equipoTemporalJugador');
+    const invitadoTemp = localStorage.getItem('equipoTemporalInvitado');
+    if (jugadorTemp) this.equipoTemporalJugador = JSON.parse(jugadorTemp);
+    if (invitadoTemp) this.equipoTemporalInvitado = JSON.parse(invitadoTemp);
   }
 
-  getEquipoJugador(): Equipo {
-    return this.equipoJugador;
+  // 🔹 Obtener todos los equipos guardados
+  getEquipos(): Observable<Equipo[]> {
+    return this.equiposSubject.asObservable();
+  }
+
+  // 🔹 Agregar un nuevo equipo
+  agregarEquipo(equipo: Equipo): void {
+    equipo.id = this.generarId();
+    this.equipos = [...this.equipos, equipo];
+    this.actualizarEquipos();
+  }
+
+  // 🔹 Eliminar un equipo por id
+  eliminarEquipo(id: number): Observable<void> {
+    this.equipos = this.equipos.filter(e => e.id !== id);
+    this.actualizarEquipos();
+    return new Observable<void>(observer => {
+      observer.next();
+      observer.complete();
+    });
+  }
+
+  // =============================
+  // 🧩 EQUIPO TEMPORAL DEL JUGADOR
+  // =============================
+
+  guardarEquipoTemporalJugador(equipo: any[]): void {
+    this.equipoTemporalJugador = equipo;
+    localStorage.setItem('equipoTemporalJugador', JSON.stringify(equipo));
+  }
+
+  obtenerEquipoTemporalJugador(): any[] {
+    if (this.equipoTemporalJugador.length) return this.equipoTemporalJugador;
+
+    const guardado = localStorage.getItem('equipoTemporalJugador');
+    return guardado ? JSON.parse(guardado) : [];
+  }
+
+  // =============================
+  // 🧩 EQUIPO TEMPORAL DEL INVITADO
+  // =============================
+
+  guardarEquipoTemporalInvitado(equipo: any[]): void {
+    this.equipoTemporalInvitado = equipo;
+    localStorage.setItem('equipoTemporalInvitado', JSON.stringify(equipo));
+  }
+
+  obtenerEquipoTemporalInvitado(): any[] {
+    if (this.equipoTemporalInvitado.length) return this.equipoTemporalInvitado;
+
+    const guardado = localStorage.getItem('equipoTemporalInvitado');
+    return guardado ? JSON.parse(guardado) : [];
   }
 
 
@@ -55,12 +106,6 @@ export class EquipoService {
     return this.equipos.length > 0
       ? Math.max(...this.equipos.map(e => e.id)) + 1
       : 1;
-  setEquipoPC(equipo: Equipo) {
-    this.equipoPC = equipo;
-  }
-
-  getEquipoPC(): Equipo {
-    return this.equipoPC;
   }
   resultadoCombate: any = null;
 
@@ -73,4 +118,3 @@ export class EquipoService {
   }
 
 }
-

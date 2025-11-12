@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EquipoService } from '../../service/equipos.service';
+import { EquiposService } from '../../service/equipos.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Button } from 'primeng/button';
@@ -55,7 +55,7 @@ export class CombatePCComponent implements OnInit {
   mensajeDialogo: string = '';
 
   constructor(
-    private equiposService: EquipoService,
+    private equiposService: EquiposService,
     private router: Router,
     private http: HttpClient
   ) {}
