@@ -78,6 +78,16 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 			return 1;
 		}
 	}
+	
+	public int deleteByUsername(String username) {
+		Optional<Equipo> found = equiRepo.findByNombre(username);
+		if (found.isPresent()) {
+			equiRepo.delete(found.get());
+			return 0;
+		} else {
+			return 1;
+		}
+	}
 
 	@Override
 	public int updateByID(Long id, EquipoDTO newData) {

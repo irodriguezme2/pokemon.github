@@ -1,6 +1,6 @@
 export interface Usuario {
   correo: string;
-  nombre: string;
+  nombreUsurio: string;
   contrasenia: string;
   fechaNacimiento: Date;
   esHombre: boolean;
@@ -8,9 +8,18 @@ export interface Usuario {
 
 export interface UsuarioDTO {
   correo: string;
-  nombre: string;
+  nombreUsurio: string;
   contrasenia: string;
   fechaNacimiento: Date;
   esHombre: boolean;
-  role?: string;
+}
+
+export interface UsuarioLogin {
+  nombreUsuario: string;
+  contrasenia?: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  role: string;
 }

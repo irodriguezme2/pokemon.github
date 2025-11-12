@@ -17,6 +17,7 @@ import { EleccionInvitadoComponent } from './app/component/eleccion-invitado/ele
 import { CombateComponent } from './app/component/combate/combate.component';
 import { MisEquiposComponent } from './app/component/mis-equipos/mis-equipos.component';
 import { PremiacionComponent} from './app/component/premiacion/premiacion.component';
+import {provideHttpClient} from '@angular/common/http';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -47,6 +48,7 @@ bootstrapApplication(AppComponent, {
         }
       }
     }),
-    provideAnimations()
+    provideHttpClient(),
+    provideAnimations(),
   ]
 });

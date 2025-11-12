@@ -24,12 +24,10 @@ import { CommonModule } from '@angular/common';
 import { MisEquiposComponent } from './component/mis-equipos/mis-equipos.component';
 import { PremiacionComponent } from './component/premiacion/premiacion.component';
 import {RouterLink} from '@angular/router';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
-
-
-
     PremiacionComponent
   ],
   imports: [
@@ -53,7 +51,7 @@ import {RouterLink} from '@angular/router';
     EleccionUnoVsPcComponent,
     SplitButton,
     CommonModule,
-    RouterLink
+    RouterLink,
   ],
   providers: [],
   bootstrap: []

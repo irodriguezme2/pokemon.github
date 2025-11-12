@@ -1,121 +1,126 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import {Router, RouterModule} from '@angular/router';
+import { MusicButtonComponent } from '../music-button/music-button.component';
 import { MusicaComponent } from '../musica/musica.component';
-import { UsuarioService } from '../../service/usuario.service';
-import { Usuario } from '../../model/usuario.model';
+import {AuthService} from '../../service/auth.service';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [DatePickerModule, FormsModule, RouterModule, MusicaComponent],
+  imports: [DatePickerModule, FormsModule, RouterModule, MusicButtonComponent, MusicaComponent, CommonModule],
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent {
-  // 🔹 Variables del formulario
-  date2: Date | null = null;
-  usuario: Usuario = {
-    correo: '',
-    nombre: '',
-    contrasenia: '',
-    fechaNacimiento: new Date(),
-    esHombre: true
+  registerData = {
+    username: '',
+    password: '',
+    email: '',
+    fechaNacimiento: null,
+    avatar: '' // se asigna según el booleano
   };
+  errorMessage: string = '';
+  successMessage: string = '';
+  isLoading: boolean = false;
+  isAvatar1Selected = true;
 
-  selectedAvatar : string | null = null;
-  constructor(
-    private usuarioService: UsuarioService,
-    private messageService: MessageService
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
-  registrarUsuario() {
-    if (!this.validarFormulario()) {
+  selectAvatar(isAvatar1: boolean): void {
+    this.isAvatar1Selected = isAvatar1;
+    this.registerData.avatar = isAvatar1 ? 'avatar1' : 'avatar2';
+  }
+
+  onSubmit() {
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    // 🔹 Validaciones básicas en el front
+    if (!this.registerData.username || !this.registerData.password || !this.registerData.email || !this.registerData.fechaNacimiento) {
+      this.errorMessage = 'Todos los campos son obligatorios';
       return;
     }
 
-    // Asignar la fecha seleccionada
-    if (this.date2) {
-      this.usuario.fechaNacimiento = this.date2;
+    if (this.registerData.username.includes(">") || this.registerData.username.includes("<") || this.registerData.username.includes("/") || this.registerData.username.includes("*")) {
+      this.errorMessage = 'El nombre de usuario no puede contener caracteres especiales';
+      return;
     }
 
-    this.usuarioService.crearUsuario(this.usuario).subscribe({
+    if (!this.registerData.email.match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+      this.errorMessage = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo especial.';
+      return;
+    }
+
+    if (!this.registerData.avatar) {
+      this.errorMessage = 'Debes seleccionar un avatar';
+      return;
+    }
+
+    const birthDate = new Date(this.registerData.fechaNacimiento);
+    const today = new Date();
+    const age =
+      today.getFullYear() -
+      birthDate.getFullYear() -
+      (today.getMonth() < birthDate.getMonth() ||
+      (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())
+        ? 1
+        : 0);
+
+    if (age < 18) {
+      this.errorMessage = 'Debes tener al menos 18 años para registrarte.';
+      return;
+    }
+
+
+    this.isLoading = true;
+
+    // 🔹 Objeto que se envía al backend
+    const userToRegister = {
+      nombreUsuario: this.registerData.username,
+      contrasenia: this.registerData.password,
+      correo: this.registerData.email,
+      fechaNacimiento: this.registerData.fechaNacimiento,
+      avatar: this.registerData.avatar
+    };
+
+    console.log('Registrando usuario:', userToRegister);
+
+    this.authService.register(userToRegister).subscribe({
       next: (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Usuario registrado correctamente'
-        });
-        this.limpiarFormulario();
+        this.isLoading = false;
+        this.successMessage = 'Usuario registrado exitosamente 🎉';
+        console.log('Registro exitoso:', response);
+        setTimeout(() => {
+          this.router.navigate(['/inicio']);
+        }, 100);
       },
       error: (error) => {
-        let mensajeError = 'Error al registrar usuario';
-
-        if (error.error) {
-          if (error.error.includes('Usuario ya existente')) {
-            mensajeError = 'El nombre de usuario ya existe';
-          } else if (error.error.includes('Correo incorrecto')) {
-            mensajeError = 'El correo electrónico no es válido';
-          } else if (error.error.includes('correo ya existente')) {
-            mensajeError = 'El correo electrónico ya está registrado';
-          }
+        this.isLoading = false;
+        console.error('Error en registro:', error);
+        if (error.status === 409) {
+          this.errorMessage = 'El nombre de usuario o correo ya existe';
+        } else if (error.status === 400) {
+          this.errorMessage = 'Datos inválidos. Verifica la información';
+        } else if (error.status === 401) {
+          this.errorMessage = 'No autorizado. Intenta de nuevo';
+        } else {
+          this.errorMessage = 'Error al registrar el usuario ' + this.getErrorMessage(error);
         }
-
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: mensajeError
-        });
       }
     });
   }
 
-  private validarFormulario(): boolean {
-    if (!this.usuario.nombre || !this.usuario.correo || !this.usuario.contrasenia || !this.date2) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'Por favor, complete todos los campos'
-      });
-      return false;
+  private getErrorMessage(error: any): string {
+    if (typeof error === 'string') return error;
+    if (error.error instanceof ProgressEvent) {
+      return 'Error de conexión con el servidor';
     }
-
-    if (!this.validarCorreo(this.usuario.correo)) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'Por favor, ingrese un correo electrónico válido'
-      });
-      return false;
-    }
-
-    if (this.usuario.contrasenia.length < 6) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'La contraseña debe tener al menos 6 caracteres'
-      });
-      return false;
-    }
-
-    return true;
+    return error.error || error.message || 'Error desconocido';
   }
 
-  private validarCorreo(correo: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(correo);
-  }
 
-  private limpiarFormulario() {
-    this.usuario = {
-      correo: '',
-      nombre: '',
-      contrasenia: '',
-      fechaNacimiento: new Date(),
-      esHombre: true
-    };
-    this.date2 = null;
-  }
 }
