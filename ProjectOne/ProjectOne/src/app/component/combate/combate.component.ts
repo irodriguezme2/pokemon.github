@@ -41,19 +41,17 @@ export class CombateComponent implements OnInit {
   turnoJugador = true;
   mensaje = '';
 
-  // Menús jugador
   mostrandoMenu = false;
   mostrandoAtaques = false;
   mostrandoCambio = false;
   movimientos: Movimiento[] = [];
 
-  // Menús invitado
   mostrandoMenuInvitado = false;
   mostrandoAtaquesInvitado = false;
   mostrandoCambioInvitado = false;
   movimientosInvitado: Movimiento[] = [];
 
-  // efectos visuales
+
   shakingJugador = false;
   shakingInvitado = false;
   flashJugador = false;
@@ -82,7 +80,6 @@ export class CombateComponent implements OnInit {
     this.iniciarCombate();
   }
 
-  /** Obtener sprite animado tipo GIF */
   obtenerGif(poke: any): string {
     const id = poke.id || poke.url?.split('/').filter(Boolean).pop();
     return id
@@ -90,16 +87,12 @@ export class CombateComponent implements OnInit {
       : poke.imagen || '';
   }
 
-  /**
-   * Iniciar combate.
-   * IMPORTANTE: no sobreescribe hp/colorHp/vivo si ya existen en los objetos del equipo.
-   */
   iniciarCombate() {
     const prepararEquipo = (equipo: Pokemon[]) =>
       equipo.map((p) => ({
         ...p,
         imagen: this.obtenerGif(p),
-        hp: (p.hp ?? 100), // si ya tenía hp, lo mantiene; si no, lo inicializa a 100
+        hp: (p.hp ?? 100),
         colorHp: p.colorHp ?? 'verde',
         vivo: p.vivo ?? true,
       }));
@@ -107,7 +100,7 @@ export class CombateComponent implements OnInit {
     this.equipoJugador = prepararEquipo(this.equipoJugador);
     this.equipoInvitado = prepararEquipo(this.equipoInvitado);
 
-    // Seleccionar primer Pokémon vivo de cada equipo (por seguridad)
+
     this.pokemonJugador = { ...this.equipoJugador.find(p => p.vivo) || this.equipoJugador[0] };
     this.pokemonInvitado = { ...this.equipoInvitado.find(p => p.vivo) || this.equipoInvitado[0] };
 
@@ -125,10 +118,6 @@ export class CombateComponent implements OnInit {
     else pokemon.colorHp = 'rojo';
   }
 
-  /**
-   * Guarda el estado (hp, vivo, colorHp) del Pokémon actual en su equipo.
-   * team = 'jugador' | 'invitado'
-   */
   private guardarEstadoActualEnEquipo(team: 'jugador' | 'invitado') {
     if (team === 'jugador' && this.pokemonJugador) {
       this.equipoJugador = this.equipoJugador.map(p =>
@@ -233,9 +222,9 @@ export class CombateComponent implements OnInit {
 
     // actualizar el equipo correspondiente para persistir la muerte
     if (esJugador) {
-      this.equipoJugador = this.equipoJugador.map(p => p.nombre === pokemon.nombre ? { ...p, vivo: false, hp: 0 } : p);
+      this.equipoJugador = this.equipoJugador.map(p => p.nombre === pokemon.nombre ? {...p, vivo: false, hp: 0} : p);
     } else {
-      this.equipoInvitado = this.equipoInvitado.map(p => p.nombre === pokemon.nombre ? { ...p, vivo: false, hp: 0 } : p);
+      this.equipoInvitado = this.equipoInvitado.map(p => p.nombre === pokemon.nombre ? {...p, vivo: false, hp: 0} : p);
     }
 
     this.mensaje = `💥 ${pokemon.nombre} fue derrotado!`;
@@ -248,21 +237,29 @@ export class CombateComponent implements OnInit {
       if (siguiente) {
         if (esJugador) {
           // antes de asignar, NO reiniciamos HP: usamos lo que venga en 'siguiente'
-          this.pokemonJugador = { ...siguiente };
+          this.pokemonJugador = {...siguiente};
           this.cargarMovimientos(siguiente.nombre, true);
           this.mensaje = `¡Has enviado a ${siguiente.nombre}!`;
           this.turnoJugador = false;
           this.mostrandoMenuInvitado = true;
         } else {
-          this.pokemonInvitado = { ...siguiente };
+          this.pokemonInvitado = {...siguiente};
           this.cargarMovimientos(siguiente.nombre, false);
           this.mensaje = `¡El invitado envió a ${siguiente.nombre}!`;
           this.turnoJugador = true;
           this.mostrandoMenu = true;
         }
       } else {
-        this.mostrarDialogo(esJugador ? '¡Has perdido el combate!' : '¡Has ganado el combate!');
-        setTimeout(() => this.router.navigate(['/eleccion']), 2500);
+        const ganador = esJugador ? 'invitado' : 'jugador';
+        const equipoGanador = ganador === 'jugador' ? this.equipoJugador : this.equipoInvitado;
+        const pokemonGanador = equipoGanador.find(p => p.vivo);
+
+        this.equiposService.establecerResultadoCombate({
+          ganador,
+          pokemonGanador
+        });
+
+        this.router.navigate(['/premiacion']);
       }
     }, 1500);
   }

@@ -2,111 +2,98 @@
   <!-- 🔹 Barra superior con información de ambos Pokémon -->
   <div class="info-superior">
     <div class="pokemon-info jugador">
-      <h3>{{ pokemonJugador.nombre | titlecase }}</h3>
+      <div class="nombre">{{ pokemonJugador?.nombre | titlecase }}</div>
       <div class="hp-bar">
-        <div class="hp" [style.width.%]="pokemonJugador.hp"></div>
+        <div
+          class="hp"
+          [style.width]="(pokemonJugador?.hp || 0) + '%'"
+          [ngClass]="{
+            verde: (pokemonJugador?.hp || 0) > 50,
+            amarillo: (pokemonJugador?.hp || 0) <= 50 && (pokemonJugador?.hp || 0) > 20,
+            rojo: (pokemonJugador?.hp || 0) <= 40
+          }"
+        ></div>
       </div>
-      <p>HP: {{ pokemonJugador.hp }}</p>
     </div>
 
     <div class="pokemon-info invitado">
-      <h3>{{ pokemonInvitado.nombre | titlecase }}</h3>
+      <div class="nombre">{{ pokemonInvitado?.nombre | titlecase }}</div>
       <div class="hp-bar">
-        <div class="hp" [style.width.%]="pokemonInvitado.hp"></div>
+        <div
+          class="hp"
+          [style.width]="(pokemonInvitado?.hp || 0) + '%'"
+          [ngClass]="{
+            verde: (pokemonInvitado?.hp || 0) > 50,
+            amarillo: (pokemonInvitado?.hp || 0) <= 50 && (pokemonInvitado?.hp || 0) > 20,
+            rojo: (pokemonInvitado?.hp || 0) <= 20
+          }"
+        ></div>
       </div>
-      <p>HP: {{ pokemonInvitado.hp }}</p>
     </div>
   </div>
-
-  <!-- 🔹 Escenario de combate -->
   <div class="escenario">
     <img
       class="sprite jugador"
-      [src]="pokemonJugador.imagen"
-      [alt]="pokemonJugador.nombre"
+      [src]="pokemonJugador?.imagen"
+      [alt]="pokemonJugador?.nombre"
+      [class.shake]="shakingJugador"
+      [class.flash]="flashJugador"
     />
 
     <img
       class="sprite invitado"
-      [src]="pokemonInvitado.imagen"
-      [alt]="pokemonInvitado.nombre"
+      [src]="pokemonInvitado?.imagen"
+      [alt]="pokemonInvitado?.nombre"
+      [class.shake]="shakingInvitado"
+      [class.flash]="flashInvitado"
     />
   </div>
 
-  <!-- 🔹 Panel inferior de interacción -->
-  <div class="panel">
-    <!-- 🟢 Menú principal: solo visible cuando es tu turno -->
-    <div class="menu-turno" *ngIf="turnoJugador && mostrandoMenu">
-      <h3>¿Qué deseas hacer?</h3>
-      <div class="botones-menu">
-        <button (click)="elegirAtacar()">⚡ Atacar</button>
-        <button (click)="elegirCambiar()">🔁 Cambiar Pokémon</button>
-        <button (click)="escapar()">🚪 Escapar</button>
-      </div>
-    </div>
+    <div class="panel jugador-panel">
 
-    <!-- 🟣 Menú de ataques -->
-    <div class="menu-ataques" *ngIf="mostrandoAtaques">
-      <h3>Elige un movimiento</h3>
-      <div class="botones-ataques">
-        <button
-          *ngFor="let mov of movimientos"
-          (click)="usarMovimiento(mov)"
-        >
-          {{ mov.nombre | titlecase }}
-        </button>
-      </div>
-      <button class="volver" (click)="mostrarMenu()">⬅ Volver</button>
-    </div>
-
-    <!-- 🟡 Menú de cambio de Pokémon -->
-    <div class="menu-cambio" *ngIf="mostrandoCambio">
-      <h3>Selecciona tu nuevo Pokémon</h3>
-      <div class="pokemones-cambio">
-        <div
-          class="pokemon-opcion"
-          *ngFor="let p of equipoJugador"
-          (click)="cambiarPokemon(p)"
-          [class.activo]="p.nombre === pokemonJugador.nombre"
-        >
-          <img [src]="p.imagen" [alt]="p.nombre" />
-          <p>{{ p.nombre | titlecase }}</p>
+      <div class="menu-principal" *ngIf="turnoJugador && mostrandoMenu">
+        <div class="texto">¿Qué debería hacer {{ pokemonJugador?.nombre }}?</div>
+        <div class="opciones">
+          <button (click)="elegirAtacar()">ATACAR</button>
+          <button (click)="elegirCambiar()">POKÉMON</button>
+          <button (click)="escapar()">CORRER</button>
         </div>
       </div>
-      <button class="volver" (click)="mostrarMenu()">⬅ Volver</button>
-    </div>
 
-    <!-- 🔴 Si no es tu turno -->
-    <div class="esperando" *ngIf="!turnoJugador">
-      <p>⏳ Turno del rival...</p>
-    </div>
-
-    <!-- 🔹 Equipos -->
-    <div class="equipos">
-      <div class="miniaturas jugador">
-        <h4>Tu equipo</h4>
-        <img
-          *ngFor="let p of equipoJugador"
-          [src]="p.imagen"
-          [alt]="p.nombre"
-          [class.activo]="p.nombre === pokemonJugador.nombre"
-        />
+    <!-- 🟣 Menú de ataques -->
+      <div class="ataques" *ngIf="mostrandoAtaques">
+        <button *ngFor="let mov of movimientos" (click)="usarMovimiento(mov)">
+          {{ mov.nombre }}
+        </button>
+        <button class="volver" (click)="volverAlMenu()">←VOLVER</button>
       </div>
 
-      <div class="miniaturas invitado" *ngIf="!turnoJugador">
-        <h4>Equipo rival</h4>
-        <img
-          *ngFor="let p of equipoInvitado"
-          [src]="p.imagen"
-          [alt]="p.nombre"
-          [class.activo]="p.nombre === pokemonInvitado.nombre"
-        />
+    <!-- 🟡 Menú de cambio de Pokémon -->
+      <div class="equipos" *ngIf="mostrandoCambio">
+        <div class="miniaturas jugador">
+          <ng-container *ngFor="let p of equipoJugador">
+            <img
+              *ngIf="p.vivo"
+              [src]="p.imagen"
+              [alt]="p.nombre"
+              (click)="cambiarPokemon(p)"
+              [class.activo]="p.nombre === pokemonJugador?.nombre"
+            />
+          </ng-container>
+        </div>
+        <button class="volvercam" (click)="volverAlMenu()">← VOLVER</button>
       </div>
     </div>
-  </div>
-
-  <!-- 🔹 Mensaje central -->
-  <div class="mensaje">
-    <p>{{ mensaje }}</p>
-  </div>
 </div>
+
+<p-dialog
+  [(visible)]="dialogMensajeVisible"
+  [modal]="true"
+  [closable]="false"
+  class="dialog-mensaje">
+  <h3 class="dialog-mensaje-titulo">¡Atención!</h3>
+  <p class="dialog-mensaje-texto">{{ mensajeDialogo }}</p>
+  <div class="dialog-botones">
+    <p-button label="OK" icon="pi pi-check" (onClick)="dialogMensajeVisible = false"></p-button>
+  </div>
+</p-dialog>

@@ -87,9 +87,6 @@ export class EquiposService {
     return guardado ? JSON.parse(guardado) : [];
   }
 
-  // =============================
-  // 🧹 LIMPIAR EQUIPOS TEMPORALES
-  // =============================
 
   limpiarEquiposTemporales(): void {
     this.equipoTemporalJugador = [];
@@ -98,9 +95,7 @@ export class EquiposService {
     localStorage.removeItem('equipoTemporalInvitado');
   }
 
-  // =============================
-  // 🔧 MÉTODOS AUXILIARES PRIVADOS
-  // =============================
+
 
   private actualizarEquipos(): void {
     this.equiposSubject.next(this.equipos);
@@ -112,4 +107,14 @@ export class EquiposService {
       ? Math.max(...this.equipos.map(e => e.id)) + 1
       : 1;
   }
+  resultadoCombate: any = null;
+
+  establecerResultadoCombate(resultado: any) {
+    this.resultadoCombate = resultado;
+  }
+
+  obtenerResultadoCombate() {
+    return this.resultadoCombate;
+  }
+
 }

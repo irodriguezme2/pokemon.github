@@ -80,7 +80,7 @@ export class EleccionUnoVsPcComponent implements OnInit{
   seleccionarEquipo(equipo: Equipo) {
     this.selectedEquipo = equipo;
     this.equiposService.guardarEquipoTemporalJugador(equipo.pokemones);
-    this.router.navigate(['/eleccion-invitado']);
+    this.router.navigate(['/equipo-pc']);
   }
 
   cargarPokemones() {
