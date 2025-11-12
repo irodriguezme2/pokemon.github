@@ -18,6 +18,7 @@ import co.edu.unbosque.pokemon.dto.EstadisticaDTO;
 import co.edu.unbosque.pokemon.dto.EstadisticaJsonDTO;
 import co.edu.unbosque.pokemon.dto.MoveDTO;
 import co.edu.unbosque.pokemon.dto.MovimientoDTO;
+import co.edu.unbosque.pokemon.entity.Ability;
 import co.edu.unbosque.pokemon.entity.Estadistica;
 import co.edu.unbosque.pokemon.entity.Movimiento;
 import co.edu.unbosque.pokemon.entity.Pokemon;
@@ -25,6 +26,7 @@ import co.edu.unbosque.pokemon.entity.Pokemon.Estado;
 import co.edu.unbosque.pokemon.repository.MovimientoRepository;
 import co.edu.unbosque.pokemon.repository.PokemonRepository;
 import co.edu.unbosque.pokemon.util.TypeEffectiveness;
+import jakarta.transaction.Transactional;
 
 @Service
 public class PokemonService implements CRUDOperation<PokemonDTO> {
@@ -105,12 +107,91 @@ public class PokemonService implements CRUDOperation<PokemonDTO> {
 		return 0;
 	}
 
+	@Transactional
+	public Pokemon createByName(String nombre) {
+		if (nombre == null || nombre.trim().isEmpty()) {
+			throw new IllegalArgumentException("Nombre de pokemon inválido");
+		}
+
+		String nombreNorm = nombre.toLowerCase().trim();
+
+		// ✅ Verifica si ya existe en la base de datos
+		Optional<Pokemon> existente = pokeRepo.findByNombre(nombreNorm);
+		if (existente.isPresent()) {
+			return existente.get(); // reutiliza el Pokémon existente
+		}
+
+		// 🔽 Si no existe, lo crea desde la API
+		String url = "https://pokeapi.co/api/v2/pokemon/" + nombreNorm;
+		PokemonJsonDTO poke = ClienteHTTP.doGetPokemon(url);
+
+		if (poke == null || poke.getMoves().isEmpty()) {
+			throw new RuntimeException("No se pudo obtener información del pokemon " + nombreNorm);
+		}
+
+		ArrayList<String> tipos = new ArrayList<>();
+		ArrayList<Movimiento> movimientos = new ArrayList<>();
+		ArrayList<MoveDTO> moves = poke.getMoves();
+
+		Collections.shuffle(moves);
+		int limite = Math.min(3, moves.size());
+
+		for (int i = 0; i < limite; i++) {
+			MovimientoJsonDTO movi = ClienteHTTP.doGetMovimientoJsonDTO(moves.get(i).getMove().getUrl());
+			Movimiento movimientoEntidad = new Movimiento(movi.getName(), movi.getPower(), movi.getType().getName(),
+					movi.getPp());
+			movimientos.add(movimientoEntidad);
+		}
+
+		ArrayList<Estadistica> estadisticas = new ArrayList<>();
+		int hpBase = 0;
+
+		for (EstadisticaJsonDTO statDto : poke.getStats()) {
+			if (statDto.getStat() == null)
+				continue;
+
+			String nombreStat = statDto.getStat().getName();
+			int valor = statDto.getBase_stat();
+			if ("hp".equals(nombreStat))
+				hpBase = valor;
+
+			if ("hp".equals(nombreStat) || "attack".equals(nombreStat) || "speed".equals(nombreStat)
+					|| "defense".equals(nombreStat)) {
+				estadisticas.add(new Estadistica(nombreStat, valor));
+			}
+		}
+
+		for (var tipo : poke.getTypes()) {
+			tipos.add(tipo.getType().getName());
+		}
+
+		Ability habilidad;
+		if (!tipos.isEmpty()) {
+			String tipoPrincipal = tipos.get(0);
+			habilidad = TypeEffectiveness.getAbilityByType(tipoPrincipal);
+		} else {
+			habilidad = TypeEffectiveness.getAbilityByType("normal");
+		}
+
+		Pokemon pokeEntidad = new Pokemon(poke.getName().toLowerCase(), tipos, movimientos, estadisticas);
+		pokeEntidad.setAbility(new Ability(habilidad.getNombre(), habilidad.getDescripcion()));
+		pokeEntidad.setEstado(Pokemon.Estado.NORMAL);
+		pokeEntidad.setHpActual(hpBase);
+
+		pokeRepo.save(pokeEntidad);
+		return pokeEntidad;
+	}
+
 	@Override
 	public List<PokemonDTO> getAll() {
 		List<Pokemon> entityList = pokeRepo.findAll();
 		List<PokemonDTO> dtoList = new ArrayList<>();
 
 		for (Pokemon entity : entityList) {
+			// Inicializar explicitamente la colección 'tipo' para evitar
+			// LazyInitializationException
+			entity.getTipo().size();
+
 			PokemonDTO dto = modelMapper.map(entity, PokemonDTO.class);
 
 			// Mapear estadísticas

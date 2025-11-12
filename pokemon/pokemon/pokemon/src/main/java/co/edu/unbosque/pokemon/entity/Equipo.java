@@ -1,12 +1,17 @@
 package co.edu.unbosque.pokemon.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Equipo {
@@ -14,7 +19,9 @@ public class Equipo {
 	private @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) long id;
 	private String nombre;
 	private long idUsuario;
-	private ArrayList<Pokemon> listaPokemon;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "equipo_id")
+	private List<Pokemon> listaPokemon = new ArrayList<>();
 
 	public Equipo() {
 		// TODO Auto-generated constructor stub
@@ -91,14 +98,14 @@ public class Equipo {
 	 * @return the listaPokemon
 	 */
 	public ArrayList<Pokemon> getListaPokemon() {
-		return listaPokemon;
+		return (ArrayList<Pokemon>) listaPokemon;
 	}
 
 	/**
-	 * @param listaPokemon the listaPokemon to set
+	 * @param pokemones the listaPokemon to set
 	 */
-	public void setListaPokemon(ArrayList<Pokemon> listaPokemon) {
-		this.listaPokemon = listaPokemon;
+	public void setListaPokemon(List<Pokemon> pokemones) {
+		this.listaPokemon = pokemones;
 	}
 
 	@Override
