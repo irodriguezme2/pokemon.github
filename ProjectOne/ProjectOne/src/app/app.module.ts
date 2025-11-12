@@ -53,6 +53,7 @@ import { EquiposPcComponent } from './component/equipos-pc/equipos-pc.component'
     SplitButton,
     CommonModule,
     RouterLink,
+    PremiacionComponent
   ],
   providers: [],
   bootstrap: []

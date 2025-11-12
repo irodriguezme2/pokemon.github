@@ -1,12 +1,21 @@
 <div class="premiacion-container">
+  <div class="confetti-container">
+    <div class="confetti" *ngFor="let n of [].constructor(40)"></div>
+  </div>
+
   <div class="premiacion-card">
     <h2 class="titulo">
       {{ ganador === 'jugador' ? '¡El jugador ha ganado!' : '¡El oponente ha ganado!' }}
     </h2>
 
     <div class="contenido">
-      <img src="assets/trofeo.png" alt="Trofeo" class="trofeo" />
-      <img *ngIf="pokemonGanador" [src]="pokemonGanador.imagen" [alt]="pokemonGanador.nombre" class="pokemon-ganador" />
+      <div class="trofeo"></div>
+      <img
+        *ngIf="pokemonGanador"
+        [src]="pokemonGanador.imagen"
+        [alt]="pokemonGanador.nombre"
+        class="pokemon-ganador"
+      />
     </div>
 
     <button (click)="volverAlMenu()" class="boton-volver">Volver al menú</button>

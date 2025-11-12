@@ -236,7 +236,6 @@ export class CombateComponent implements OnInit {
     setTimeout(() => {
       if (siguiente) {
         if (esJugador) {
-          // antes de asignar, NO reiniciamos HP: usamos lo que venga en 'siguiente'
           this.pokemonJugador = {...siguiente};
           this.cargarMovimientos(siguiente.nombre, true);
           this.mensaje = `¡Has enviado a ${siguiente.nombre}!`;
@@ -252,7 +251,15 @@ export class CombateComponent implements OnInit {
       } else {
         const ganador = esJugador ? 'invitado' : 'jugador';
         const equipoGanador = ganador === 'jugador' ? this.equipoJugador : this.equipoInvitado;
-        const pokemonGanador = equipoGanador.find(p => p.vivo);
+
+        // ✅ Corregido: asegurar que siempre haya un Pokémon ganador con imagen
+        let pokemonGanador = equipoGanador.find(p => p.vivo);
+        if (!pokemonGanador && equipoGanador.length > 0) {
+          pokemonGanador = equipoGanador[0];
+        }
+        if (pokemonGanador) {
+          pokemonGanador.imagen = this.obtenerGif(pokemonGanador);
+        }
 
         this.equiposService.establecerResultadoCombate({
           ganador,
@@ -263,6 +270,7 @@ export class CombateComponent implements OnInit {
       }
     }, 1500);
   }
+
 
   cambiarPokemon(p: Pokemon) {
     if (!p || !p.vivo || p.nombre === this.pokemonJugador.nombre) return;
@@ -294,7 +302,38 @@ export class CombateComponent implements OnInit {
   }
 
   escapar() {
+    // Si escapa el jugador
+    const ganador = 'invitado';
+    const equipoGanador = this.equipoInvitado;
+    let pokemonGanador = equipoGanador.find(p => p.vivo) || equipoGanador[0];
+
+    if (pokemonGanador) {
+      pokemonGanador.imagen = this.obtenerGif(pokemonGanador);
+    }
+
+    this.equiposService.establecerResultadoCombate({
+      ganador,
+      pokemonGanador
+    });
+
     this.mostrarDialogo('¡Has escapado del combate!');
+    setTimeout(() => this.router.navigate(['/premiacion']), 2500);
+  }
+  escaparInvitado() {
+    const ganador = 'jugador';
+    const equipoGanador = this.equipoJugador;
+    let pokemonGanador = equipoGanador.find(p => p.vivo) || equipoGanador[0];
+
+    if (pokemonGanador) {
+      pokemonGanador.imagen = this.obtenerGif(pokemonGanador);
+    }
+
+    this.equiposService.establecerResultadoCombate({
+      ganador,
+      pokemonGanador
+    });
+
+    this.mostrarDialogo('¡El invitado ha escapado del combate!');
     setTimeout(() => this.router.navigate(['/premiacion']), 2500);
   }
 

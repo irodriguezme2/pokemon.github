@@ -18,6 +18,7 @@ export class PremiacionComponent implements OnInit {
 
   ngOnInit() {
     const resultado = this.equiposService.obtenerResultadoCombate();
+
     if (!resultado) {
       this.router.navigate(['/premiacion']);
       return;
@@ -25,8 +26,14 @@ export class PremiacionComponent implements OnInit {
 
     this.ganador = resultado.ganador;
     this.pokemonGanador = resultado.pokemonGanador;
-  }
 
+    if (this.pokemonGanador && !this.pokemonGanador.imagen) {
+      const id = this.pokemonGanador.id;
+      if (id) {
+        this.pokemonGanador.imagen = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`;
+      }
+    }
+  }
   volverAlMenu() {
     this.router.navigate(['/principal']);
   }
