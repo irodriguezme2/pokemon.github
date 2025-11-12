@@ -28,15 +28,6 @@ import { EquiposPcComponent } from './component/equipos-pc/equipos-pc.component'
 
 @NgModule({
   declarations: [
-
-
-
-
-import {HttpClientModule} from '@angular/common/http';
-
-@NgModule({
-  declarations: [
-    PremiacionComponent
   ],
   imports: [
     BrowserModule,
