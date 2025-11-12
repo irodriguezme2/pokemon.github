@@ -26,10 +26,8 @@ import { PremiacionComponent } from './component/premiacion/premiacion.component
 import {RouterLink} from '@angular/router';
 import { EquiposPcComponent } from './component/equipos-pc/equipos-pc.component';
 
-
 @NgModule({
   declarations: [
-
   ],
   imports: [
     BrowserModule,
