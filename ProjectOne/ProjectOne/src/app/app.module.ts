@@ -26,17 +26,10 @@ import { PremiacionComponent } from './component/premiacion/premiacion.component
 import {RouterLink} from '@angular/router';
 import { EquiposPcComponent } from './component/equipos-pc/equipos-pc.component';
 
-@NgModule({
-  declarations: [
-
-
-
-
-import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    PremiacionComponent
+
   ],
   imports: [
     BrowserModule,
@@ -62,6 +55,7 @@ import {HttpClientModule} from '@angular/common/http';
     SplitButton,
     CommonModule,
     RouterLink,
+    PremiacionComponent
   ],
   providers: [],
   bootstrap: []
