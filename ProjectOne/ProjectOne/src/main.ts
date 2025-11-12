@@ -17,6 +17,7 @@ import { EleccionInvitadoComponent } from './app/component/eleccion-invitado/ele
 import { CombateComponent } from './app/component/combate/combate.component';
 import { MisEquiposComponent } from './app/component/mis-equipos/mis-equipos.component';
 import { PremiacionComponent} from './app/component/premiacion/premiacion.component';
+import { EquiposPcComponent} from './app/component/equipos-pc/equipos-pc.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -32,7 +33,8 @@ const routes: Routes = [
   { path: 'eleccion-invitado', component: EleccionInvitadoComponent },
   { path: 'combate', component: CombateComponent },
   { path: 'mis-equipos', component: MisEquiposComponent},
-  { path: 'premiacion', component: PremiacionComponent}
+  { path: 'premiacion', component: PremiacionComponent},
+  { path: 'equipo-pc', component: EquiposPcComponent}
 
 ];
 

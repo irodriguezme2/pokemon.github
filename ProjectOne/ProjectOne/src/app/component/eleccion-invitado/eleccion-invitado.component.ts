@@ -5,7 +5,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { Router } from '@angular/router';
 import { Equipo, EquiposService } from '../../service/equipos.service';
-import {Dialog} from 'primeng/dialog';
+import { Dialog } from 'primeng/dialog';
+import { InputText } from 'primeng/inputtext';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 interface Pokemon {
   nombre: string;
@@ -25,7 +27,10 @@ interface Pokemon {
     ButtonModule,
     HttpClientModule,
     SplitButtonModule,
-    Dialog
+    Dialog,
+    InputText,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class EleccionInvitadoComponent implements OnInit {
@@ -40,9 +45,11 @@ export class EleccionInvitadoComponent implements OnInit {
   splitButtonItems: any[] = [];
   selectedEquipo: Equipo | null = null;
 
-  // 💬 Diálogo de mensajes personalizados
   dialogMensajeVisible: boolean = false;
   mensajeDialogo: string = '';
+
+  busqueda: string = '';
+  pokemonesFiltrados: Pokemon[] = [];
 
   constructor(
     private router: Router,
@@ -51,10 +58,9 @@ export class EleccionInvitadoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Recupera el equipo temporal del INVITADO si existe
     const equipoGuardado = this.equiposService.obtenerEquipoTemporalInvitado();
     if (equipoGuardado?.length) {
-      this.equipoSeleccionado = equipoGuardado;
+      this.equipoSeleccionado = [];
     }
 
     this.cargarPokemones();
@@ -71,15 +77,11 @@ export class EleccionInvitadoComponent implements OnInit {
 
   seleccionarEquipo(equipo: Equipo) {
     this.selectedEquipo = equipo;
-
-    // ✅ Guardar el equipo del invitado correctamente
     this.equiposService.guardarEquipoTemporalInvitado(equipo.pokemones);
-
-    // 🔄 Redirigir a la página donde se mostrarán los Pokémon del equipo elegido
     this.router.navigate(['/equipos']);
   }
 
-
+  // 🔹 Cargar lista base de Pokémon
   cargarPokemones() {
     const apiUrl = `https://pokeapi.co/api/v2/pokemon?limit=${this.limit}&offset=${this.offset}`;
     this.http.get<any>(apiUrl).subscribe({
@@ -92,19 +94,19 @@ export class EleccionInvitadoComponent implements OnInit {
             nombre,
             imagen: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${this.obtenerIdDesdeUrl(poke.url)}.png`,
             seleccionado: !!yaSeleccionado,
-            tipo: yaSeleccionado?.tipo || [],
+            tipo: [],
             movimientos: yaSeleccionado?.movimientos || []
           };
         });
 
         this.pokemones = nuevosPokemones;
+        this.pokemonesFiltrados = [...this.pokemones];
       },
-      error: (err) => {
-        console.error('Error al cargar los Pokémon:', err);
-      }
+      error: (err) => console.error('Error al cargar los Pokémon:', err)
     });
   }
 
+  // 🔹 Obtener ID del Pokémon desde su URL
   obtenerIdDesdeUrl(url: string): number {
     const partes = url.split('/');
     return parseInt(partes[partes.length - 2]);
@@ -118,7 +120,6 @@ export class EleccionInvitadoComponent implements OnInit {
       return;
     }
 
-    // Alternar estado seleccionado
     pokemon.seleccionado = !pokemon.seleccionado;
 
     if (pokemon.seleccionado) {
@@ -127,29 +128,31 @@ export class EleccionInvitadoComponent implements OnInit {
       this.equipoSeleccionado = this.equipoSeleccionado.filter(p => p.nombre !== pokemon.nombre);
     }
 
-    // Mostrar info en el panel lateral
     this.pokemonActual = pokemon;
 
-    // Si ya tiene tipo y movimientos, no volver a pedir
     if (pokemon.tipo?.length && pokemon.movimientos?.length) return;
 
     const apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemon.nombre}`;
     this.http.get<any>(apiUrl).subscribe({
       next: (data) => {
         const tipos = data.types.map((t: any) => t.type.name);
-        const movimientos = data.moves.slice(0, 5).map((m: any) => m.move.name);
+
+        const totalMovimientos = data.moves.length;
+        let movimientosAleatorios: string[] = [];
+
+        if (totalMovimientos > 0) {
+          const mezclados = data.moves.sort(() => Math.random() - 0.5);
+          movimientosAleatorios = mezclados.slice(0, 5).map((m: any) => m.move.name);
+        }
 
         pokemon.tipo = tipos;
-        pokemon.movimientos = movimientos;
+        pokemon.movimientos = movimientosAleatorios;
 
-        // Asegurar que el panel lateral se actualiza
         if (this.pokemonActual?.nombre === pokemon.nombre) {
           this.pokemonActual = { ...pokemon };
         }
       },
-      error: (err) => {
-        console.error('Error al cargar detalles del Pokémon:', err);
-      }
+      error: (err) => console.error('Error al cargar detalles del Pokémon:', err)
     });
   }
 
@@ -164,9 +167,44 @@ export class EleccionInvitadoComponent implements OnInit {
     this.offset += this.limit;
     this.cargarPokemones();
   }
+  filtrarPokemones(): void {
+    const texto = this.busqueda.toLowerCase().trim();
 
-  cambiarEquipo(): void {
-    console.log('🔁 Cambiar equipo');
+    if (!texto) {
+      this.pokemonesFiltrados = [...this.pokemones];
+      return;
+    }
+
+    const filtradosLocales = this.pokemones.filter((p: Pokemon) =>
+      p.nombre.toLowerCase().includes(texto)
+    );
+
+    this.pokemonesFiltrados = [...filtradosLocales];
+
+    this.http.get<any>('https://pokeapi.co/api/v2/pokemon?limit=2000').subscribe({
+      next: (data: any) => {
+        const coincidencias = data.results.filter((poke: any) =>
+          poke.name.toLowerCase().includes(texto)
+        );
+        const nuevosPokemones: Pokemon[] = coincidencias.map((poke: any) => {
+          const id = this.obtenerIdDesdeUrl(poke.url);
+          return {
+            nombre: poke.name,
+            imagen: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+            seleccionado: false,
+            tipo: [],
+            movimientos: []
+          };
+        });
+
+        const nombresExistentes = new Set(this.pokemonesFiltrados.map(p => p.nombre));
+        this.pokemonesFiltrados = [
+          ...this.pokemonesFiltrados,
+          ...nuevosPokemones.filter(p => !nombresExistentes.has(p.nombre))
+        ];
+      },
+      error: (err: any) => console.error('Error al buscar Pokémon similares:', err)
+    });
   }
 
   irSiguiente(): void {

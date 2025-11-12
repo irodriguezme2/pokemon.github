@@ -24,13 +24,14 @@ import { CommonModule } from '@angular/common';
 import { MisEquiposComponent } from './component/mis-equipos/mis-equipos.component';
 import { PremiacionComponent } from './component/premiacion/premiacion.component';
 import {RouterLink} from '@angular/router';
+import { EquiposPcComponent } from './component/equipos-pc/equipos-pc.component';
 
 @NgModule({
   declarations: [
 
 
 
-    PremiacionComponent
+
   ],
   imports: [
     BrowserModule,
@@ -48,6 +49,8 @@ import {RouterLink} from '@angular/router';
     CombatePCComponent,
     PokemonesComponent,
     UsuarioComponent,
+    PremiacionComponent,
+    EquiposPcComponent,
     InicioComponent,
     RegistroComponent,
     EleccionUnoVsPcComponent,

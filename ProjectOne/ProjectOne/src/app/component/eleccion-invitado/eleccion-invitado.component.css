@@ -48,10 +48,28 @@
   display: flex;
   justify-content: space-between;
   width: 97% !important;
-  max-width: 1250px;
+  max-width: 1290px;
   margin: -2rem auto 3rem auto;
   gap: clamp(0.5rem, 2vw, 1.5rem);
 }
+
+.barra-busqueda {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 250px;
+  transition: all 0.3s ease;
+}
+
+.barra-busqueda:focus {
+  outline: none;
+  border-color: #4dabf7;
+  box-shadow: 0 0 5px #4dabf7;
+}
+
+
 
 /* ===== GALERÍA DE POKÉMON ===== */
 .galeria {
