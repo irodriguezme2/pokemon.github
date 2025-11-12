@@ -11,12 +11,12 @@ import { MusicaComponent } from './component/musica/musica.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  mostrarBoton = true; // ✅ Siempre visible
+  mostrarBoton = true;
 
   constructor(public musicService: MusicService) {}
 
   ngOnInit() {
-    // ✅ Inicia la música al entrar a la app
+
     if (!this.musicService['audio']) {
       this.musicService.play();
     }

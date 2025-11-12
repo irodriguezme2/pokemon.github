@@ -1,6 +1,6 @@
 <router-outlet></router-outlet>
 
-<!-- Botón flotante -->
+
 <button
   *ngIf="mostrarBoton"
   class="btn-musica"
@@ -9,5 +9,4 @@
   {{ musicService.muted ? '🔇' : '🔊' }}
 </button>
 
-<!-- Mantiene la música activa -->
 <app-musica></app-musica>

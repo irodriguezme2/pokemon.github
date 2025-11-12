@@ -289,11 +289,23 @@ export class CombatePCComponent implements OnInit {
   }
 
   escapar() {
+    // Si escapa el jugador
+    const ganador = 'invitado';
+    const equipoGanador = this.equipoInvitado;
+    let pokemonGanador = equipoGanador.find(p => p.vivo) || equipoGanador[0];
+
+    if (pokemonGanador) {
+      pokemonGanador.imagen = this.obtenerGif(pokemonGanador);
+    }
+
+    this.equiposService.establecerResultadoCombate({
+      ganador,
+      pokemonGanador
+    });
+
     this.mostrarDialogo('¡Has escapado del combate!');
     setTimeout(() => this.router.navigate(['/premiacion']), 2500);
   }
-
-
   turnoInvitado() {
     this.mensaje = `Turno del rival...`;
     const daño = Math.floor(Math.random() * 20) + 5;

@@ -88,18 +88,15 @@
     </div>
   </div>
 
-  <!-- 🔹 Panel del invitado -->
   <div
     class="panel invitado-panel"
-    *ngIf="mostrandoMenuInvitado || mostrandoAtaquesInvitado || mostrandoCambioInvitado"
-  >
-    <!-- Menú principal -->
+    *ngIf="mostrandoMenuInvitado || mostrandoAtaquesInvitado || mostrandoCambioInvitado">
     <div class="menu-principal" *ngIf="mostrandoMenuInvitado">
       <div class="texto">¿Qué debería hacer {{ pokemonInvitado?.nombre }}?</div>
       <div class="opciones">
         <button (click)="elegirAtacarInvitado()">ATACAR</button>
         <button (click)="elegirCambiarInvitado()">POKÉMON</button>
-        <button (click)="escapar()">CORRER</button>
+        <button (click)="escaparInvitado()">CORRER</button>
       </div>
     </div>
 
