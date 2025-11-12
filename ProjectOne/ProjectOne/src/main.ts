@@ -7,7 +7,6 @@ import { AppComponent } from './app/app.component';
 import { InicioComponent } from './app/component/inicio/inicio.component';
 import { RegistroComponent } from './app/component/registro/registro.component';
 import { PrincipalComponent } from './app/component/principal/principal.component';
-import { UsuarioComponent } from './app/component/usuario/usuario.component';
 import { PokemonesComponent } from './app/component/pokemones/pokemones.component';
 import { MusicaComponent } from './app/component/musica/musica.component';
 import { EquiposComponent } from './app/component/equipos/equipos.component';
@@ -20,24 +19,24 @@ import { PremiacionComponent} from './app/component/premiacion/premiacion.compon
 import { EquiposPcComponent} from './app/component/equipos-pc/equipos-pc.component';
 import { CombatePCComponent} from './app/component/combate-pc/combate-pc.component';
 import {provideHttpClient} from '@angular/common/http';
+import {authGuard} from './app/service/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: 'inicio', component: InicioComponent },
   { path: 'registro', component: RegistroComponent },
-  { path: 'principal', component: PrincipalComponent },
-  { path: 'usuario', component: UsuarioComponent },
-  { path: 'pokemones', component: PokemonesComponent },
-  { path: 'equipos', component: EquiposComponent },
-  { path: 'musica', component: MusicaComponent },
-  {path : 'eleccion', component:EleccionComponent},
-  { path: 'eleccion-uno-vs-pc', component: EleccionUnoVsPcComponent },
-  { path: 'eleccion-invitado', component: EleccionInvitadoComponent },
-  { path: 'combate', component: CombateComponent },
-  { path: 'mis-equipos', component: MisEquiposComponent},
-  { path: 'premiacion', component: PremiacionComponent},
-  { path: 'equipo-pc', component: EquiposPcComponent},
-  { path: 'combate-pc', component: CombatePCComponent}
+  { path: 'principal', component: PrincipalComponent, canActivate: [authGuard]  },
+  { path: 'pokemones', component: PokemonesComponent, canActivate: [authGuard]   },
+  { path: 'equipos', component: EquiposComponent, canActivate: [authGuard]   },
+  { path: 'musica', component: MusicaComponent, canActivate: [authGuard]   },
+  {path : 'eleccion', component:EleccionComponent ,canActivate: [authGuard]  },
+  { path: 'eleccion-uno-vs-pc', component: EleccionUnoVsPcComponent, canActivate: [authGuard]   },
+  { path: 'eleccion-invitado', component: EleccionInvitadoComponent, canActivate: [authGuard]   },
+  { path: 'combate', component: CombateComponent, canActivate: [authGuard]   },
+  { path: 'mis-equipos', component: MisEquiposComponent, canActivate: [authGuard]  },
+  { path: 'premiacion', component: PremiacionComponent,canActivate: [authGuard]  },
+  { path: 'equipo-pc', component: EquiposPcComponent,canActivate: [authGuard]  },
+  { path: 'combate-pc', component: CombatePCComponent, canActivate: [authGuard]  }
 
 ];
 

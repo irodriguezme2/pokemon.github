@@ -15,11 +15,19 @@ export class AuthService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, user, { headers }).pipe(
       tap(response => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('userRole', response.role);
+        sessionStorage.setItem('token', response.token);
+        sessionStorage.setItem('userRole', response.role);
         console.log('Token guardado:', response.token);
       })
     );
+  }
+
+  getCurrentUser(): Observable<any> {
+    const token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get('http://localhost:8081/auth/actual', { headers });
   }
 
   getUserRole(): string | null {
@@ -36,13 +44,6 @@ export class AuthService {
     return roles.includes(userRole || '');
   }
 
-  logout(): void {
-    // Limpiar todo del localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('userRole');
-
-    console.log('Sesión cerrada - datos limpiados');
-  }
   register(user: UsuarioLogin): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, user, {
       responseType: 'text'
@@ -50,7 +51,12 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
+  }
+
+  logout(): void {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userRole');
   }
 
   isLoggedIn(): boolean {

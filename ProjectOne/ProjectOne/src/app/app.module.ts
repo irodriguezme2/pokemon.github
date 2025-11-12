@@ -9,7 +9,6 @@ import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
-import { UsuarioComponent } from './component/usuario/usuario.component';
 import { PokemonesComponent } from './component/pokemones/pokemones.component';
 import { EquiposComponent } from './component/equipos/equipos.component';
 import { MusicaComponent } from './component/musica/musica.component';
@@ -44,7 +43,6 @@ import { EquiposPcComponent } from './component/equipos-pc/equipos-pc.component'
     CombateComponent,
     CombatePCComponent,
     PokemonesComponent,
-    UsuarioComponent,
     PremiacionComponent,
     EquiposPcComponent,
     InicioComponent,

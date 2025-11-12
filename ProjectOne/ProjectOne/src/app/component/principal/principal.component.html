@@ -33,9 +33,14 @@
       </div>
 
       <div class="sidebar-user">
-        <a class="sidebar-profile-link" routerLink="/usuario" (click)="visible = false">
-          <p-avatar [image]="user.photo" shape="circle" class="sidebar-avatar"/>
-          <span class="sidebar-username">{{ user.nickname }}</span>
+        <a class="sidebar-profile-link">
+          <p-avatar
+            [image]="user?.esHombre ? '/nina.png' : '/nino.png'"
+            shape="circle"
+            class="sidebar-avatar">
+          </p-avatar>
+
+          <span class="sidebar-username">{{ user.nombreUsuario }}</span>
         </a>
         <button class="sidebar-logout" pRipple (click)="logout()">
           <i class="pi pi-sign-out"></i>

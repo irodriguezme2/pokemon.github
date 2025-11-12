@@ -7,15 +7,19 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +38,7 @@ import co.edu.unbosque.pokemon.service.UsuarioService;
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:8082")
 @Tag(name = "Autenticación", description = "API para autenticación de usuarios (login y registro)")
+@SecurityRequirement(name = "bearerAuth")
 public class AuthController {
 
 	/** Gestor de autenticación para validar credenciales de usuario. */
@@ -170,6 +175,16 @@ public class AuthController {
 		} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al registrar el usuario");
 		}
+	}
+
+	@GetMapping("/actual")
+	public ResponseEntity<UsuarioDTO> obtenerUsuarioActual() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (username == null || username.isBlank()) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		UsuarioDTO usuario = userService.obtenerPorNombre(username);
+		return ResponseEntity.ok(usuario);
 	}
 
 	/**
