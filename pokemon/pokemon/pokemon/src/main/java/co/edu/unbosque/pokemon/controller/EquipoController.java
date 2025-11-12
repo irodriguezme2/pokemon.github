@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,29 +20,20 @@ public class EquipoController {
 	@Autowired
 	private EquipoService equiService;
 
-	@PostMapping("/crearswagger")
-	public ResponseEntity<String> crearEquipoSwagger(@RequestParam String nombre, Long id, String pokemon1,
-			String pokemon2, String pokemon3, String pokemon4, String pokemon5, String pokemon6) {
-		int status = equiService.create(nombre, id, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6);
-		if (status == 1) {
-			return new ResponseEntity<>("El equipo debe tener 6 integrantes", HttpStatus.NOT_ACCEPTABLE);
-		} else if (status == 2) {
-			return new ResponseEntity<String>("El pokemon ingresado no existe", HttpStatus.NOT_ACCEPTABLE);
-		} else {
-			return new ResponseEntity<>("Equipo creado exitosamente", HttpStatus.CREATED);
-		}
-	}
-
 	@PostMapping("/crear")
-	public ResponseEntity<String> crearEquipo(@RequestParam String nombre, Long id, String... pokemones) {
+	public ResponseEntity<String> crearEquipo(@RequestParam String nombre, @RequestParam(required = false) Long id,
+			@RequestParam String[] pokemones) {
+
 		int status = equiService.create(nombre, id, pokemones);
-		if (status == 1) {
-			return new ResponseEntity<>("El equipo debe tener 6 integrantes", HttpStatus.NOT_ACCEPTABLE);
-		} else if (status == 2) {
-			return new ResponseEntity<String>("El pokemon ingresado no existe", HttpStatus.NOT_ACCEPTABLE);
-		} else {
-			return new ResponseEntity<>("Equipo creado exitosamente", HttpStatus.CREATED);
+
+		switch (status) {
+		case 1:
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+					.body("El equipo debe tener exactamente 6 integrantes");
+		case 2:
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Uno o más Pokémon ingresados no existen");
+		default:
+			return ResponseEntity.status(HttpStatus.CREATED).body("Equipo creado exitosamente");
 		}
 	}
-
 }
