@@ -44,13 +44,14 @@ export class EleccionComponent implements OnInit {
   splitButtonItems: any[] = [];
   selectedEquipo: Equipo | null = null;
 
-  // 🟦 Panel para guardar equipo
   dialogVisible: boolean = false;
   nombreEquipo: string = '';
 
-  // 💬 Diálogo de mensajes personalizados
   dialogMensajeVisible: boolean = false;
   mensajeDialogo: string = '';
+
+  busqueda: string = '';
+  pokemonesFiltrados: Pokemon[] = [];
 
   constructor(
     private router: Router,
@@ -61,7 +62,7 @@ export class EleccionComponent implements OnInit {
   ngOnInit() {
     const equipoGuardado = this.equiposService.obtenerEquipoTemporalJugador();
     if (equipoGuardado?.length) {
-      this.equipoSeleccionado = equipoGuardado;
+      this.equipoSeleccionado = [];
     }
 
     this.cargarPokemones();
@@ -94,12 +95,12 @@ export class EleccionComponent implements OnInit {
             nombre,
             imagen: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${this.obtenerIdDesdeUrl(poke.url)}.png`,
             seleccionado: !!yaSeleccionado,
-            tipo: yaSeleccionado?.tipo || [],
+            tipo: [],
             movimientos: yaSeleccionado?.movimientos || []
           };
         });
-
         this.pokemones = nuevosPokemones;
+        this.pokemonesFiltrados = [...this.pokemones];
       },
       error: (err) => console.error('Error al cargar los Pokémon:', err)
     });
@@ -134,10 +135,17 @@ export class EleccionComponent implements OnInit {
     this.http.get<any>(apiUrl).subscribe({
       next: (data) => {
         const tipos = data.types.map((t: any) => t.type.name);
-        const movimientos = data.moves.slice(0, 5).map((m: any) => m.move.name);
+
+        const totalMovimientos = data.moves.length;
+        let movimientosAleatorios: string[] = [];
+
+        if (totalMovimientos > 0) {
+          const mezclados = data.moves.sort(() => Math.random() - 0.5);
+          movimientosAleatorios = mezclados.slice(0, 5).map((m: any) => m.move.name);
+        }
 
         pokemon.tipo = tipos;
-        pokemon.movimientos = movimientos;
+        pokemon.movimientos = movimientosAleatorios;
 
         if (this.pokemonActual?.nombre === pokemon.nombre) {
           this.pokemonActual = { ...pokemon };
@@ -159,11 +167,50 @@ export class EleccionComponent implements OnInit {
     this.cargarPokemones();
   }
 
+  filtrarPokemones(): void {
+    const texto = this.busqueda.toLowerCase().trim();
+
+    if (!texto) {
+      this.pokemonesFiltrados = [...this.pokemones];
+      return;
+    }
+
+    const filtradosLocales = this.pokemones.filter((p: Pokemon) =>
+      p.nombre.toLowerCase().includes(texto)
+    );
+
+    this.pokemonesFiltrados = [...filtradosLocales];
+
+    this.http.get<any>('https://pokeapi.co/api/v2/pokemon?limit=2000').subscribe({
+      next: (data: any) => {
+        const coincidencias = data.results.filter((poke: any) =>
+          poke.name.toLowerCase().includes(texto)
+        );
+        const nuevosPokemones: Pokemon[] = coincidencias.map((poke: any) => {
+          const id = this.obtenerIdDesdeUrl(poke.url);
+          return {
+            nombre: poke.name,
+            imagen: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+            seleccionado: false,
+            tipo: [],
+            movimientos: []
+          };
+        });
+
+        const nombresExistentes = new Set(this.pokemonesFiltrados.map(p => p.nombre));
+        this.pokemonesFiltrados = [
+          ...this.pokemonesFiltrados,
+          ...nuevosPokemones.filter(p => !nombresExistentes.has(p.nombre))
+        ];
+      },
+      error: (err: any) => console.error('Error al buscar Pokémon similares:', err)
+    });
+  }
+
   cambiarEquipo(): void {
     console.log('🔁 Cambiar equipo');
   }
 
-  // 🧾 Panel para ingresar nombre del equipo
   mostrarDialogoNombre(): void {
     if (this.equipoSeleccionado.length < 6) {
       this.mostrarMensaje('⚠️ Debes seleccionar exactamente 6 Pokémon para continuar.');
@@ -191,7 +238,6 @@ export class EleccionComponent implements OnInit {
     this.router.navigate(['/eleccion-invitado']);
   }
 
-  // 💬 Mostrar mensaje bonito tipo ventana emergente
   mostrarMensaje(texto: string): void {
     this.mensajeDialogo = texto;
     this.dialogMensajeVisible = true;

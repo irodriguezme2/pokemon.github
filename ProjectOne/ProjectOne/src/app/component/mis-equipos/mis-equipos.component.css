@@ -47,7 +47,7 @@
 
 /* Títulos */
 :host ::ng-deep.titulo {
-  color: #77093f;
+  color: #c30935;
   font-size: 50px !important;
   border: 6px solid #095703 !important;
   border-radius: 0;
@@ -124,10 +124,10 @@
   gap: 20px;
   margin: 0 auto; /* asegura el centrado del bloque */
   font-family: 'Press Start 2P', cursive !important;
-  background-color: #77093f;
+  background-color: #c30935;
   color: #f6fbfd;
   font-size: 20px !important;
-border:6px solid #77093f;
+border:6px solid #c30935;
   margin-bottom: 10px !important;
 }
 

@@ -17,6 +17,8 @@ import { EleccionInvitadoComponent } from './app/component/eleccion-invitado/ele
 import { CombateComponent } from './app/component/combate/combate.component';
 import { MisEquiposComponent } from './app/component/mis-equipos/mis-equipos.component';
 import { PremiacionComponent} from './app/component/premiacion/premiacion.component';
+import { EquiposPcComponent} from './app/component/equipos-pc/equipos-pc.component';
+import { CombatePCComponent} from './app/component/combate-pc/combate-pc.component';
 import {provideHttpClient} from '@angular/common/http';
 
 const routes: Routes = [
@@ -33,7 +35,9 @@ const routes: Routes = [
   { path: 'eleccion-invitado', component: EleccionInvitadoComponent },
   { path: 'combate', component: CombateComponent },
   { path: 'mis-equipos', component: MisEquiposComponent},
-  { path: 'premiacion', component: PremiacionComponent}
+  { path: 'premiacion', component: PremiacionComponent},
+  { path: 'equipo-pc', component: EquiposPcComponent},
+  { path: 'combate-pc', component: CombatePCComponent}
 
 ];
 

@@ -36,6 +36,25 @@ export class EquipoService {
     return this.equipoJugador;
   }
 
+
+  limpiarEquiposTemporales(): void {
+    this.equipoTemporalJugador = [];
+    this.equipoTemporalInvitado = [];
+    localStorage.removeItem('equipoTemporalJugador');
+    localStorage.removeItem('equipoTemporalInvitado');
+  }
+
+
+
+  private actualizarEquipos(): void {
+    this.equiposSubject.next(this.equipos);
+    localStorage.setItem('equipos', JSON.stringify(this.equipos));
+  }
+
+  private generarId(): number {
+    return this.equipos.length > 0
+      ? Math.max(...this.equipos.map(e => e.id)) + 1
+      : 1;
   setEquipoPC(equipo: Equipo) {
     this.equipoPC = equipo;
   }
@@ -43,5 +62,15 @@ export class EquipoService {
   getEquipoPC(): Equipo {
     return this.equipoPC;
   }
+  resultadoCombate: any = null;
+
+  establecerResultadoCombate(resultado: any) {
+    this.resultadoCombate = resultado;
+  }
+
+  obtenerResultadoCombate() {
+    return this.resultadoCombate;
+  }
+
 }
 

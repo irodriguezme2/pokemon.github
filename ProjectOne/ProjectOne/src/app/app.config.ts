@@ -13,6 +13,9 @@ import {MusicaComponent} from './component/musica/musica.component';
 import {EleccionComponent} from './component/eleccion/eleccion.component';
 import {EleccionUnoVsPcComponent} from './component/eleccion-uno-vs-pc/eleccion-uno-vs-pc.component';
 import {CombateComponent} from './component/combate/combate.component';
+import {EquiposPcComponent} from './component/equipos-pc/equipos-pc.component';
+import {CombatePCComponent} from './component/combate-pc/combate-pc.component';
+import {PremiacionComponent} from './component/premiacion/premiacion.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -26,6 +29,9 @@ const routes: Routes = [
   { path: 'eleccion-uno-vs-pc', component: EleccionUnoVsPcComponent },
   { path: 'eleccion', component: EleccionComponent },
   { path: 'combate', component: CombateComponent },
+  { path: 'equipo-pc', component: EquiposPcComponent},
+  { path: 'combate-pc', component: CombatePCComponent},
+  { path: 'premiacion', component: PremiacionComponent}
 
 ];
 

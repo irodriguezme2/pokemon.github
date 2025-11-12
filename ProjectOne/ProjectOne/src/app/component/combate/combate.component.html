@@ -33,18 +33,21 @@
       </div>
     </div>
   </div>
-
-  <!-- 🔹 Escenario principal -->
   <div class="escenario">
     <img
       class="sprite jugador"
       [src]="pokemonJugador?.imagen"
       [alt]="pokemonJugador?.nombre"
+      [class.shake]="shakingJugador"
+      [class.flash]="flashJugador"
     />
+
     <img
       class="sprite invitado"
       [src]="pokemonInvitado?.imagen"
       [alt]="pokemonInvitado?.nombre"
+      [class.shake]="shakingInvitado"
+      [class.flash]="flashInvitado"
     />
   </div>
 
@@ -65,6 +68,7 @@
       <button *ngFor="let mov of movimientos" (click)="usarMovimiento(mov)">
         {{ mov.nombre }}
       </button>
+      <button class="volver" (click)="volverAlMenu()">←VOLVER</button>
     </div>
 
     <!-- Menú de cambio -->
@@ -80,8 +84,9 @@
           />
         </ng-container>
       </div>
+      <button class="volvercam" (click)="volverAlMenu()">← VOLVER</button>
     </div>
-
+  </div>
 
   <!-- 🔹 Panel del invitado -->
   <div
@@ -106,6 +111,7 @@
       >
         {{ mov.nombre }}
       </button>
+      <button class="volver" (click)="volverAlMenuInvitado()">←VOLVER</button>
     </div>
 
     <!-- Menú de cambio del invitado -->
@@ -121,21 +127,19 @@
           />
         </ng-container>
       </div>
+      <button class="volvercam" (click)="volverAlMenuInvitado()">←VOLVER</button>
     </div>
-
-
-</div>
   </div>
 </div>
-    <!-- ⚠️ Diálogo de advertencia -->
-    <p-dialog
-      [(visible)]="dialogMensajeVisible"
-      [modal]="true"
-      [closable]="false"
-      class="dialog-mensaje">
-      <h3 class="dialog-mensaje-titulo">¡Atención!</h3>
-      <p class="dialog-mensaje-texto">{{ mensajeDialogo }}</p>
-      <div class="dialog-botones">
-        <p-button label="OK" icon="pi pi-check" (onClick)="dialogMensajeVisible = false"></p-button>
-      </div>
-    </p-dialog>
+
+<p-dialog
+  [(visible)]="dialogMensajeVisible"
+  [modal]="true"
+  [closable]="false"
+  class="dialog-mensaje">
+  <h3 class="dialog-mensaje-titulo">¡Atención!</h3>
+  <p class="dialog-mensaje-texto">{{ mensajeDialogo }}</p>
+  <div class="dialog-botones">
+    <p-button label="OK" icon="pi pi-check" (onClick)="dialogMensajeVisible = false"></p-button>
+  </div>
+</p-dialog>
