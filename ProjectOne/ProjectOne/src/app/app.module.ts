@@ -32,6 +32,11 @@ import { EquiposPcComponent } from './component/equipos-pc/equipos-pc.component'
 
 
 
+import {HttpClientModule} from '@angular/common/http';
+
+@NgModule({
+  declarations: [
+    PremiacionComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,7 @@ import { EquiposPcComponent } from './component/equipos-pc/equipos-pc.component'
     EleccionUnoVsPcComponent,
     SplitButton,
     CommonModule,
-    RouterLink
+    RouterLink,
   ],
   providers: [],
   bootstrap: []

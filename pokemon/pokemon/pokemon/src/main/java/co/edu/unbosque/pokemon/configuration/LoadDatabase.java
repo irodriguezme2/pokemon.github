@@ -39,8 +39,9 @@ public class LoadDatabase {
 			if (found.isPresent()) {
 				log.info("El administrador ya existe, omitiendo la creación del administrador...");
 			} else {
-				Usuario adminUser = new Usuario("admin",Usuario.Role.ADMIN, passwordEncoder.encode("1234567890"));
+				Usuario adminUser = new Usuario("admin", Usuario.Role.ADMIN, passwordEncoder.encode("1234567890"));
 				userRepo.save(adminUser);
+				adminUser.setVerificado(true);
 				log.info("Precargando usuario administrador");
 			}
 			Optional<Usuario> found2 = userRepo.findByNombreUsuario("normaluser");
@@ -48,6 +49,7 @@ public class LoadDatabase {
 				log.info("El usuario normal ya existe, omitiendo la creación del usuario normal...");
 			} else {
 				Usuario normalUser = new Usuario("normaluser", Usuario.Role.USER, passwordEncoder.encode("1234567890"));
+				normalUser.setVerificado(true);
 				userRepo.save(normalUser);
 				log.info("Precargando usuario normal");
 			}

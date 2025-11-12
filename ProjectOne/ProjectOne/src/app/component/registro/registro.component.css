@@ -62,32 +62,71 @@ p{
   margin-bottom: 70px;
 }
 
+
 button {
   width: 200px;
   height: 73px !important;
   padding: 12px;
   border-radius: 22px;
   background: white;
-  border-color: #2c6599;
+  border: 2.5px solid #2c6599;
   font-weight: bolder;
-  font-size: 30px;
+  font-size: 35px;
   text-align: center;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgb(44, 101, 153, 0.75);
-  margin-top: 12px;
-  margin-left: 80px;
+  box-shadow: 0 2px 6px rgba(44, 101, 153, 0.75);
+  margin-top: 10px;
   font-family: 'Comic Sans MS', cursive;
   color: #0b4571;
+  transition: all 0.2s ease;
+  margin-left: 70px;
 }
+
 button:hover,
 button:focus-visible {
-  background-color: #f6fbfd;
+  background-color: #fffb00;
   color: #1f578a;
   box-shadow: 0 8px 32px 0 rgba(44,101,153,0.22), 0 1.5px 8px 0 rgba(0,0,0,0.10);
   transform: translateY(-2px) scale(1.03);
   border-color: #1f578a;
   outline: none;
+}
 
+button:disabled {
+  background-color: #c5d4e0;
+  border-color: #a3b5c4;
+  color: #5c6b77;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+.error {
+  color: #c62828;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif !important;
+  margin-top: 4px;
+  border-left: 4px solid #f44336;
+  padding: 6px 10px;
+  border-radius: 6px;
+  width: 70%;
+  margin-left: 35px;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(244, 67, 54, 0.3);
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif !important;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #f5c6cb;
+  text-align: center;
 }
 
 .fondo {

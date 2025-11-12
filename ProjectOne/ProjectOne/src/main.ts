@@ -19,6 +19,7 @@ import { MisEquiposComponent } from './app/component/mis-equipos/mis-equipos.com
 import { PremiacionComponent} from './app/component/premiacion/premiacion.component';
 import { EquiposPcComponent} from './app/component/equipos-pc/equipos-pc.component';
 import { CombatePCComponent} from './app/component/combate-pc/combate-pc.component';
+import {provideHttpClient} from '@angular/common/http';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -51,6 +52,7 @@ bootstrapApplication(AppComponent, {
         }
       }
     }),
-    provideAnimations()
+    provideHttpClient(),
+    provideAnimations(),
   ]
 });

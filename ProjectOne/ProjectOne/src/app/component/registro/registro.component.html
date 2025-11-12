@@ -1,39 +1,103 @@
 <div class="fondo">
   <div class="card">
     <div class="logo"></div>
-    <form (ngSubmit)="registrarUsuario()">
-      <div class="form-body">
-        <input type="text" placeholder="Usuario" [(ngModel)]="usuario.nombre" name="nombre" required>
-        <input type="password" placeholder="Contraseña" [(ngModel)]="usuario.contrasenia" name="contrasenia" required>
-        <input type="email" placeholder="Correo" [(ngModel)]="usuario.correo" name="correo" required>
-        <p-calendar name="fecha" [(ngModel)]="date2" showIcon="true" placeholder="Fecha de nacimiento" dateFormat="dd/mm/yy"></p-calendar>
 
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div class="form-body">
+        <!-- Username -->
+        <input type="text"
+               id="username"
+               name="username"
+               [(ngModel)]="registerData.username"
+               placeholder="Ingresa usuario"
+               required
+               minlength="3"
+               #username="ngModel">
+        <div *ngIf="username.invalid && username.touched" class="error">
+          <div *ngIf="username.errors?.['required']"><b>Nombre de usuario</b> es requerido</div>
+          <div *ngIf="username.errors?.['minlength']"><b>Mínimo 3 caracteres</b></div>
+        </div>
+
+        <!-- Password -->
+        <input type="password"
+               id="password"
+               name="password"
+               [(ngModel)]="registerData.password"
+               placeholder="Contraseña"
+               required
+               minlength="6"
+               #password="ngModel">
+        <div *ngIf="password.invalid && password.touched" class="error">
+          <div *ngIf="password.errors?.['required']"><b>Contraseña</b> es requerida</div>
+          <div *ngIf="password.errors?.['minlength']"><b>Mínimo 6 caracteres</b></div>
+        </div>
+
+        <!-- Email -->
+        <input type="email"
+               id="email"
+               name="email"
+               [(ngModel)]="registerData.email"
+               placeholder="Correo electrónico"
+               required
+               email
+               #email="ngModel">
+        <div *ngIf="email.invalid && email.touched" class="error">
+          <div *ngIf="email.errors?.['required']"><b>Correo</b> es requerido</div>
+          <div *ngIf="email.errors?.['email']"><b>Correo inválido</b></div>
+        </div>
+
+        <!-- Fecha de nacimiento -->
+        <p-datepicker
+          name="fechaNacimiento"
+          [(ngModel)]="registerData.fechaNacimiento"
+          showIcon="true"
+          placeholder="Fecha de nacimiento"
+          required
+          #fechaNacimiento="ngModel">
+        </p-datepicker>
+        <div *ngIf="fechaNacimiento.invalid && fechaNacimiento.touched" class="error">
+          <b>La fecha de nacimiento</b> es requerida
+        </div>
+
+        <!-- Avatar -->
         <div class="avatar-box">
           <p>Elige tu avatar:</p>
           <div class="avatar-options">
             <button
               type="button"
               class="avatar-btn avatar1"
-              [class.selected]="selectedAvatar === 'avatar1'"
-              (click)="selectedAvatar = 'avatar1'">
+              [class.selected]="isAvatar1Selected"
+              (click)="selectAvatar(true)">
             </button>
 
             <button
               type="button"
               class="avatar-btn avatar2"
-              [class.selected]="selectedAvatar === 'avatar2'"
-              (click)="selectedAvatar = 'avatar2'">
+              [class.selected]="!isAvatar1Selected"
+              (click)="selectAvatar(false)">
             </button>
           </div>
         </div>
-        <button class="action-btn" type="submit">Registrar</button>
       </div>
+
+      <!-- Botón de registro -->
+      <button
+              type="submit"
+              [disabled]="registerForm.invalid">
+        Registrar
+      </button>
+
       <div class="link-box">
         <span>¿Ya tienes cuenta?</span>
         <a routerLink="/inicio" class="link-accent">Inicia sesión</a>
       </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
     </form>
   </div>
-  <!-- Remueve temporalmente si sospechas de MusicaComponent -->
+
   <app-musica></app-musica>
 </div>
