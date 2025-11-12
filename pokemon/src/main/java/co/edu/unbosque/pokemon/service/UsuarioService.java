@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import co.edu.unbosque.pokemon.dto.UsuarioDTO;
@@ -196,5 +197,12 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		}
 		return false;
 	}
+	
+
+    public UsuarioDTO obtenerPorNombre(String nombreUsuario) {
+        Usuario usuario = userRepo.findByNombreUsuario(nombreUsuario)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + nombreUsuario));
+        return modelMapper.map(usuario, UsuarioDTO.class);
+    }
 
 }

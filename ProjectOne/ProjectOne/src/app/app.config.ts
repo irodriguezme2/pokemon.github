@@ -6,7 +6,6 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import {InicioComponent} from './component/inicio/inicio.component';
 import {RegistroComponent} from './component/registro/registro.component';
 import {PrincipalComponent} from './component/principal/principal.component';
-import {UsuarioComponent} from './component/usuario/usuario.component';
 import {PokemonesComponent} from './component/pokemones/pokemones.component';
 import {EquiposComponent} from './component/equipos/equipos.component';
 import {MusicaComponent} from './component/musica/musica.component';
@@ -16,13 +15,13 @@ import {CombateComponent} from './component/combate/combate.component';
 import {EquiposPcComponent} from './component/equipos-pc/equipos-pc.component';
 import {CombatePCComponent} from './component/combate-pc/combate-pc.component';
 import {PremiacionComponent} from './component/premiacion/premiacion.component';
+import {authGuard} from './service/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: 'inicio', component: InicioComponent },
   { path: 'registro', component: RegistroComponent },
-  { path: 'principal', component: PrincipalComponent },
-  { path: 'usuario', component: UsuarioComponent },
+  { path: 'principal', component: PrincipalComponent},
   { path: 'pokemones', component: PokemonesComponent },
   { path: 'equipos', component: EquiposComponent },
   { path: 'musica', component: MusicaComponent },

@@ -54,6 +54,7 @@ public class UsuarioController {
 		}
 	}
 
+	
 	@GetMapping("/verificar")
 	public ResponseEntity<String> verificarCuenta(@RequestParam int token) {
 		boolean verificado = userSer.verificarUsuarioPorToken(token);
@@ -119,4 +120,5 @@ public class UsuarioController {
 			return new ResponseEntity<>("Credenciales inválidas", HttpStatus.UNAUTHORIZED);
 		}
 	}
+	
 }
