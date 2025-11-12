@@ -13,9 +13,12 @@ import co.edu.unbosque.pokemon.entity.Equipo;
 import co.edu.unbosque.pokemon.entity.Pokemon;
 import co.edu.unbosque.pokemon.repository.EquipoRepository;
 import co.edu.unbosque.pokemon.repository.PokemonRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class EquipoService implements CRUDOperation<EquipoDTO> {
+	@Autowired
+	private PokemonService pokemonService;
 
 	@Autowired
 	private EquipoRepository equiRepo;
@@ -37,23 +40,27 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 		}
 	}
 
-	public int create(String nombre, long id, String... pokemones) {
-		if (pokemones.length != 6) {
-			return 1;
-		} else {
-			ArrayList<Pokemon> listaPokemones = new ArrayList<>();
-			for (String nombrePokemon : pokemones) {
-				Optional<Pokemon> p = pokeRepo.findByNombre(nombrePokemon.toLowerCase());
-				if (p.isEmpty()) {
-					return 2;
-				}
-				listaPokemones.add(p.get());
-			}
-			Equipo equi = new Equipo(nombre, id, listaPokemones);
-			equiRepo.save(equi);
-			return 0;
+	@Transactional
+	public int create(String nombre, Long idUsuario, String... nombresPokemones) {
+		if (nombresPokemones.length != 6) {
+			return 1; // Error: el equipo debe tener 6 integrantes
 		}
 
+		ArrayList<Pokemon> lista = new ArrayList<>();
+
+		for (String nombrePoke : nombresPokemones) {
+			try {
+				Pokemon p = pokemonService.createByName(nombrePoke.trim());
+				lista.add(p);
+			} catch (Exception e) {
+				return 2; // Error: Pokémon no existe o fallo la API
+			}
+		}
+
+		Equipo equipo = new Equipo(nombre, idUsuario, lista);
+		equiRepo.save(equipo);
+
+		return 0; // Éxito
 	}
 
 	@Override
@@ -73,6 +80,16 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 	public int deleteByID(Long id) {
 		if (equiRepo.findById(id).isPresent()) {
 			equiRepo.deleteById(id);
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+	
+	public int deleteByUsername(String username) {
+		Optional<Equipo> found = equiRepo.findByNombre(username);
+		if (found.isPresent()) {
+			equiRepo.delete(found.get());
 			return 0;
 		} else {
 			return 1;

@@ -2,12 +2,19 @@ package co.edu.unbosque.pokemon.controller;
 
 import co.edu.unbosque.pokemon.entity.Batalla;
 import co.edu.unbosque.pokemon.service.BatallaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/batalla")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:8082"})
+@Transactional
+@Tag(name = "Gestión de Batallas", description = "Endpoints para administrar batallas")
+@SecurityRequirement(name = "bearerAuth")
 public class BatallaController {
 
 	@Autowired

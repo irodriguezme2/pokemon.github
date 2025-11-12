@@ -24,8 +24,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8081" })
-@RequestMapping(path = { "/usuario" })
+@RequestMapping("/usuario")
+@CrossOrigin(origins = { "http://localhost:8082" })
 @Transactional
 @Tag(name = "Gestión de Usuarios", description = "Endpoints para administrar usuarios")
 @SecurityRequirement(name = "bearerAuth")
@@ -43,6 +43,9 @@ public class UsuarioController {
 		} else if (status == 1) {
 			return new ResponseEntity<String>("Usuario ya existente, por favor ingrese otro nombre",
 					HttpStatus.NOT_ACCEPTABLE);
+		} else if (status == 3) {
+			return new ResponseEntity<String>("Correo ya existente, inicie sesion",
+					HttpStatus.NOT_ACCEPTABLE);
 		} else if (status == 2) {
 			return new ResponseEntity<String>("Correo incorrecto", HttpStatus.NOT_ACCEPTABLE);
 		} else {
@@ -56,9 +59,9 @@ public class UsuarioController {
 		boolean verificado = userSer.verificarUsuarioPorToken(token);
 
 		if (verificado) {
-			return new ResponseEntity<>("✅ Cuenta verificada con éxito. ¡Ya puedes iniciar sesión!", HttpStatus.OK);
+			return new ResponseEntity<>("Cuenta verificada con éxito. ¡Ya puedes iniciar sesión!", HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>("❌ Token inválido o expirado.", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Token inválido o expirado.", HttpStatus.NOT_FOUND);
 		}
 	}
 

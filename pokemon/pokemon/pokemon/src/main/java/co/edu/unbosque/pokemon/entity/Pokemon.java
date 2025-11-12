@@ -20,14 +20,13 @@ import jakarta.persistence.OneToOne;
 public class Pokemon {
 
 	private @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) long id;
-	@Column(unique = true, name = "nombreUsuario")
+	@Column(name = "nombre")
 	private String nombre;
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> tipo;
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pokemon_id")
 	private List<Movimiento> movimiento;
-
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pokemon_id")
 	private List<Estadistica> estadistica;

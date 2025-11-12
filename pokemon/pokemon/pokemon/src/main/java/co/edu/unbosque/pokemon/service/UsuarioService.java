@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import co.edu.unbosque.pokemon.dto.UsuarioDTO;
 import co.edu.unbosque.pokemon.entity.Usuario;
+import co.edu.unbosque.pokemon.entity.Usuario.Role;
 import co.edu.unbosque.pokemon.repository.UsuarioRepository;
 
 @Service
@@ -22,11 +23,9 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 	private ModelMapper modelMapper;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private EnvioCorreoService envioCorreo;
-
-
 
 	public UsuarioService() {
 		// TODO Auto-generated constructor stub
@@ -51,10 +50,15 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 				return 2;
 			}
 
+		} else if (findCorreoAlreadyTaken(user)) {
+			System.out.println("llegue aca");
+			return 3;
 		} else {
 			user.setContrasenia(passwordEncoder.encode(user.getPassword()));
 			if (newData.getRol() != null) {
 				newData.setRol(newData.getRol());
+			} else {
+				newData.setRol(Role.USER);
 			}
 			user.setVerificado(false);
 			user.setToken(token);
@@ -123,6 +127,15 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		}
 	}
 
+	public boolean findCorreoAlreadyTaken(Usuario newUser) {
+		Optional<Usuario> found = userRepo.findByCorreo(newUser.getCorreo());
+		if (found.isPresent()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public int validateCredentials(String username, String password) {
 		// Buscar usuario por nombre de usuario
 		Optional<Usuario> userOpt = userRepo.findByNombreUsuario(username);
@@ -170,20 +183,18 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 			return 1;
 		}
 	}
-	
+
 	public boolean verificarUsuarioPorToken(int token) {
 		Optional<Usuario> userOpt = userRepo.findByToken(token);
 
 		if (userOpt.isPresent()) {
 			Usuario user = userOpt.get();
 			user.setVerificado(true);
-			user.setToken(0); 
+			user.setToken(0);
 			userRepo.save(user);
 			return true;
 		}
 		return false;
 	}
-
-
 
 }

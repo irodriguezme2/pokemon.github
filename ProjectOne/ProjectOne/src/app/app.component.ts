@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MusicService } from './component/musica/music.service';
 import { MusicaComponent } from './component/musica/musica.component';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MusicaComponent],
+  imports: [RouterOutlet, MusicaComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
