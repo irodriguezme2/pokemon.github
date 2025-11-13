@@ -8,6 +8,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ * Representa un movimiento que un Pokémon puede ejecutar dentro del sistema
+ * PokéLab.
+ * <p>
+ * Cada movimiento posee un nombre, tipo elemental, daño base y puntos de poder
+ * (PP) que determinan la cantidad de veces que puede ser utilizado.
+ * </p>
+ *
+ * <p>
+ * <b>Ejemplo:</b> Un movimiento con nombre "Lanzallamas", tipo "Fuego", daño 90
+ * y puntos de poder 15 representa un ataque poderoso de tipo fuego.
+ * </p>
+ *
+ * @author PokéLab
+ * @version 1.0
+ */
 @Entity
 public class Movimiento implements Serializable {
 
@@ -17,10 +33,21 @@ public class Movimiento implements Serializable {
 	private String tipo;
 	private int puntosPoder;
 
+	/**
+	 * Constructor vacío
+	 */
 	public Movimiento() {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Constructor que inicializa un movimiento con sus características principales.
+	 *
+	 * @param nombre      Nombre del movimiento.
+	 * @param danio       Daño base que inflige.
+	 * @param tipo        Tipo elemental del movimiento.
+	 * @param puntosPoder Puntos de poder disponibles.
+	 */
 	public Movimiento(String nombre, int danio, String tipo, int puntosPoder) {
 		super();
 

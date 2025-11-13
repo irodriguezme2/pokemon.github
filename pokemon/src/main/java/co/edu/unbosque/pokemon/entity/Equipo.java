@@ -13,6 +13,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 
+/**
+ * Representa un equipo Pokémon dentro del sistema PokéLab.
+ * <p>
+ * Cada equipo pertenece a un usuario específico y contiene una lista de Pokémon
+ * seleccionados para participar en batallas.
+ * </p>
+ *
+ * <p>
+ * <b>Ejemplo:</b> Un equipo llamado "Elite de Kanto" perteneciente al usuario
+ * con ID 102, compuesto por seis Pokémon distintos listos para competir en una
+ * batalla.
+ * </p>
+ *
+ * @author PokéLab
+ * @version 1.0
+ */
 @Entity
 public class Equipo {
 
@@ -27,6 +43,13 @@ public class Equipo {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Constructor que permite crear un equipo con sus atributos principales.
+	 *
+	 * @param nombre       Nombre del equipo.
+	 * @param idUsuario    Identificador del usuario propietario.
+	 * @param listaPokemon Lista de Pokémon que conforman el equipo.
+	 */
 	public Equipo(String nombre, long idUsuario, ArrayList<Pokemon> listaPokemon) {
 		super();
 		this.nombre = nombre;

@@ -16,6 +16,26 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
+
+
+/**
+ * Representa un Pokémon dentro del sistema PokéLab.
+ * <p>
+ * Cada Pokémon posee un nombre único, uno o más tipos, una lista de
+ * movimientos, estadísticas base, una habilidad especial y un estado actual
+ * (como "Parálisis" o "Quemadura"). Además, mantiene un valor de puntos de
+ * salud actuales (HP).
+ * </p>
+ *
+ * <p>
+ * <b>Ejemplo:</b> Un Pokémon como "Charizard" puede tener los tipos
+ * <i>Fuego</i> y <i>Volador</i>, la habilidad "Blaze", movimientos como
+ * "Lanzallamas" y estadísticas personalizadas.
+ * </p>
+ *
+ * @author PokéLab
+ * @version 1.0
+ */
 @Entity
 public class Pokemon {
 
@@ -37,6 +57,10 @@ public class Pokemon {
 	@Enumerated(EnumType.STRING)
 	private Estado estado;
 
+	/**
+	 * Enumeración que representa los posibles estados alterados que puede tener un
+	 * Pokémon.
+	 */
 	public enum Estado {
 
 		NORMAL, BURN, POISON, BADLY_POISONED, PARALYSIS, SLEEP, FREEZE, CONFUSION, FLINCH, CURSED, BOUND, INFATUATION;
@@ -46,6 +70,16 @@ public class Pokemon {
 		// TODO Auto-generated constructor stub
 	}
 
+
+	/**
+	 * Constructor que permite inicializar un Pokémon con sus características
+	 * principales.
+	 *
+	 * @param nombre      Nombre del Pokémon.
+	 * @param tipo        Lista de tipos elementales.
+	 * @param movimiento  Lista de movimientos disponibles.
+	 * @param estadistica Lista de estadísticas base.
+	 */
 	public Pokemon(String nombre, List<String> tipo, List<Movimiento> movimiento, List<Estadistica> estadistica) {
 		super();
 		this.nombre = nombre;
@@ -56,11 +90,24 @@ public class Pokemon {
 		this.estado = Estado.NORMAL;
 	}
 
+	/**
+	 * Obtiene el valor base de HP desde las estadísticas del Pokémon. Si no existe
+	 * la estadística de HP, retorna 50 por defecto.
+	 *
+	 * @return valor base de HP.
+	 */
 	private int obtenerHPBase() {
 		return estadistica.stream().filter(e -> "hp".equalsIgnoreCase(e.getNombre())).mapToInt(Estadistica::getValor)
 				.findFirst().orElse(50);
 	}
 
+
+	/**
+	 * Busca el valor de una estadística específica por nombre.
+	 *
+	 * @param statName nombre de la estadística (por ejemplo, "ataque").
+	 * @return valor numérico de la estadística, o 0 si no se encuentra.
+	 */
 	public int getStatValue(String statName) {
 		if (estadistica == null)
 			return 0;

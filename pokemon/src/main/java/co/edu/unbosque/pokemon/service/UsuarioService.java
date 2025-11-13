@@ -15,6 +15,30 @@ import co.edu.unbosque.pokemon.entity.Usuario;
 import co.edu.unbosque.pokemon.entity.Usuario.Role;
 import co.edu.unbosque.pokemon.repository.UsuarioRepository;
 
+/**
+ * Servicio encargado de gestionar las operaciones relacionadas con los usuarios
+ * del sistema Pokémon, incluyendo creación, autenticación, actualización,
+ * eliminación y verificación por token.
+ * 
+ * <p>
+ * Este servicio implementa la interfaz {@link CRUDOperation} para ofrecer las
+ * operaciones básicas y extiende su funcionalidad con validaciones de
+ * credenciales, verificación por correo electrónico y generación de tokens.
+ * </p>
+ * 
+ * <p>
+ * Funcionalidades principales:
+ * <ul>
+ * <li>Registrar nuevos usuarios con verificación por correo.</li>
+ * <li>Encriptar contraseñas usando {@link PasswordEncoder}.</li>
+ * <li>Verificar existencia y validez de credenciales.</li>
+ * <li>Eliminar o actualizar información de usuarios existentes.</li>
+ * </ul>
+ * </p>
+ * 
+ * @author PokéLab
+ * @version 1.0
+ */
 @Service
 public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 
@@ -28,10 +52,22 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 	@Autowired
 	private EnvioCorreoService envioCorreo;
 
+
+	/**
+	 * Constructor vacío
+	 */
 	public UsuarioService() {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Crea un nuevo usuario en el sistema. Genera un token de verificación
+	 * aleatorio y envía un correo electrónico para confirmar el registro.
+	 * 
+	 * @param newData DTO con los datos del nuevo usuario
+	 * @return 0 si se creó correctamente, 1 si el usuario ya está verificado, 2 si
+	 *         ya existía pero no estaba verificado
+	 */
 	@Override
 	public int create(UsuarioDTO newData) {
 		Usuario user = modelMapper.map(newData, Usuario.class);
@@ -69,6 +105,11 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Obtiene todos los usuarios registrados en el sistema.
+	 * 
+	 * @return lista de {@link UsuarioDTO} con la información de cada usuario
+	 */
 	@Override
 	public List<UsuarioDTO> getAll() {
 		List<Usuario> entityList = userRepo.findAll();
@@ -81,11 +122,24 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 
 		return dtoList;
 	}
-
+	
+	/**
+	 * Verifica si ya existe un usuario registrado con el correo dado.
+	 * 
+	 * @param correo correo a verificar
+	 * @return {@code true} si el correo ya está registrado, {@code false} en caso
+	 *         contrario
+	 */
 	public boolean existByCorreo(String correo) {
 		return userRepo.findByCorreo(correo).isPresent();
 	}
-
+	
+	/**
+	 * Elimina un usuario existente por su identificador.
+	 * 
+	 * @param id identificador del usuario
+	 * @return 0 si se eliminó correctamente, 1 si no se encontró
+	 */
 	@Override
 	public int deleteByID(Long id) {
 		if (userRepo.findById(id).isPresent()) {
@@ -96,6 +150,14 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Actualiza los datos de un usuario existente.
+	 * 
+	 * @param id      identificador del usuario
+	 * @param newData nuevos datos a aplicar en el usuario
+	 * @return 0 si se actualizó correctamente, 1 si el nombre de usuario ya está en
+	 *         uso, 2 si no se encontró el usuario, 3 para errores no esperados
+	 */
 	@Override
 	public int updateByID(Long id, UsuarioDTO newData) {
 		Optional<Usuario> found = userRepo.findById(id);
@@ -119,6 +181,13 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Verifica si un nombre de usuario ya está tomado, recibiendo un objeto
+	 * {@link Usuario}.
+	 * 
+	 * @param newUser usuario a verificar
+	 * @return {@code true} si ya existe, {@code false} si está disponible
+	 */
 	public boolean findUsernameAlreadyTaken(Usuario newUser) {
 		Optional<Usuario> found = userRepo.findByNombreUsuario(newUser.getUsername());
 		if (found.isPresent()) {
@@ -128,6 +197,13 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Valida las credenciales de un usuario al intentar iniciar sesión.
+	 * 
+	 * @param username nombre de usuario
+	 * @param password contraseña ingresada
+	 * @return 0 si las credenciales son correctas, 1 si son inválidas
+	 */
 	public boolean findCorreoAlreadyTaken(Usuario newUser) {
 		Optional<Usuario> found = userRepo.findByCorreo(newUser.getCorreo());
 		if (found.isPresent()) {
@@ -137,6 +213,13 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		}
 	}
 
+
+	/**
+	 * Verifica si un nombre de usuario ya está registrado.
+	 * 
+	 * @param username nombre de usuario a verificar
+	 * @return {@code true} si ya existe, {@code false} en caso contrario
+	 */
 	public int validateCredentials(String username, String password) {
 		// Buscar usuario por nombre de usuario
 		Optional<Usuario> userOpt = userRepo.findByNombreUsuario(username);
@@ -157,6 +240,12 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		return found.isPresent();
 	}
 
+
+	/**
+	 * Obtiene la cantidad total de usuarios registrados en el sistema.
+	 * 
+	 * @return número total de usuarios
+	 */
 	public long count() {
 		return userRepo.count();
 	}

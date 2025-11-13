@@ -13,11 +13,27 @@ import co.edu.unbosque.pokemon.entity.Pokemon;
 import co.edu.unbosque.pokemon.entity.Pokemon.Estado;
 import co.edu.unbosque.pokemon.util.TypeEffectiveness;
 
+/**
+ * Servicio encargado de gestionar la lógica de combate entre equipos Pokémon.
+ * Controla los turnos, efectos de estado, habilidades y cálculo de daño durante
+ * la batalla.
+ * 
+ * @author PokéLab
+ * @version 1.0
+ */
 @Service
 public class BatallaService {
 
 	private final Random random = new Random();
 
+
+	/**
+	 * Inicia una batalla, configurando equipos, HP y estados iniciales.
+	 * 
+	 * @param batalla la instancia de {@link Batalla} a iniciar
+	 * @return la batalla con valores inicializados
+	 * @throws IllegalArgumentException si alguno de los equipos es nulo
+	 */
 	public Batalla iniciarBatalla(Batalla batalla) {
 		if (batalla == null)
 			throw new IllegalArgumentException("Batalla nula");
@@ -44,6 +60,11 @@ public class BatallaService {
 		return batalla;
 	}
 
+	/**
+	 * Inicializa los Pokémon de un equipo estableciendo HP y estado base.
+	 * 
+	 * @param equipo el equipo a inicializar
+	 */
 	private void inicializarEquipo(Equipo equipo) {
 		if (equipo == null || equipo.getListaPokemon() == null)
 			return;
@@ -54,6 +75,16 @@ public class BatallaService {
 		}
 	}
 
+	/**
+	 * Ejecuta un turno de la batalla según el movimiento o habilidad seleccionada.
+	 * 
+	 * @param batalla                la batalla en curso
+	 * @param movimientoSeleccionado nombre del movimiento elegido
+	 * @param usarHabilidad          true si se desea usar la habilidad del Pokémon
+	 *                               activo
+	 * @return la batalla actualizada tras el turno
+	 * @throws IllegalStateException si no hay una batalla activa
+	 */
 	public Batalla ejecutarTurno(Batalla batalla, String movimientoSeleccionado, boolean usarHabilidad) {
 		if (batalla == null || !Boolean.TRUE.equals(batalla.isBatallaActiva())) {
 			throw new IllegalStateException("No hay una batalla activa.");
@@ -167,16 +198,41 @@ public class BatallaService {
 		return equipo.getListaPokemon().stream().filter(p -> p.getHpActual() > 0).findFirst().orElse(null);
 	}
 
+
+	/**
+	 * Comprueba si un equipo tiene al menos un Pokémon con HP > 0.
+	 *
+	 * @param equipo equipo a verificar.
+	 * @return {@code true} si existe al menos un Pokémon vivo, {@code false} en
+	 *         caso contrario.
+	 */
 	private boolean hayPokemonesVivos(Equipo equipo) {
 		if (equipo == null || equipo.getListaPokemon() == null)
 			return false;
 		return equipo.getListaPokemon().stream().anyMatch(p -> p.getHpActual() > 0);
 	}
 
+
+	/**
+	 * Cambia el turno actual de la batalla entre "equipo1" y "equipo2".
+	 *
+	 * @param batalla instancia de {@link Batalla} cuyo turno se cambiará.
+	 */
 	private void cambiarTurno(Batalla batalla) {
 		batalla.setTurnoActual(batalla.getTurnoActual().equals("equipo1") ? "equipo2" : "equipo1");
 	}
 
+	/**
+	 * Finaliza la batalla si alguno de los dos equipos no tiene Pokémon vivos.
+	 * <p>
+	 * Establece equipo ganador/perdedor, marca la batalla como inactiva y cambia el
+	 * estado.
+	 * </p>
+	 *
+	 * @param batalla la batalla a finalizar (si corresponde).
+	 * @param e1      primer equipo participante.
+	 * @param e2      segundo equipo participante.
+	 */
 	private void finalizarSiCorresponde(Batalla batalla, Equipo e1, Equipo e2) {
 		if (!hayPokemonesVivos(e1)) {
 			batalla.setEquipoGanador(e2);
@@ -191,6 +247,18 @@ public class BatallaService {
 		}
 	}
 
+	/**
+	 * Busca un movimiento por nombre en la lista de movimientos de un Pokémon.
+	 * <p>
+	 * Si el nombre es nulo o está en blanco, o no se encuentra el movimiento, se
+	 * selecciona un movimiento aleatorio del Pokémon (si existe).
+	 * </p>
+	 *
+	 * @param p      Pokémon cuyos movimientos se consultan.
+	 * @param nombre nombre del movimiento a buscar (case-insensitive).
+	 * @return el {@link Movimiento} encontrado o uno aleatorio; {@code null} si no
+	 *         hay movimientos.
+	 */
 	private Movimiento elegirMovimientoPorNombre(Pokemon p, String nombre) {
 		if (p.getMovimiento() == null || p.getMovimiento().isEmpty())
 			return null;
@@ -203,6 +271,13 @@ public class BatallaService {
 		return seleccionarMovimientoAleatorio(p);
 	}
 
+	/**
+	 * Selecciona un movimiento aleatorio del Pokémon.
+	 *
+	 * @param p Pokémon del que se seleccionará el movimiento.
+	 * @return un {@link Movimiento} aleatorio, o {@code null} si no hay
+	 *         movimientos.
+	 */
 	private Movimiento seleccionarMovimientoAleatorio(Pokemon p) {
 		List<Movimiento> movs = p.getMovimiento();
 		if (movs == null || movs.isEmpty())
@@ -257,6 +332,23 @@ public class BatallaService {
 				+ efectividadMsg);
 	}
 
+	/**
+	 * Calcula un modificador de daño basado en la habilidad pasiva del atacante.
+	 * <p>
+	 * Ejemplos de comportamientos implementados:
+	 * <ul>
+	 * <li>Blaze/Torrent/Overgrow/Swarm: aumentan daño de su tipo si HP &lt;
+	 * 1/3.</li>
+	 * <li>Guts: aumenta el ataque si el atacante tiene un estado alterado.</li>
+	 * <li>Pixilate se maneja cambiando el tipo del movimiento antes del
+	 * cálculo.</li>
+	 * </ul>
+	 * </p>
+	 *
+	 * @param atacante Pokémon atacante.
+	 * @param mov      movimiento utilizado (se usa para comprobar el tipo).
+	 * @return multiplicador a aplicar al daño (por defecto {@code 1.0}).
+	 */
 	private double obtenerModificadorHabilidadAtacante(Pokemon atacante, Movimiento mov) {
 		if (atacante.getAbility() == null)
 			return 1.0;

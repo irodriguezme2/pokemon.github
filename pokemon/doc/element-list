@@ -1,0 +1,9 @@
+co.edu.unbosque.pokemon
+co.edu.unbosque.pokemon.configuration
+co.edu.unbosque.pokemon.controller
+co.edu.unbosque.pokemon.dto
+co.edu.unbosque.pokemon.entity
+co.edu.unbosque.pokemon.repository
+co.edu.unbosque.pokemon.secutiry
+co.edu.unbosque.pokemon.service
+co.edu.unbosque.pokemon.util

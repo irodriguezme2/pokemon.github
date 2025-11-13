@@ -18,6 +18,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * Representa a un usuario dentro del sistema PokéLab y se integra con Spring
+ * Security mediante la implementación de {@link UserDetails}.
+ * <p>
+ * Contiene credenciales, información personal, estado de la cuenta y rol del
+ * usuario.
+ * </p>
+ *
+ * <p>
+ * <b>Ejemplo:</b> Un usuario con correo "ash@pokelab.com", nombreUsuario
+ * "ashKetchum", rol USER y cuenta habilitada para iniciar sesión en la
+ * aplicación.
+ * </p>
+ *
+ * @author PokéLab
+ * @version 1.0
+ */
 @Entity
 @Table(name = "usuarioPokemon")
 public class Usuario implements UserDetails {
@@ -39,6 +56,13 @@ public class Usuario implements UserDetails {
 	private boolean credentialsNonExpired;
 	private boolean enabled;
 
+	/**
+	 * Constructor por defecto.
+	 * <p>
+	 * Inicializa los flags de la cuenta en valores por defecto y asigna
+	 * {@code Role.USER} como rol predeterminado.
+	 * </p>
+	 */
 	public Usuario() {
 		this.accountNonExpired = true;
 		this.accountNonLocked = true;
@@ -48,10 +72,23 @@ public class Usuario implements UserDetails {
 		this.role = Role.USER;
 	}
 
+	/**
+	 * Enum que define los roles posibles para un usuario.
+	 */
 	public enum Role {
 		USER, ADMIN,
 	}
 
+	/**
+	 * Constructor completo del usuario.
+	 *
+	 * @param correo          correo electrónico.
+	 * @param nombreUsuario   nombre de usuario único.
+	 * @param contrasenia     contraseña del usuario.
+	 * @param rol             rol asignado.
+	 * @param fechaNacimiento fecha de nacimiento.
+	 * @param esHombre        indicador de género.
+	 */
 	public Usuario(String correo, String nombreUsuario, String contrasenia, Role rol, Date fechaNacimiento,
 			boolean esHombre) {
 		this();
@@ -63,12 +100,25 @@ public class Usuario implements UserDetails {
 		this.esHombre = esHombre;
 	}
 
+	/**
+	 * Constructor con correo y contraseña.
+	 *
+	 * @param correo      correo electrónico.
+	 * @param contrasenia contraseña del usuario.
+	 */
 	public Usuario(String correo, String contrasenia) {
 		this();
 		this.correo = correo;
 		this.contrasenia = contrasenia;
 	}
 
+	/**
+	 * Constructor con nombre de usuario, rol y contraseña.
+	 *
+	 * @param nombreUsuario nombre de usuario.
+	 * @param role          rol asignado.
+	 * @param contrasenia   contraseña del usuario.
+	 */
 	public Usuario(String nombreUsuario, Role role, String contrasenia) {
 		this();
 		this.nombreUsuario = nombreUsuario;
@@ -76,11 +126,22 @@ public class Usuario implements UserDetails {
 		this.contrasenia = contrasenia;
 	}
 
+	/**
+	 * Calcula el código hash del usuario a partir de sus atributos principales.
+	 *
+	 * @return valor hash único.
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(contrasenia, correo, esHombre, fechaNacimiento, id, nombreUsuario);
 	}
 
+	/**
+	 * Compara dos usuarios según su información básica y credenciales.
+	 *
+	 * @param obj objeto a comparar.
+	 * @return {@code true} si ambos usuarios son equivalentes.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -1,0 +1,1 @@
+tagSearchIndex = [{"l":"Funciones principales:","h":"class co.edu.unbosque.pokemon.PokemonApplication","d":"Section","u":"co/edu/unbosque/pokemon/PokemonApplication.html#funciones-principales--heading"},{"l":"Serialized Form","h":"","u":"serialized-form.html"}];updateSearchResults();

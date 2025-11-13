@@ -7,6 +7,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ * Representa una estadística individual de un Pokémon dentro del sistema
+ * PokéLab.
+ * <p>
+ * Cada estadística tiene un nombre y un valor numérico, los cuales determinan
+ * aspectos como la fuerza, velocidad, defensa o cualquier otro atributo medible
+ * de un Pokémon.
+ * </p>
+ *
+ * <p>
+ * <b>Ejemplo:</b> Una estadística con nombre "Ataque" y valor 85 indica la
+ * capacidad ofensiva del Pokémon.
+ * </p>
+ *
+ * @author PokéLab
+ * @version 1.0
+ */
 @Entity
 public class Estadistica implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -16,10 +33,19 @@ public class Estadistica implements Serializable {
 	private Long id;
 	private String nombre;
 	private int valor;
-
+	
+	/**
+	 * Constructor vacío
+	 */
 	public Estadistica() {
 	}
 
+	/**
+	 * Constructor que permite crear una estadística con su nombre y valor.
+	 *
+	 * @param nombre Nombre de la estadística (por ejemplo, "Ataque").
+	 * @param valor  Valor numérico asignado a la estadística.
+	 */
 	public Estadistica(String nombre, int valor) {
 		this.nombre = nombre;
 		this.valor = valor;

@@ -15,6 +15,19 @@ import co.edu.unbosque.pokemon.repository.EquipoRepository;
 import co.edu.unbosque.pokemon.repository.PokemonRepository;
 import jakarta.transaction.Transactional;
 
+/**
+ * Servicio encargado de gestionar las operaciones CRUD relacionadas con los
+ * equipos de Pokémon. Permite la creación, actualización, eliminación y
+ * consulta de equipos asociados a los usuarios.
+ * 
+ * <p>
+ * Incluye validaciones de unicidad por nombre y verificación de existencia de
+ * los Pokémon que conforman el equipo.
+ * </p>
+ * 
+ * @author PokéLab
+ * @version 1.0
+ */
 @Service
 public class EquipoService implements CRUDOperation<EquipoDTO> {
 	@Autowired
@@ -29,6 +42,12 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	/**
+	 * Crea un nuevo equipo en el sistema a partir de un {@link EquipoDTO}.
+	 * 
+	 * @param newData DTO que contiene los datos del nuevo equipo
+	 * @return 0 si el equipo fue creado correctamente, 1 si el nombre ya existe
+	 */
 	@Override
 	public int create(EquipoDTO newData) {
 		Equipo entity = modelMapper.map(newData, Equipo.class);
@@ -40,6 +59,15 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 		}
 	}
 
+	/**
+	 * Crea un equipo a partir de nombres de Pokémon y el identificador del usuario.
+	 * 
+	 * @param nombre    nombre del equipo
+	 * @param id        identificador del usuario propietario
+	 * @param pokemones nombres de los seis Pokémon que integran el equipo
+	 * @return 0 si el equipo fue creado, 1 si no tiene 6 Pokémon, 2 si alguno no
+	 *         existe
+	 */
 	@Transactional
 	public int create(String nombre, Long idUsuario, String... nombresPokemones) {
 		if (nombresPokemones.length != 6) {
@@ -63,6 +91,11 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 		return 0; // Éxito
 	}
 
+	/**
+	 * Obtiene la lista completa de equipos registrados.
+	 * 
+	 * @return lista de {@link EquipoDTO} con todos los equipos existentes
+	 */
 	@Override
 	public List<EquipoDTO> getAll() {
 		List<Equipo> entityList = equiRepo.findAll();
@@ -76,6 +109,12 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 		return dtoList;
 	}
 
+	/**
+	 * Elimina un equipo del sistema a partir de su identificador.
+	 * 
+	 * @param id identificador del equipo
+	 * @return 0 si se eliminó correctamente, 1 si no existe
+	 */
 	@Override
 	public int deleteByID(Long id) {
 		if (equiRepo.findById(id).isPresent()) {
@@ -86,6 +125,14 @@ public class EquipoService implements CRUDOperation<EquipoDTO> {
 		}
 	}
 	
+	/**
+	 * Actualiza los datos de un equipo existente por su identificador.
+	 * 
+	 * @param id      identificador del equipo
+	 * @param newData datos actualizados en formato {@link EquipoDTO}
+	 * @return 0 si la actualización fue exitosa, 1 si el nuevo nombre ya está en
+	 *         uso, 2 si el equipo no existe, 3 para errores no esperados
+	 */
 	public int deleteByUsername(String username) {
 		Optional<Equipo> found = equiRepo.findByNombre(username);
 		if (found.isPresent()) {

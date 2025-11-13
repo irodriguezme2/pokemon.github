@@ -28,6 +28,19 @@ import co.edu.unbosque.pokemon.repository.PokemonRepository;
 import co.edu.unbosque.pokemon.util.TypeEffectiveness;
 import jakarta.transaction.Transactional;
 
+/**
+ * Servicio encargado de gestionar las operaciones CRUD y lógicas relacionadas
+ * con los Pokémon. Permite la creación de Pokémon desde datos locales o
+ * consumiendo la API pública de PokeAPI.
+ * 
+ * <p>
+ * Incluye la gestión de tipos, movimientos, estadísticas, habilidades y
+ * estados.
+ * </p>
+ * 
+ * @author PokéLab
+ * @version 1.0
+ */
 @Service
 public class PokemonService implements CRUDOperation<PokemonDTO> {
 
@@ -39,6 +52,12 @@ public class PokemonService implements CRUDOperation<PokemonDTO> {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	/**
+	 * Crea un nuevo Pokémon en el sistema a partir de un {@link PokemonDTO}.
+	 * 
+	 * @param newData DTO con los datos del Pokémon a registrar
+	 * @return 0 si se creó correctamente, 1 si el Pokémon ya existe
+	 */
 	@Override
 	public int create(PokemonDTO newData) {
 		Pokemon entity = modelMapper.map(newData, Pokemon.class);
@@ -51,6 +70,14 @@ public class PokemonService implements CRUDOperation<PokemonDTO> {
 		}
 	}
 
+	/**
+	 * Crea un Pokémon en el sistema a partir de la API de PokeAPI. Realiza el
+	 * consumo HTTP, obtiene las estadísticas, movimientos y tipos.
+	 * 
+	 * @param url URL del recurso del Pokémon en la API de PokeAPI
+	 * @return 0 si se creó correctamente, 1 si ya existe o si no posee movimientos
+	 *         válidos
+	 */
 	public int create(String url) {
 		PokemonJsonDTO poke = ClienteHTTP.doGetPokemon(url);
 		ArrayList<String> tipos = new ArrayList<>();

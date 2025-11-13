@@ -14,13 +14,32 @@ import co.edu.unbosque.pokemon.dto.EstadisticaJsonDTO;
 import co.edu.unbosque.pokemon.dto.MovimientoJsonDTO;
 import co.edu.unbosque.pokemon.dto.PokemonJsonDTO;
 
+
+/**
+ * Clase encargada de realizar solicitudes HTTP hacia APIs externas (como la
+ * PokeAPI) y convertir las respuestas JSON en objetos DTO.
+ * 
+ * <p>
+ * Utiliza {@link HttpClient} de Java 11+ con soporte HTTP/2.
+ * </p>
+ * 
+ * @author PokéLab
+ * @version 1.0
+ */
 public class ClienteHTTP {
 
 //Quien hace la solicitud. Creacion del cliente
 	private static final HttpClient CLIENTE = HttpClient.newBuilder().version(Version.HTTP_2)
 			.connectTimeout(Duration.ofSeconds(10)).build();
 
-	// Consumir la api. Solicitud
+	/**
+	 * Realiza una solicitud GET genérica a una URL y devuelve el código de estado
+	 * junto al cuerpo.
+	 *
+	 * @param url dirección completa del recurso a consultar.
+	 * @return una cadena con el código de estado HTTP y el cuerpo de la respuesta
+	 *         separados por tabulación.
+	 */
 	public static String doGet(String url) {
 		HttpRequest solicitud = HttpRequest.newBuilder().GET().uri(URI.create(url))
 				.header("Content-Type", "application/json").build();
@@ -39,7 +58,14 @@ public class ClienteHTTP {
 		return respuesta.statusCode() + "\t" + respuesta.body();
 	}
 
-	// Consumir la api. Solicitud
+	/**
+	 * Realiza una solicitud GET y convierte el resultado JSON en un objeto
+	 * {@link PokemonJsonDTO}.
+	 *
+	 * @param url dirección de la API del Pokémon (por ejemplo:
+	 *            "https://pokeapi.co/api/v2/pokemon/1/").
+	 * @return objeto {@link PokemonJsonDTO} con los datos del Pokémon.
+	 */
 	public static PokemonJsonDTO doGetPokemon(String url) {
 		HttpRequest solicitud = HttpRequest.newBuilder().GET().uri(URI.create(url))
 				.header("Content-Type", "application/json").build();
@@ -61,7 +87,14 @@ public class ClienteHTTP {
 		return pokemonJsonDTO;
 	}
 
-	// Consumir la api. Solicitud
+	/**
+	 * Realiza una solicitud GET y convierte el resultado JSON en un objeto
+	 * {@link MovimientoJsonDTO}.
+	 *
+	 * @param url dirección de la API del movimiento (por ejemplo:
+	 *            "https://pokeapi.co/api/v2/move/52/").
+	 * @return objeto {@link MovimientoJsonDTO} con los datos del movimiento.
+	 */
 	public static MovimientoJsonDTO doGetMovimientoJsonDTO(String url) {
 		HttpRequest solicitud = HttpRequest.newBuilder().GET().uri(URI.create(url))
 				.header("Content-Type", "application/json").build();
@@ -83,6 +116,15 @@ public class ClienteHTTP {
 		return movimientoJsonDTO;
 	}
 
+	/**
+	 * Realiza una solicitud GET y convierte el resultado JSON en un objeto
+	 * {@link EstadisticaJsonDTO}.
+	 *
+	 * @param url dirección de la API de la estadística (por ejemplo:
+	 *            "https://pokeapi.co/api/v2/stat/1/").
+	 * @return objeto {@link EstadisticaJsonDTO} con la información de la
+	 *         estadística.
+	 */
 	public static EstadisticaJsonDTO doGetEstadisticaJsonDTO(String url) {
 		HttpRequest solicitud = HttpRequest.newBuilder().GET().uri(URI.create(url))
 				.header("Content-Type", "application/json").build();
@@ -104,14 +146,5 @@ public class ClienteHTTP {
 		return estadisticaJsonDTO;
 	}
 
-	public static void main(String[] args) {
-		/*
-		 * System.out.println(doGet(
-		 * "https://ipgeolocation.abstractapi.com/v1/?api_key=11b6b958b53043d5b88a20ba752283f4&ip_address=190.131.251.193"
-		 * ));
-		 * System.out.println(doGet("https://countriesnow.space/api/v0.1/countries"));
-		 */
-		System.out.println(doGetMovimientoJsonDTO("https://pokeapi.co/api/v2/move/52/").toString());
-	}
 
 }

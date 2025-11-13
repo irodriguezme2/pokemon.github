@@ -15,7 +15,7 @@ public class BatallaPokemon {
 	private int hp;
 	private int attack;
 	private int speed;
-	private String estado; 
+	private String estado;
 
 	public BatallaPokemon(long id, String nombre, List<String> tipo, List<Movimiento> movimientos, int hp, int attack,
 			int speed, String estado) {
